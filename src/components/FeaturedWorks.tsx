@@ -926,7 +926,7 @@ export const FeaturedWorks: React.FC = () => {
             />
             <span className="text-[12px] font-heading font-medium tracking-[0.25em] uppercase text-white/50">
               PixelCraft<span className="text-[8px] align-super leading-none text-white/40">®</span>
-              <span className="font-cursive text-[18px] text-white/60 ml-1.5">by Sujith</span>
+              <span className="font-cursive text-[18px] text-white/60 ml-1.5 normal-case">by Sujith</span>
             </span>
           </div>
         </div>,
