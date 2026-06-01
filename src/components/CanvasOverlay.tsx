@@ -10,9 +10,25 @@ export const CanvasOverlay: React.FC = () => {
   const [cursorText, setCursorText] = useState('');
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Detect touch device or mobile screen size
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(
+        window.innerWidth >= 1024 && 
+        !('ontouchstart' in window || navigator.maxTouchPoints > 0)
+      );
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   // Setup fluid trailing mouse glow canvas
   useEffect(() => {
+    if (!isDesktop) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -70,10 +86,12 @@ export const CanvasOverlay: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [isDesktop]);
 
   // Setup hardware-accelerated custom cursor
   useEffect(() => {
+    if (!isDesktop) return;
+
     const cursor = cursorRef.current;
     const cursorDot = cursorDotRef.current;
     if (!cursor || !cursorDot) return;
@@ -149,7 +167,7 @@ export const CanvasOverlay: React.FC = () => {
       window.removeEventListener('mouseover', handleMouseOver);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [isDesktop]);
 
   return (
     <>
@@ -157,41 +175,48 @@ export const CanvasOverlay: React.FC = () => {
       <div className="noise-overlay" />
 
       {/* Trailing Radial Mouse Glow Canvas */}
-      <canvas
-        ref={canvasRef}
-        className="fixed inset-0 w-full h-full z-1 pointer-events-none select-none"
-      />
+      {isDesktop && (
+        <canvas
+          ref={canvasRef}
+          className="fixed inset-0 w-full h-full z-1 pointer-events-none select-none"
+        />
+      )}
 
       {/* Custom Hardware-Accelerated Dynamic Cursor */}
-      <div
-        ref={cursorRef}
-        className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 pointer-events-none z-[10000] flex items-center justify-center transition-all duration-300 ease-out hidden lg:flex ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        } ${
-          isHovered
-            ? 'w-16 h-16 bg-white/10 backdrop-blur-[2px] border-white scale-110'
-            : 'w-8 h-8 scale-100'
-        }`}
-      >
-        {isHovered && cursorText && (
-          <span className="text-[9px] uppercase tracking-[0.2em] font-heading font-semibold text-white pointer-events-none animate-fade-in">
-            {cursorText}
-          </span>
-        )}
-        {isHovered && !cursorText && (
-          <span className="text-[14px] font-heading font-medium text-white select-none leading-none">
-            ✳︎
-          </span>
-        )}
-      </div>
+      {isDesktop && (
+        <>
+          <div
+            ref={cursorRef}
+            className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 pointer-events-none z-[10000] flex items-center justify-center transition-all duration-300 ease-out ${
+              isVisible ? 'opacity-100' : 'opacity-0'
+            } ${
+              isHovered
+                ? 'w-16 h-16 bg-white/10 backdrop-blur-[2px] border-white scale-110'
+                : 'w-8 h-8 scale-100'
+            }`}
+          >
+            {isHovered && cursorText && (
+              <span className="text-[9px] uppercase tracking-[0.2em] font-heading font-semibold text-white pointer-events-none animate-fade-in">
+                {cursorText}
+              </span>
+            )}
+            {isHovered && !cursorText && (
+              <span className="text-[14px] font-heading font-medium text-white select-none leading-none">
+                ✳︎
+              </span>
+            )}
+          </div>
 
-      {/* Instant cursor dot */}
-      <div
-        ref={cursorDotRef}
-        className={`fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[10001] transition-transform duration-300 ease-out hidden lg:block ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        } ${isHovered ? 'scale-0' : 'scale-100'}`}
-      />
+          {/* Instant cursor dot */}
+          <div
+            ref={cursorDotRef}
+            className={`fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[10001] transition-transform duration-300 ease-out ${
+              isVisible ? 'opacity-100' : 'opacity-0'
+            } ${isHovered ? 'scale-0' : 'scale-100'}`}
+          />
+        </>
+      )}
     </>
   );
 };
+

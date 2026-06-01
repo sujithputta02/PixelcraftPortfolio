@@ -5,6 +5,21 @@ export const BackgroundVideo: React.FC = () => {
   const prevX = useRef<number | null>(null);
   const queuedTargetTime = useRef<number | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Detect touch device or mobile screen size
+  useEffect(() => {
+    const checkTouch = () => {
+      setIsTouchDevice(
+        'ontouchstart' in window || 
+        navigator.maxTouchPoints > 0 || 
+        window.innerWidth < 1024
+      );
+    };
+    checkTouch();
+    window.addEventListener('resize', checkTouch);
+    return () => window.removeEventListener('resize', checkTouch);
+  }, []);
 
   // Bulletproof safety fallback to ensure background fades in and is never black
   useEffect(() => {
@@ -18,6 +33,15 @@ export const BackgroundVideo: React.FC = () => {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // If it's a touch/mobile device, we loop and autoplay natively instead of scrubbing on touch
+    if (isTouchDevice) {
+      video.loop = true;
+      video.play().catch((err) => {
+        console.log("Mobile video autoplay blocked or failed:", err);
+      });
+      return;
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!video || !video.duration || isNaN(video.duration)) return;
@@ -49,49 +73,14 @@ export const BackgroundVideo: React.FC = () => {
       prevX.current = null;
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!video || !video.duration || isNaN(video.duration)) return;
-      if (e.touches.length === 0) return;
-
-      const currentX = e.touches[0].clientX;
-
-      if (prevX.current === null) {
-        prevX.current = currentX;
-        return;
-      }
-
-      const delta = currentX - prevX.current;
-      prevX.current = currentX;
-
-      const SENSITIVITY = 1.2; // Slightly higher sensitivity for touch
-      const deltaRatio = delta / window.innerWidth;
-      const timeDelta = deltaRatio * SENSITIVITY * video.duration;
-      
-      const newTargetTime = Math.max(0, Math.min(video.duration, video.currentTime + timeDelta));
-
-      if (video.seeking) {
-        queuedTargetTime.current = newTargetTime;
-      } else {
-        video.currentTime = newTargetTime;
-      }
-    };
-
-    const handleTouchEnd = () => {
-      prevX.current = null;
-    };
-
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isLoaded]);
+  }, [isLoaded, isTouchDevice]);
 
   const handleSeeked = () => {
     const video = videoRef.current;
@@ -108,7 +97,12 @@ export const BackgroundVideo: React.FC = () => {
     setIsLoaded(true);
     // Seek to a beautiful initial frame
     if (videoRef.current) {
-      videoRef.current.currentTime = 0;
+      if (isTouchDevice) {
+        videoRef.current.loop = true;
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.currentTime = 0;
+      }
     }
   };
 
@@ -123,15 +117,23 @@ export const BackgroundVideo: React.FC = () => {
         }}
         muted
         playsInline
+        loop={isTouchDevice}
+        autoPlay={isTouchDevice}
         preload="auto"
         crossOrigin="anonymous"
         onSeeked={handleSeeked}
         onLoadedMetadata={handleLoadedMetadata}
-        onCanPlay={() => setIsLoaded(true)}
+        onCanPlay={() => {
+          setIsLoaded(true);
+          if (isTouchDevice && videoRef.current) {
+            videoRef.current.play().catch(() => {});
+          }
+        }}
       />
       {/* Cinematic dark ambient overlay to ensure perfect contrast for reading primary typography */}
       <div className="fixed inset-0 bg-gradient-to-b from-[#050505]/75 via-[#050505]/35 to-[#050505]/98 z-0 pointer-events-none select-none" />
     </>
   );
 };
+
 

@@ -121,10 +121,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-scroll-left {
   animation: scroll-left 35s linear infinite;
+  will-change: transform;
 }
 
 .animate-scroll-right {
   animation: scroll-right 35s linear infinite;
+  will-change: transform;
 }
 
 /* Hide default cursor on desktop */
@@ -161,14 +163,20 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-disco-1 {
   animation: disco-float-1 20s ease-in-out infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .animate-disco-2 {
   animation: disco-float-2 24s ease-in-out infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .animate-disco-3 {
   animation: disco-float-3 22s ease-in-out infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .text-disco {

@@ -7,6 +7,9 @@ export const EditorialIntro: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Disable interactive tilt on small devices/touch screens to avoid visual rendering/flickering issues in Safari
+    if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+    
     const card = cardRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();

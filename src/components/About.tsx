@@ -6,6 +6,9 @@ export const About: React.FC = () => {
   const [isEmblemHovered, setIsEmblemHovered] = useState(false);
 
   const handlePanelMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Disable interactive tilt on small devices/touch screens to avoid visual rendering/flickering issues in Safari
+    if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
     const card = panelRef.current;
     if (!card) return;
     const rect = card.getBoundingClientRect();
