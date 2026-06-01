@@ -11,8 +11,8 @@ const useTypewriter = (text: string, speed = 38, startDelay = 600) => {
 
     const startTyping = () => {
       timer = setInterval(() => {
-        setDisplayed((prev) => prev + text.charAt(index));
         index++;
+        setDisplayed(text.substring(0, index));
         if (index >= text.length) {
           clearInterval(timer);
           setDone(true);
