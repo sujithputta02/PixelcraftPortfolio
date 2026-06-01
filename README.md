@@ -15,15 +15,6 @@
   <img src="https://img.shields.io/badge/built_with-Vite_%2B_React_%2B_TypeScript-646CFF?style=flat-square&logo=vite" alt="Built With Vite React TS" />
   <img src="https://img.shields.io/badge/styling-Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css" alt="Tailwind CSS Styling" />
 </p>
-
-<p align="center">
-  <img src="public/images/Sujithprofile.png" alt="Sujith Putta" width="160" style="border-radius: 14px; border: 1px solid rgba(255,255,255,0.12);" />
-  <br />
-  <strong>Sujith Putta</strong><br />
-  <em>Creative Leader & Graphic Designer</em><br />
-  📍 Bangalore, IN
-</p>
-
 ---
 
 ## ✳︎ Visual Experience & Showroom Core
