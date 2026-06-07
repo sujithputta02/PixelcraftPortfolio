@@ -49,7 +49,7 @@ export const About: React.FC = () => {
           
           <div className="flex items-center gap-3 mb-6">
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45">
-              03 — MISSION
+              05 — MISSION
             </span>
             <div className="w-8 h-[1px] bg-white/20" />
             <h2 className="text-[15px] sm:text-[17px] font-heading font-normal tracking-[0.1em] uppercase text-white/80">

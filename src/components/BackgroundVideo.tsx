@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 export const BackgroundVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const targetTime = useRef<number | null>(null);
+  const lastSeekTime = useRef<number>(0);
   const prevX = useRef<number | null>(null);
-  const queuedTargetTime = useRef<number | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -56,17 +57,12 @@ export const BackgroundVideo: React.FC = () => {
       const delta = currentX - prevX.current;
       prevX.current = currentX;
 
-      const SENSITIVITY = 0.8;
+      const SENSITIVITY = 0.55; // Lower sensitivity for smooth feel
       const deltaRatio = delta / window.innerWidth;
       const timeDelta = deltaRatio * SENSITIVITY * video.duration;
       
-      const newTargetTime = Math.max(0, Math.min(video.duration, video.currentTime + timeDelta));
-
-      if (video.seeking) {
-        queuedTargetTime.current = newTargetTime;
-      } else {
-        video.currentTime = newTargetTime;
-      }
+      const baseTime = targetTime.current !== null ? targetTime.current : video.currentTime;
+      targetTime.current = Math.max(0, Math.min(video.duration, baseTime + timeDelta));
     };
 
     const handleMouseLeave = () => {
@@ -76,21 +72,36 @@ export const BackgroundVideo: React.FC = () => {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
 
+    // Continuous smooth scrubbing loop using RAF
+    let animationId: number;
+    const updateScrub = () => {
+      const now = Date.now();
+      if (
+        video &&
+        targetTime.current !== null &&
+        !video.seeking &&
+        now - lastSeekTime.current > 65 // Throttle to ~15 seeks/sec (highly optimized)
+      ) {
+        if (Math.abs(video.currentTime - targetTime.current) > 0.02) {
+          video.currentTime = targetTime.current;
+          lastSeekTime.current = now;
+        } else {
+          targetTime.current = null;
+        }
+      }
+      animationId = requestAnimationFrame(updateScrub);
+    };
+    animationId = requestAnimationFrame(updateScrub);
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      cancelAnimationFrame(animationId);
     };
   }, [isLoaded, isTouchDevice]);
 
   const handleSeeked = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (queuedTargetTime.current !== null) {
-      const nextTime = queuedTargetTime.current;
-      queuedTargetTime.current = null;
-      video.currentTime = nextTime;
-    }
+    lastSeekTime.current = Date.now();
   };
 
   const handleLoadedMetadata = () => {

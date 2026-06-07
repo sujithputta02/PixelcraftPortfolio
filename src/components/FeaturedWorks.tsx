@@ -21,11 +21,28 @@ interface Project {
 
 const projectsData: Project[] = [
   {
+    id: 'obsession',
+    title: 'OBSESSION (2026)',
+    taxonomy: 'Cinematic Horror Key Art',
+    image: '/Poster/OBSESSION Poster.png',
+    gridSpan: 'col-span-12 md:col-span-6 lg:col-span-7',
+    overview: 'This poster is a study of the fraught and conflicted relationship between desire and destruction, expressed in a minimalist but symbolic visual style. Two characters are on opposite sides of a broken platform, separated by an insurmountable gap representing emotional distance, isolation and the effects of unhealthy attachment. The mysterious One Wish Willow is central to the story and its events, and a reminder that one wish can change reality and the line between love and obsession can get blurred. The black, dripping structures are symbols of corruption and decay. The bright red background is a symbol of passion, danger, desire and psychological instability. The composition is designed to evoke the film’s themes of longing, control and the devastating price of getting exactly what you want. Employing bold typography, cinematic storytelling and symbolic imagery, the composition creates a striking, emotionally potent theatrical poster.',
+    challenge: 'Creating a clean visual balance between the heavy, dripping obsidian textures representing corruption and decay and the high-saturation crimson backdrop without introducing color bleed or losing micro-grain definition.',
+    creativeDirection: 'Deep horror minimalism, stark crimson red and black contrast lines, distressed custom typography pairing layouts, and symbolic isolated character framing.',
+    development: 'Compositing character profile outlines on isolated platforms, painting procedural ink dripping silhouettes, and typesetting title layers in Canva and Affinity Designer.',
+    tools: ['Canva', 'Affinity Designer', 'Digital Painting'],
+    results: 'A highly striking, emotionally potent conceptual poster that captured extensive engagement across design portals and curated feature showcases.',
+    galleryImages: ['/Poster/OBSESSION Poster.png', '/Poster/All the Stars are Closer - Black Panther Poster.png'],
+    behanceUrl: 'https://www.behance.net/gallery/250684349/OBSESSION-%282026%29-Cinematic-Horror-Poster-Concept',
+    pinterestUrl: 'https://pin.it/4hmd5zpmG',
+    instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
+  },
+  {
     id: 'black-panther',
     title: 'All The Stars Are Closer — Black Panther',
     taxonomy: 'Cinematic Key Art Design',
     image: '/Poster/All the Stars are Closer - Black Panther Poster.png',
-    gridSpan: 'col-span-12 md:col-span-6 lg:col-span-7', // Prominent col-span-7 as first featured project
+    gridSpan: 'col-span-12 md:col-span-6 lg:col-span-5', // Prominent col-span-5 as second featured project (symmetrical with obsession)
     overview: 'An elite cinematic key art print paying homage to the sovereign majesty and ancestral lineage of Wakanda. This visual masterpiece blends cosmic stellar grids, dramatic light ray structures, and a rich, hand-painted Vibranium suit surface structure to deliver a profound, museum-grade tribute to the iconic cultural phenomenon.',
     challenge: 'Achieving a perfect equilibrium between the ultra-fine tactile micro-textures of the woven Vibranium battle-suit and high-intensity, multi-directional golden solar key-light specular flares. The complex rendering demanded absolute luminance precision to prevent saturation blowout while keeping deep shadow detail fully intact.',
     creativeDirection: 'Constructing a hyper-reflective obsidian canvas layered with deep amethyst and solar-gold volumetric space nebulae. Dramatic low-key focal spotlighting shapes the subject\'s heroic profile, complemented by custom tracked, geometric sans-serif displays that evoke eternal authority.',
@@ -57,7 +74,7 @@ const projectsData: Project[] = [
     title: 'DUDEHOLIC — Music & Memories',
     taxonomy: 'Pop Culture Music Editorial',
     image: '/Poster/Dudeholic Poster.png',
-    gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 2, Slot 1 (Symmetrical with Dune)
+    gridSpan: 'col-span-12 md:col-span-6 lg:col-span-7', // Symmetrical 7/5 split with dear-el-v2
     overview: 'A fan tribute poster inspired by DUDE, visuals inspired by Sai Abhyankkar’s music and screen presence of Pradeep Ranganathan and Mamitha Baiju. The art is made for fellow Dudeholics who relate to music through memories, and combines retro cassette aesthetics, nostalgic photography and cinematic storytelling. ☔🎵',
     challenge: 'Blending dynamic retro cassette tapes and detailed musical analog layers with high-fidelity movie stills of Pradeep and Mamitha, preserving micro-details and soft rainy nostalgic lighting overlays.',
     creativeDirection: 'Warm nostalgic amber tones mixed with indigo rain glows, vintage cassette textures, technical tape text layers, and expressive typographic alignment.',
@@ -443,7 +460,7 @@ export const FeaturedWorks: React.FC = () => {
         <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 sm:mb-20">
           <div className="text-left">
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 block mb-3">
-              02 — SHOWCASE
+              03 — SHOWCASE
             </span>
             <h2 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight">
               Featured Exhibition Matrix
@@ -487,44 +504,44 @@ export const FeaturedWorks: React.FC = () => {
                   </>
                 )}
 
-                {/* Image Mask Reveal Container */}
-                <div className="w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-auto md:h-[480px] overflow-hidden relative border-b border-white/5">
+                {/* Image Container taking full card height */}
+                <div className="w-full h-[380px] sm:h-[450px] md:h-[480px] overflow-hidden relative">
                   
                   {/* High Resolution Static Image */}
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1200ms] ease-out"
+                    className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1200ms] ease-out"
                     loading="lazy"
                   />
                   
                   {/* Subtle Mouse Glow Ambient Highlight Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none" />
-                </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-10" />
 
-                {/* Metadata structural overlay card footer */}
-                <div className="p-5 sm:p-6 w-full flex justify-between items-end bg-[#0C0C0C]">
-                  <div className="text-left">
-                    <span className="text-[10px] font-heading font-medium tracking-[0.15em] uppercase text-white/35 block mb-1">
-                      {project.taxonomy}
-                    </span>
-                    <h3 className="text-[18px] sm:text-[23px] font-heading font-semibold text-white tracking-tight leading-none group-hover:translate-x-1 duration-300">
-                      {project.title}
-                    </h3>
-                  </div>
-                  
-                  <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white group-hover:bg-white flex items-center justify-center transition-all duration-300">
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      className="text-white group-hover:text-black transition-colors"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                  {/* Frosted Glass Overlay Footer (Half Blurred matching reference UI) */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex justify-between items-end bg-black/40 backdrop-blur-[16px] border-t border-white/10 z-20 transition-all duration-500 group-hover:bg-black/55">
+                    <div className="text-left">
+                      <span className="text-[10px] font-heading font-medium tracking-[0.15em] uppercase text-white/45 block mb-1">
+                        {project.taxonomy}
+                      </span>
+                      <h3 className="text-[18px] sm:text-[23px] font-heading font-semibold text-white tracking-tight leading-none group-hover:translate-x-1 duration-300">
+                        {project.title}
+                      </h3>
+                    </div>
+                    
+                    <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white group-hover:bg-white flex items-center justify-center transition-all duration-300 flex-shrink-0 ml-4">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        className="text-white group-hover:text-black transition-colors"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
 

@@ -1,10 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 export const EditorialIntro: React.FC = () => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [tiltStyle, setTiltStyle] = useState<React.CSSProperties>({});
-  const [spotlightPos, setSpotlightPos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     // Disable interactive tilt on small devices/touch screens to avoid visual rendering/flickering issues in Safari
@@ -20,22 +17,25 @@ export const EditorialIntro: React.FC = () => {
     const rotateX = (yc - y) / 10; // 3D tilt angles
     const rotateY = (x - xc) / 10;
     
-    setTiltStyle({
-      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.025, 1.025, 1.025)`,
-      transition: 'transform 0.1s ease-out',
-      boxShadow: '0 30px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 0, 127, 0.22), 0 0 25px rgba(0, 255, 255, 0.18)'
-    });
-    setSpotlightPos({ x, y });
-    setIsHovered(true);
+    card.style.transition = 'transform 0.1s ease-out';
+    card.style.setProperty('--rotate-x', `${rotateX}deg`);
+    card.style.setProperty('--rotate-y', `${rotateY}deg`);
+    card.style.setProperty('--card-scale', '1.025');
+    card.style.setProperty('--card-shadow', '0 30px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 0, 127, 0.22), 0 0 25px rgba(0, 255, 255, 0.18)');
+    card.style.setProperty('--spotlight-x', `${x}px`);
+    card.style.setProperty('--spotlight-y', `${y}px`);
+    card.style.setProperty('--spotlight-opacity', '1');
   };
 
   const handleMouseLeave = () => {
-    setTiltStyle({
-      transform: `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
-      transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
-      boxShadow: ''
-    });
-    setIsHovered(false);
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+    card.style.setProperty('--rotate-x', '0deg');
+    card.style.setProperty('--rotate-y', '0deg');
+    card.style.setProperty('--card-scale', '1');
+    card.style.setProperty('--card-shadow', 'none');
+    card.style.setProperty('--spotlight-opacity', '0');
   };
 
   return (
@@ -111,7 +111,10 @@ export const EditorialIntro: React.FC = () => {
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            style={tiltStyle}
+            style={{
+              transform: 'perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--card-scale, 1), var(--card-scale, 1), var(--card-scale, 1))',
+              boxShadow: 'var(--card-shadow, none)',
+            }}
             className="w-full max-w-[340px] disco-card border-disco-chrome rounded-2xl p-4 sm:p-5 transition-all duration-500 group relative overflow-hidden"
             data-cursor="Artist"
             data-magnetic
@@ -124,19 +127,19 @@ export const EditorialIntro: React.FC = () => {
             <div className="disco-sparkle bottom-6 right-8 sparkle-fast pointer-events-none" />
 
             {/* Dynamic Interactive Specular Spotlight Overlay */}
-            {isHovered && (
-              <div
-                className="absolute pointer-events-none z-20 transition-opacity duration-300 opacity-100"
-                style={{
-                  top: spotlightPos.y - 120,
-                  left: spotlightPos.x - 120,
-                  width: 240,
-                  height: 240,
-                  background: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%)',
-                  borderRadius: '50%'
-                }}
-              />
-            )}
+            <div
+              className="absolute pointer-events-none z-20 transition-opacity duration-300"
+              style={{
+                top: 'var(--spotlight-y, 0px)',
+                left: 'var(--spotlight-x, 0px)',
+                transform: 'translate(-50%, -50%)',
+                opacity: 'var(--spotlight-opacity, 0)',
+                width: 240,
+                height: 240,
+                background: 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%)',
+                borderRadius: '50%'
+              }}
+            />
 
             {/* Specular Ambient Glow Highlight */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-white/[0.03] rounded-full blur-xl pointer-events-none group-hover:bg-white/[0.06] transition-colors duration-500 z-10" />

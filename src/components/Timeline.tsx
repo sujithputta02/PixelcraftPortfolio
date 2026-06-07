@@ -68,7 +68,7 @@ export const Timeline: React.FC = () => {
 
       <div className="max-w-4xl mx-auto text-center mb-16 sm:mb-20">
         <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 block mb-3">
-          05 — CHRONOLOGY
+          07 — CHRONOLOGY
         </span>
         <h2 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight">
           Journey & Milestones

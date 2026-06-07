@@ -5,6 +5,8 @@ import { BackgroundVideo } from './components/BackgroundVideo';
 import { CanvasOverlay } from './components/CanvasOverlay';
 import { EditorialIntro } from './components/EditorialIntro';
 import { FeaturedWorks } from './components/FeaturedWorks';
+import { NewArrivals } from './components/NewArrivals';
+import { CreativeVault } from './components/CreativeVault';
 import { About } from './components/About';
 import { Skills } from './components/Skills';
 import { Timeline } from './components/Timeline';
@@ -111,8 +113,14 @@ function App() {
         {/* Section 2: Editorial Intro & Profile exhibit */}
         <EditorialIntro />
 
+        {/* Section 2.5: New Arrivals showcase section */}
+        <NewArrivals onNavClick={handleNavClick} />
+
         {/* Section 3: Featured Works bento grid exhibition matrix */}
         <FeaturedWorks />
+
+        {/* Section 3.5: Creative Vault overlapping grid visual wall */}
+        <CreativeVault />
 
         {/* Section 4: About & Strategic Vision manifesto */}
         <About />

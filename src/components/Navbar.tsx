@@ -72,6 +72,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
             </button>
             <span className="mx-1 text-white/30 text-[20px]">,</span>
             <button
+              onClick={() => handleLinkClick('latest')}
+              className="text-white/70 hover:text-white transition-colors duration-300 px-1"
+              data-cursor="Latest"
+            >
+              Latest
+            </button>
+            <span className="mx-1 text-white/30 text-[20px]">,</span>
+            <button
               onClick={() => handleLinkClick('about')}
               className="text-white/70 hover:text-white transition-colors duration-300 px-1"
               data-cursor="About"
@@ -146,6 +154,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
             className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
           >
             Works
+          </button>
+          <button
+            onClick={() => handleLinkClick('latest')}
+            className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
+          >
+            Latest
           </button>
           <button
             onClick={() => handleLinkClick('about')}

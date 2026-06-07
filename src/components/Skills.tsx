@@ -59,7 +59,7 @@ export const Skills: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-16 mb-16 sm:mb-20 text-left">
         <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 block mb-3">
-          04 — CAPABILITIES
+          06 — CAPABILITIES
         </span>
         <h2 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight">
           Specialized Skill Matrix
