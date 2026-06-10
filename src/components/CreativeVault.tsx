@@ -82,7 +82,7 @@ const MarqueeCard: React.FC<MarqueeCardProps> = ({
       className="w-[140px] sm:w-[170px] md:w-[210px] lg:w-[240px] aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/10 cursor-pointer relative transition-all duration-500 hover:scale-105 hover:z-50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] group shrink-0"
     >
       <ProgressiveImage
-        src={item.image}
+        src={item.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}
         alt={item.title}
         className="w-full h-full object-cover grayscale-0 opacity-100 md:grayscale md:opacity-70 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700"
         loading="lazy"
@@ -409,9 +409,15 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
         }
         .animate-marquee-l {
           animation: marquee-l 32s linear infinite;
+          will-change: transform;
+          backface-visibility: hidden;
+          transform: translate3d(0, 0, 0);
         }
         .animate-marquee-r {
           animation: marquee-r 32s linear infinite;
+          will-change: transform;
+          backface-visibility: hidden;
+          transform: translate3d(0, 0, 0);
         }
         .group\/row1:hover .animate-marquee-l,
         .group\/row2:hover .animate-marquee-r,
