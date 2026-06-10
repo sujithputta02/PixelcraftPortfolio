@@ -689,8 +689,8 @@ export const FeaturedWorks: React.FC = () => {
       {/* Morphing Expansion Detail Modal */}
       {activeProject && createPortal(
         <div
-          className={`fixed inset-0 z-[9999] flex justify-end overflow-hidden select-none transition-all duration-700 ease-out ${
-            isMorphing ? 'bg-black/95 backdrop-blur-md pointer-events-auto' : 'bg-transparent pointer-events-none'
+          className={`fixed inset-0 z-[9999] flex justify-end overflow-hidden select-none transition-all duration-700 ease-out case-study-modal-backdrop ${
+            isMorphing ? 'backdrop-blur-md pointer-events-auto' : 'bg-transparent pointer-events-none'
           }`}
         >
           {/* Fixed Close Button Anchor (Always visible and clickable in top-right of viewport) */}
@@ -1054,7 +1054,7 @@ export const FeaturedWorks: React.FC = () => {
       {/* Lightbox / Full-Screen Image Preview Modal */}
       {lightboxImage && createPortal(
         <div
-          className="fixed inset-0 z-[10100] bg-black/98 backdrop-blur-2xl flex flex-col items-center justify-center select-none"
+          className="fixed inset-0 z-[10100] bg-black/98 backdrop-blur-2xl flex flex-col items-center justify-center select-none always-dark"
           onClick={() => setLightboxImage(null)}
         >
           {/* Close Button Anchor */}

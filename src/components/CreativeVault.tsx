@@ -464,7 +464,7 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
       {activeImage && createPortal(
         <div
           onClick={handleCloseLightbox}
-          className="fixed inset-0 bg-black/98 z-[100000] flex items-center justify-center p-4 cursor-zoom-out animate-fade-in"
+          className="fixed inset-0 bg-black/98 z-[100000] flex items-center justify-center p-4 cursor-zoom-out animate-fade-in always-dark"
         >
           {/* Close button */}
           <button
