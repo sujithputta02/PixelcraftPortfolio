@@ -27,3 +27,5 @@ dist-ssr
 likes.db
 *.db
 
+# Sub-projects (separate repos)
+developer-portfolio/
