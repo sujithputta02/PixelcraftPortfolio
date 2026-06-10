@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import { ProgressiveImage } from './ProgressiveImage';
+import { sfx } from '../utils/sfx';
 
 export const About: React.FC = () => {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -62,12 +64,16 @@ export const About: React.FC = () => {
             className="mb-8 relative select-none cursor-pointer" 
             data-cursor="Core Emblem" 
             data-magnetic
-            onMouseEnter={() => setIsEmblemHovered(true)}
+            onMouseEnter={() => {
+              setIsEmblemHovered(true);
+              sfx.playTick('hover');
+            }}
             onMouseLeave={() => setIsEmblemHovered(false)}
+            onClick={() => sfx.playTick('click')}
           >
             {/* Ambient neon backdrop glow */}
             <div className="absolute inset-0 rounded-full bg-[#ff007f]/10 blur-[30px] animate-[pulse_5s_infinite] pointer-events-none" />
-            <img
+            <ProgressiveImage
               src="/Pixelcraft Discomorphism wb.png"
               alt="PixelCraft Discomorphism Logo"
               className={`w-28 h-28 sm:w-36 sm:h-36 object-contain filter drop-shadow-[0_0_12px_rgba(255,0,127,0.45)] drop-shadow-[0_0_6px_rgba(0,255,255,0.35)] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${

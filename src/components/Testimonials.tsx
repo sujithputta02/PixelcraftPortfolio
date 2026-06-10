@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { sfx } from '../utils/sfx';
 
 interface PhilosophyItem {
   quote: string;
@@ -45,6 +46,10 @@ const TestimonialCard: React.FC<{ item: PhilosophyItem }> = ({ item }) => {
     const yc = rect.height / 2;
     const rotateX = (yc - y) / 10; // 3D tilt rotation intensity
     const rotateY = (x - xc) / 10;
+
+    if (!isHovered) {
+      sfx.playTick('hover');
+    }
 
     setTiltStyle({
       transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,

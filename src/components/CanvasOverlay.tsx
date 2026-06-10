@@ -70,9 +70,13 @@ export const CanvasOverlay: React.FC = () => {
         radius
       );
 
-      gradient.addColorStop(0, 'rgba(255, 255, 255, 0.055)');
-      gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.024)');
-      gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      const isLightTheme = document.documentElement.classList.contains('light');
+      const glowColor = isLightTheme ? '0, 0, 0' : '255, 255, 255';
+      const glowOpacityMultiplier = isLightTheme ? 0.6 : 1;
+
+      gradient.addColorStop(0, `rgba(${glowColor}, ${0.055 * glowOpacityMultiplier})`);
+      gradient.addColorStop(0.3, `rgba(${glowColor}, ${0.024 * glowOpacityMultiplier})`);
+      gradient.addColorStop(1, `rgba(${glowColor}, 0)`);
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);

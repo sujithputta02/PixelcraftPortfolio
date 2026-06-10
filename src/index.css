@@ -8,13 +8,36 @@
   /* Strict Luxury Color Specs */
   --bg-primary: #050505;
   --bg-secondary: #0E0E0E;
+  --bg-card: #0C0C0C;
+  --bg-darker: #0A0A0A;
   --card-surface: rgba(255, 255, 255, 0.04);
   --text-primary: #F5F5F5;
   --text-secondary: #A3A3A3;
   --accent-glow: rgba(255, 255, 255, 0.12);
+  --border-primary: rgba(255, 255, 255, 0.05);
   
   /* Easing curves */
   --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.light {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #EBEBEF;
+  --bg-card: #DFDFE5;
+  --bg-darker: #D1D1D6;
+  --card-surface: rgba(0, 0, 0, 0.04);
+  --text-primary: #1D1D1F;
+  --text-secondary: #5A5A5F;
+  --accent-glow: rgba(0, 0, 0, 0.06);
+  --border-primary: rgba(0, 0, 0, 0.08);
+}
+
+/* Custom Clip-Path classes for ink ripple transition */
+.clip-circle-zero {
+  clip-path: circle(0% at var(--x, 0px) var(--y, 0px));
+}
+.clip-circle-full {
+  clip-path: circle(150% at var(--x, 0px) var(--y, 0px));
 }
 
 body {
@@ -176,7 +199,11 @@ h1, h2, h3, h4, h5, h6 {
 .animate-disco-3 {
   animation: disco-float-3 22s ease-in-out infinite;
   will-change: transform;
-  transform: translate3d(0, 0, 0);
+}
+
+/* Refine background spheres to use smooth atmospheric blur glows instead of sharp gooey circle outlines */
+div[style*="liquid-gooey-effect"] {
+  filter: blur(80px) !important;
 }
 
 .text-disco {
@@ -413,6 +440,499 @@ h1, h2, h3, h4, h5, h6 {
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* ==========================================
+   Apple-Grade Light Theme Overrides
+   ========================================== */
+.light {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Base structural backgrounds */
+.light .bg-\[\#050505\] {
+  background-color: var(--bg-primary) !important;
+}
+
+.light .bg-\[\#0E0E0E\] {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light .bg-\[\#0C0C0C\] {
+  background-color: var(--bg-card) !important;
+}
+
+.light .bg-\[\#0A0A0A\] {
+  background-color: var(--bg-darker) !important;
+}
+
+/* Section level background overrides for perfect Apple-style vertical alternation */
+.light #hero {
+  background-color: transparent !important;
+}
+
+.light #about {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light #latest {
+  background-color: var(--bg-primary) !important;
+}
+
+.light #works {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light #vault {
+  background-color: var(--bg-primary) !important;
+}
+
+.light #vault + section {
+  background-color: var(--bg-secondary) !important; /* About strategic manifesto */
+}
+
+.light #skills {
+  background-color: var(--bg-primary) !important;
+}
+
+.light #timeline {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light #timeline + section {
+  background-color: var(--bg-primary) !important; /* Testimonials */
+}
+
+.light #contact {
+  background-color: var(--bg-secondary) !important;
+}
+
+.light footer {
+  background-color: var(--bg-primary) !important;
+}
+
+/* Scrolling skills ticker side fading mask overrides */
+.light .from-\[\#050505\] {
+  --tw-gradient-from: var(--bg-primary) !important;
+  --tw-gradient-to: rgba(255, 255, 255, 0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.light .bg-gradient-to-r.from-\[\#050505\] {
+  background-image: linear-gradient(to right, var(--bg-primary), transparent) !important;
+}
+
+.light .bg-gradient-to-l.from-\[\#050505\] {
+  background-image: linear-gradient(to left, var(--bg-primary), transparent) !important;
+}
+
+/* Keep original visible video in light mode, no filters */
+.light video {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 0.35 !important;
+}
+
+/* Background overlays (scrolled navbar background) */
+.light .bg-black\/65 {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Mobile nav overlay menu */
+.light .bg-\[\#050505\]\/98 {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+}
+
+/* Standard border hierarchy overrides */
+.light .border-white\/5,
+.light .border-white\/8,
+.light .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+.light .border-white\/12,
+.light .border-white\/15,
+.light .border-white\/20 {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.light .border-white\/30,
+.light .border-white\/40 {
+  border-color: rgba(0, 0, 0, 0.22) !important;
+}
+
+.light .border-white,
+.light .hover\:border-white:hover {
+  border-color: rgba(0, 0, 0, 0.35) !important;
+}
+
+.light .decoration-white\/30 {
+  text-decoration-color: rgba(0, 0, 0, 0.22) !important;
+}
+
+/* Translucent background overrides for tags and cards in light mode */
+.light .bg-white\/5,
+.light .bg-white\/10,
+.light .bg-white\/15,
+.light .bg-white\/20,
+.light .bg-white\/50,
+.light .bg-white\/\[0\.02\],
+.light .bg-white\/\[0\.015\],
+.light .bg-white\/\[0\.025\] {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Hardcoded hex text and background colors mapping */
+.light .text-\[\#A3A3A3\] {
+  color: var(--text-secondary) !important;
+}
+
+.light .text-\[\#F5F5F5\] {
+  color: var(--text-primary) !important;
+}
+
+.light .bg-white\/\[0\.015\] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* High opacity text-white overrides */
+.light .text-white,
+.light .text-white\/100,
+.light .text-white\/95,
+.light .text-white\/90,
+.light .text-white\/85,
+.light .text-white\/80 {
+  color: var(--text-primary) !important;
+}
+
+/* Medium opacity text-white overrides */
+.light .text-white\/75,
+.light .text-white\/70,
+.light .text-white\/65,
+.light .text-white\/60,
+.light .text-white\/55,
+.light .text-white\/50,
+.light .text-white\/45,
+.light .text-white\/40 {
+  color: var(--text-secondary) !important;
+}
+
+/* Low opacity text-white overrides */
+.light .text-white\/35,
+.light .text-white\/30,
+.light .text-white\/25,
+.light .text-white\/20,
+.light .text-white\/15,
+.light .text-white\/10,
+.light .text-white\/5 {
+  color: rgba(29, 29, 31, 0.35) !important;
+}
+
+/* Exclude colored elements or specific buttons/states from black text overrides */
+.light button .text-white,
+.light .bg-\[\#ff007f\] .text-white,
+.light .bg-black .text-white,
+.light button.bg-white .text-black,
+.light .text-red-500,
+.light .text-orange-500 {
+  color: inherit !important;
+}
+
+/* Mobile hamburger button span lines */
+.light nav button span.bg-white {
+  background-color: var(--text-primary) !important;
+}
+
+/* Signature script text color on light mode */
+.light .text-white\/90.font-cursive {
+  color: #ff007f !important;
+}
+
+/* Custom interactive components overrides */
+.light .card-chrome {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 247, 0.99));
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05),
+    0 4px 10px rgba(0, 0, 0, 0.04),
+    0 15px 35px rgba(0, 0, 0, 0.03);
+}
+
+.light .glass-disco {
+  background: rgba(0, 0, 0, 0.025);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.85),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.02),
+    0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+.light .disco-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(245, 245, 247, 1) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.05),
+    0 8px 30px rgba(0, 0, 0, 0.03);
+}
+
+.light .border-holographic {
+  background: linear-gradient(#ffffff, #f5f5f7) padding-box,
+              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff, #ff007f) border-box;
+}
+
+.light .border-disco-chrome {
+  background: linear-gradient(#ffffff, #f5f5f7) padding-box,
+              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff) border-box;
+}
+
+.light .disco-tile-grid {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.012) 1px, transparent 1px);
+}
+
+/* Hover adjustments for holographic border cards */
+.light .border-disco-hover:hover {
+  background: linear-gradient(#ffffff, #f5f5f7) padding-box,
+              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff) border-box !important;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.06),
+    0 0 20px rgba(255, 0, 127, 0.12) !important;
+}
+
+.light .disco-card-active {
+  background: linear-gradient(#ffffff, #f5f5f7) padding-box,
+              linear-gradient(135deg, #ff007f, #ffffff, #00ffff) border-box !important;
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.8),
+    0 15px 40px rgba(0, 0, 0, 0.08),
+    0 0 25px rgba(255, 0, 127, 0.12) !important;
+}
+
+.light [class*="animate-marquee"] > div:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Sparkles adaptations for visibility in light mode */
+.light .disco-sparkle {
+  background: radial-gradient(circle, #ff007f 20%, transparent 60%) !important;
+}
+.light .disco-sparkle::before,
+.light .disco-sparkle::after {
+  background-color: #ff007f !important;
+}
+
+/* Pastel float liquid blobs opacity control */
+.light .fixed.inset-0.pointer-events-none.z-0.overflow-hidden.opacity-\[0\.16\] {
+  opacity: 0.07 !important;
+}
+
+/* Restore white text visibility inside dark overlay panels / lightboxes */
+.light [class*="bg-black/"] .text-white,
+.light [class*="bg-black/"] [class*="text-white/"] {
+  color: #FFFFFF !important;
+}
+.light .fixed.inset-0.bg-black\/98 *,
+.light .fixed.bg-black\/98 * {
+  color: #FFFFFF !important;
+}
+.light [class*="bg-black"] .text-white\/90 { color: rgba(255, 255, 255, 0.9) !important; }
+.light [class*="bg-black"] .text-white\/80 { color: rgba(255, 255, 255, 0.8) !important; }
+.light [class*="bg-black"] .text-white\/70 { color: rgba(255, 255, 255, 0.7) !important; }
+.light [class*="bg-black"] .text-white\/60 { color: rgba(255, 255, 255, 0.6) !important; }
+.light [class*="bg-black"] .text-white\/50 { color: rgba(255, 255, 255, 0.5) !important; }
+.light [class*="bg-black"] .text-white\/45 { color: rgba(255, 255, 255, 0.45) !important; }
+.light [class*="bg-black"] .text-white\/40 { color: rgba(255, 255, 255, 0.4) !important; }
+.light [class*="bg-black"] .text-white\/35 { color: rgba(255, 255, 255, 0.35) !important; }
+.light [class*="bg-black"] .text-white\/30 { color: rgba(255, 255, 255, 0.3) !important; }
+.light [class*="bg-black"] .text-white\/20 { color: rgba(255, 255, 255, 0.2) !important; }
+
+/* Custom Cursors light mode adaptation */
+.light .fixed.border-white\/40 {
+  border-color: rgba(29, 29, 31, 0.4) !important;
+}
+.light .fixed.bg-white\/10 {
+  background-color: rgba(29, 29, 31, 0.05) !important;
+  border-color: rgba(29, 29, 31, 0.8) !important;
+}
+.light .fixed.bg-white\/10 span {
+  color: var(--text-primary) !important;
+}
+.light .fixed.bg-white.rounded-full {
+  background-color: var(--text-primary) !important;
+}
+
+/* Contact forms inputs light mode styling */
+.light input,
+.light textarea {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-primary) !important;
+}
+.light input::placeholder,
+.light textarea::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.7;
+}
+
+/* Apple primary CTA buttons (high contrast inversion) */
+.light button.bg-white {
+  background-color: var(--text-primary) !important;
+  color: var(--bg-primary) !important;
+  border-color: transparent !important;
+}
+
+.light button.bg-white:hover {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-primary) !important;
+}
+
+/* Liquid Steel dark metallic typography overrides */
+.light .text-platinum-chrome {
+  background: linear-gradient(
+    135deg,
+    #1d1d1f 0%,
+    #434348 20%,
+    #8e9eab 40%,
+    #1d1d1f 50%,
+    #333333 60%,
+    #666666 80%,
+    #1d1d1f 100%
+  ) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05)) !important;
+}
+
+/* Lighter box shadow classes matching standard layouts */
+.light [class*="shadow-[0_25px_60px"] {
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08) !important;
+}
+.light [class*="shadow-[0_15px_35px"] {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+.light [class*="shadow-[0_20px_50px"] {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.07) !important;
+}
+.light [class*="shadow-"] {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+}
+.light .shadow-disco-neon {
+  box-shadow: 
+    0 0 25px rgba(255, 0, 127, 0.12),
+    0 0 15px rgba(0, 255, 255, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.04) !important;
+}
+.light .glow-neon-pink {
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.15) !important;
+}
+.light .glow-neon-cyan {
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.15) !important;
+}
+
+/* Disable image and text drop-shadow filters in light mode to keep elements crisp and remove bounding box outlines */
+.light img,
+.light [class*="drop-shadow"] {
+  filter: none !important;
+}
+
+
+/* ==========================================
+   Hero Dark Room Restoration & Navbar Scroll Colors
+   ========================================== */
+
+/* Restore original dark mode white-text colors inside the dark Hero section */
+.light #hero .text-white,
+.light #hero [class*="text-white/"] {
+  color: #FFFFFF !important;
+}
+.light #hero .text-white\/95 { color: rgba(255, 255, 255, 0.95) !important; }
+.light #hero .text-white\/90 { color: rgba(255, 255, 255, 0.90) !important; }
+.light #hero .text-white\/85 { color: rgba(255, 255, 255, 0.85) !important; }
+.light #hero .text-white\/80 { color: rgba(255, 255, 255, 0.80) !important; }
+.light #hero .text-white\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+.light #hero .text-white\/70 { color: rgba(255, 255, 255, 0.70) !important; }
+.light #hero .text-white\/65 { color: rgba(255, 255, 255, 0.65) !important; }
+.light #hero .text-white\/60 { color: rgba(255, 255, 255, 0.60) !important; }
+.light #hero .text-white\/55 { color: rgba(255, 255, 255, 0.55) !important; }
+.light #hero .text-white\/50 { color: rgba(255, 255, 255, 0.50) !important; }
+.light #hero .text-white\/45 { color: rgba(255, 255, 255, 0.45) !important; }
+.light #hero .text-white\/40 { color: rgba(255, 255, 255, 0.40) !important; }
+.light #hero .text-white\/35 { color: rgba(255, 255, 255, 0.35) !important; }
+.light #hero .text-white\/30 { color: rgba(255, 255, 255, 0.30) !important; }
+.light #hero .text-white\/25 { color: rgba(255, 255, 255, 0.25) !important; }
+.light #hero .text-white\/20 { color: rgba(255, 255, 255, 0.20) !important; }
+.light #hero .text-white\/15 { color: rgba(255, 255, 255, 0.15) !important; }
+.light #hero .text-white\/10 { color: rgba(255, 255, 255, 0.10) !important; }
+.light #hero .text-white\/5  { color: rgba(255, 255, 255, 0.05) !important; }
+.light #hero .text-\[\#A3A3A3\] { color: #A3A3A3 !important; }
+.light #hero .text-\[\#F5F5F5\] { color: #F5F5F5 !important; }
+
+/* Restore primary white buttons inside Hero */
+.light #hero button.bg-white {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: transparent !important;
+}
+.light #hero button.bg-white:hover {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Restore silver SUJITH metallic title */
+.light #hero .text-platinum-chrome {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #e8e8e8 20%,
+    #a8a8a8 40%,
+    #ffffff 50%,
+    #888888 60%,
+    #e8e8e8 80%,
+    #ffffff 100%
+  ) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.08)) !important;
+}
+
+/* Scrolled vs Unscrolled Navbar text overrides in light mode */
+.light nav:not(.bg-black\/65) .text-white,
+.light nav:not(.bg-black\/65) [class*="text-white/"] {
+  color: #FFFFFF !important;
+}
+.light nav:not(.bg-black\/65) button span.bg-white {
+  background-color: #FFFFFF !important;
+}
+.light nav.bg-black\/65 .text-white,
+.light nav.bg-black\/65 [class*="text-white/"] {
+  color: var(--text-primary) !important;
+}
+.light nav.bg-black\/65 button span.bg-white {
+  background-color: var(--text-primary) !important;
+}
+.light nav.bg-black\/65 button.bg-white\/5 {
+  color: var(--text-primary) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+.light nav:not(.bg-black\/65) button.bg-white\/5 {
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+.light nav.bg-black\/65 button.bg-white\/5 span {
+  color: var(--text-primary) !important;
+}
+
+
 
 
 

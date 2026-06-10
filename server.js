@@ -49,7 +49,10 @@ const db = new sqlite3.Database(dbPath, (err) => {
               'the-odyssey': 112,
               'raga-revenge': 89,
               'spiderman-bnd': 156,
-              'black-panther': 245
+              'black-panther': 245,
+              'obsession': 288,
+              'iphone-17-pro': 132,
+              'hamza-returns': 115
             };
 
             const stmt = db.prepare('INSERT INTO likes (card_id, count) VALUES (?, ?)');

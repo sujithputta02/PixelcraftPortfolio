@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { sfx } from '../utils/sfx';
+import { ProgressiveImage } from './ProgressiveImage';
 
 interface Project {
   id: string;
@@ -377,7 +379,6 @@ const renderOverviewWithHashtags = (text: string) => {
 };
 
 export const FeaturedWorks: React.FC = () => {
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [morphOrigin, setMorphOrigin] = useState<DOMRect | null>(null);
   const [isMorphing, setIsMorphing] = useState(false);
@@ -386,7 +387,21 @@ export const FeaturedWorks: React.FC = () => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
+  // Split-List layout states
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [prevActiveIndex, setPrevActiveIndex] = useState<number | null>(null);
+  const [fadeKey, setFadeKey] = useState(0);
+
+  const handleTitleHover = (index: number) => {
+    if (index === activeIndex) return;
+    sfx.playTick('hover');
+    setPrevActiveIndex(activeIndex);
+    setActiveIndex(index);
+    setFadeKey((prev) => prev + 1);
+  };
+
   const handleCardClick = (project: Project, e: React.MouseEvent<HTMLDivElement>) => {
+    sfx.playTick('click');
     e.preventDefault();
     clickedCardRef.current = e.currentTarget;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -401,6 +416,7 @@ export const FeaturedWorks: React.FC = () => {
   };
 
   const handleCloseDetail = () => {
+    sfx.playTick('click');
     setIsMorphing(false);
     // Smooth transition back before clearing project
     setTimeout(() => {
@@ -412,6 +428,7 @@ export const FeaturedWorks: React.FC = () => {
   };
 
   const handleNextProject = () => {
+    sfx.playTick('click');
     if (!activeProject) return;
     const currentIndex = projectsData.findIndex((p) => p.id === activeProject.id);
     const nextIndex = (currentIndex + 1) % projectsData.length;
@@ -467,87 +484,204 @@ export const FeaturedWorks: React.FC = () => {
             </h2>
           </div>
           <p className="max-w-xs text-left text-[14px] sm:text-[16px] font-body text-white/45 leading-relaxed">
-            Asymmetric variable layouts mapping fine-art aesthetics onto visual strategy. Crafted frame by frame.
+            Interactive editorial layout mapping fine-art aesthetics onto visual strategy. Hover to review, click to view case study.
           </p>
         </div>
 
-        {/* Bento Asymmetric Grid */}
-        <div className="grid grid-cols-12 gap-y-12 gap-x-6 sm:gap-x-8">
-          {projectsData.map((project) => {
-            const isSelfHovered = hoveredId === project.id;
-            const isAnyHovered = hoveredId !== null;
-            const isOtherHovered = isAnyHovered && !isSelfHovered;
+        {/* Desktop/Tablet Split-List View (Shown on md and up) */}
+        <div className="w-full hidden md:grid grid-cols-12 gap-12 items-start mt-8">
+          <style>{`
+            .scroll-bar-custom::-webkit-scrollbar {
+              width: 3px;
+            }
+            .scroll-bar-custom::-webkit-scrollbar-track {
+              background: transparent;
+            }
+            .scroll-bar-custom::-webkit-scrollbar-thumb {
+              background: rgba(255, 255, 255, 0.08);
+              border-radius: 99px;
+            }
+            .scroll-bar-custom::-webkit-scrollbar-thumb:hover {
+              background: rgba(255, 0, 127, 0.35);
+            }
+          `}</style>
 
-            return (
-              <div
-                key={project.id}
-                onClick={(e) => handleCardClick(project, e)}
-                onMouseEnter={() => setHoveredId(project.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                className={`relative rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 border-disco-hover cursor-pointer transition-all duration-700 ease-out select-none group ${
-                  project.gridSpan
-                } ${
-                  isSelfHovered ? 'scale-[1.015] border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.9)] z-20' : 'scale-100 z-10'
-                } ${
-                  isOtherHovered ? 'opacity-35 scale-[0.985] blur-[1px]' : 'opacity-100'
-                }`}
-                data-cursor="Open View"
-              >
-                {/* Disco mirror tile grid overlay fading in on hover */}
-                <div className="disco-tile-grid opacity-0 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" />
-                
-                {/* Sparkles twinkling on card hover */}
-                {isSelfHovered && (
-                  <>
-                    <div className="disco-sparkle top-4 left-6 sparkle-slow" />
-                    <div className="disco-sparkle top-24 right-10 sparkle-fast" />
-                  </>
-                )}
-
-                {/* Image Container taking full card height */}
-                <div className="w-full h-[380px] sm:h-[450px] md:h-[480px] overflow-hidden relative">
+          {/* Left Column: Scrollable List of Titles */}
+          <div className="col-span-7 h-[650px] overflow-y-auto pr-4 scroll-bar-custom flex flex-col gap-6 text-left">
+            {projectsData.map((project, index) => {
+              const isActive = index === activeIndex;
+              return (
+                <div
+                  key={project.id}
+                  onMouseEnter={() => handleTitleHover(index)}
+                  onClick={(e) => {
+                    handleTitleHover(index);
+                    handleCardClick(project, e as any);
+                  }}
+                  className={`group flex items-start gap-4 py-2 border-b border-white/5 cursor-pointer select-none transition-all duration-300 ${
+                    isActive ? 'border-white/15 pl-4' : 'hover:pl-2'
+                  }`}
+                >
+                  <span className={`font-heading text-lg md:text-2xl font-light tracking-wide transition-colors duration-300 ${
+                    isActive ? 'text-[#ff007f]' : 'text-white/20 group-hover:text-white/45'
+                  }`}>
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                   
-                  {/* High Resolution Static Image */}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1200ms] ease-out"
-                    loading="lazy"
-                  />
-                  
-                  {/* Subtle Mouse Glow Ambient Highlight Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-10" />
-
-                  {/* Frosted Glass Overlay Footer (Half Blurred matching reference UI) */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex justify-between items-end bg-black/40 backdrop-blur-[16px] border-t border-white/10 z-20 transition-all duration-500 group-hover:bg-black/55">
-                    <div className="text-left">
-                      <span className="text-[10px] font-heading font-medium tracking-[0.15em] uppercase text-white/45 block mb-1">
-                        {project.taxonomy}
-                      </span>
-                      <h3 className="text-[18px] sm:text-[23px] font-heading font-semibold text-white tracking-tight leading-none group-hover:translate-x-1 duration-300">
-                        {project.title}
-                      </h3>
-                    </div>
-                    
-                    <div className="w-8 h-8 rounded-full border border-white/15 group-hover:border-white group-hover:bg-white flex items-center justify-center transition-all duration-300 flex-shrink-0 ml-4">
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        className="text-white group-hover:text-black transition-colors"
-                      >
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                      </svg>
-                    </div>
+                  <div className="flex flex-col">
+                    <h3 className={`font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-tight transition-all duration-300 uppercase ${
+                      isActive ? 'text-white font-normal' : 'text-white/45 group-hover:text-white/80'
+                    }`}>
+                      {project.title.split(' — ')[0].split(' (')[0]} 
+                    </h3>
+                    <span className={`text-[10px] md:text-xs font-heading font-medium tracking-wider uppercase mt-1 transition-colors duration-300 ${
+                      isActive ? 'text-white/60' : 'text-white/20 group-hover:text-white/40'
+                    }`}>
+                      {project.taxonomy}
+                    </span>
                   </div>
                 </div>
+              );
+            })}
+          </div>
 
+          {/* Right Column: Sticky Viewport */}
+          <div className="col-span-5 md:sticky md:top-28 flex flex-col items-center">
+            {/* Viewport Frame */}
+            <div
+              onClick={(e) => handleCardClick(projectsData[activeIndex], e as any)}
+              className="w-full max-w-[320px] sm:max-w-[360px] aspect-[3/4.2] rounded-3xl overflow-hidden bg-[#0A0A0A] border border-white/5 hover:border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.95)] relative group cursor-pointer transition-all duration-500 hover:shadow-[0_30px_70px_rgba(255,0,127,0.1)] hover:scale-[1.015]"
+              data-cursor="Open View"
+            >
+              {/* Noise Grain Overlay */}
+              <div 
+                className="absolute inset-0 pointer-events-none opacity-[0.04] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] mix-blend-overlay z-20"
+              />
+              
+              {/* Sparkles on hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-30">
+                <div className="disco-sparkle top-4 left-6 sparkle-slow" />
+                <div className="disco-sparkle top-24 right-10 sparkle-fast" />
               </div>
-            );
-          })}
+
+              {/* Crossfading images */}
+              {prevActiveIndex !== null && (
+                <ProgressiveImage
+                  src={projectsData[prevActiveIndex].image}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 grayscale"
+                />
+              )}
+              
+              <ProgressiveImage
+                key={fadeKey}
+                src={projectsData[activeIndex].image}
+                alt={projectsData[activeIndex].title}
+                className="absolute inset-0 w-full h-full object-cover animate-spotlight-fade z-10"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-15" />
+
+              {/* Glassmorphic Details Overlay Badge */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex justify-between items-end bg-black/45 backdrop-blur-[16px] border-t border-white/10 z-20 transition-all duration-500 group-hover:bg-black/60 animate-fade-in">
+                <div className="text-left">
+                  <span className="text-[10px] font-heading font-medium tracking-[0.15em] uppercase text-white/45 block mb-1">
+                    {projectsData[activeIndex].taxonomy}
+                  </span>
+                  <h3 className="text-[18px] sm:text-[22px] font-heading font-semibold text-white tracking-tight leading-none group-hover:translate-x-1 duration-300">
+                    {projectsData[activeIndex].title}
+                  </h3>
+                </div>
+                
+                <div className="w-8 h-8 rounded-full border border-white/15 bg-white/5 group-hover:border-white group-hover:bg-white flex items-center justify-center transition-all duration-300 flex-shrink-0 ml-4">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    className="text-white group-hover:text-black transition-colors"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            {/* Action hint details below viewport */}
+            <span className="text-[11px] font-heading tracking-widest text-white/30 uppercase mt-4 select-none animate-pulse">
+              Click Poster to View Full Case Study
+            </span>
+          </div>
+        </div>
+
+        {/* Mobile/Tablet View (Horizontal Swipeable Carousel - Shown under md breakpoint) */}
+        <div className="md:hidden w-full flex flex-col gap-6 select-none mt-8">
+          <style>{`
+            .scroll-bar-none::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
+          
+          <div 
+            className="w-full flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 scroll-bar-none"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {projectsData.map((project) => (
+              <div
+                key={project.id}
+                onClick={(e) => handleCardClick(project, e as any)}
+                className="snap-center shrink-0 w-[275px] sm:w-[325px] aspect-[3/4.2] rounded-3xl overflow-hidden bg-[#0C0C0C] border border-white/5 relative group cursor-pointer shadow-[0_15px_35px_rgba(0,0,0,0.7)]"
+              >
+                {/* Noise overlay */}
+                <div 
+                  className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] mix-blend-overlay z-20"
+                />
+
+                <ProgressiveImage
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover group-hover:scale-105 duration-[1200ms] ease-out"
+                  loading="lazy"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-10" />
+
+                {/* Card Details Bar */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end bg-black/45 backdrop-blur-[16px] border-t border-white/10 z-20">
+                  <div className="text-left">
+                    <span className="text-[9px] font-heading font-medium tracking-[0.15em] uppercase text-white/45 block mb-1">
+                      {project.taxonomy}
+                    </span>
+                    <h3 className="text-[17px] sm:text-[20px] font-heading font-semibold text-white tracking-tight leading-none">
+                      {project.title.split(' — ')[0].split(' (')[0]}
+                    </h3>
+                  </div>
+                  
+                  <div className="w-8 h-8 rounded-full border border-white/15 bg-white/5 flex items-center justify-center flex-shrink-0 ml-3">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      className="text-white"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Swipe Hint */}
+          <div className="flex items-center justify-between px-2 text-white/35 font-heading text-[10px] sm:text-xs tracking-widest uppercase">
+            <span className="animate-pulse">← SWIPE TO BROWSE →</span>
+            <span>{projectsData.length} POSTERS</span>
+          </div>
         </div>
 
       </div>
@@ -562,6 +696,7 @@ export const FeaturedWorks: React.FC = () => {
           {/* Fixed Close Button Anchor (Always visible and clickable in top-right of viewport) */}
           <button
             onClick={handleCloseDetail}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="fixed top-6 right-6 sm:top-8 sm:right-10 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10050] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md"
             data-cursor="Close"
             data-magnetic
@@ -647,11 +782,14 @@ export const FeaturedWorks: React.FC = () => {
 
               {/* Hero Image Showcase panel */}
               <div
-                onClick={() => setLightboxImage(activeProject.image)}
+                onClick={() => {
+                  sfx.playTick('click');
+                  setLightboxImage(activeProject.image);
+                }}
                 className="w-full max-w-xl mx-auto aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-hidden bg-[#0A0A0A] border border-white/5 hover:border-white/20 transition-all duration-500 mb-12 relative cursor-pointer group"
                 data-cursor="Zoom Art"
               >
-                <img
+                <ProgressiveImage
                   src={activeProject.image}
                   alt={activeProject.title}
                   className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-[1000ms]"
@@ -793,7 +931,10 @@ export const FeaturedWorks: React.FC = () => {
                             return (
                               <div
                                 key={idx}
-                                onClick={() => setLightboxImage(imgSrc)}
+                                onClick={() => {
+                                  sfx.playTick('click');
+                                  setLightboxImage(imgSrc);
+                                }}
                                 className={`absolute inset-0 w-full h-full transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer ${
                                   isActive 
                                     ? 'opacity-100 scale-100 z-10 pointer-events-auto' 
@@ -801,7 +942,7 @@ export const FeaturedWorks: React.FC = () => {
                                 }`}
                                 data-cursor="Zoom Art"
                               >
-                                <img
+                                <ProgressiveImage
                                   src={imgSrc}
                                   alt={`${activeProject.title} Exhibit ${idx + 1}`}
                                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[1000ms]"
@@ -821,7 +962,11 @@ export const FeaturedWorks: React.FC = () => {
                         <>
                           {/* Left button */}
                           <button
-                            onClick={() => setActiveSlideIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
+                            onClick={() => {
+                              sfx.playTick('click');
+                              setActiveSlideIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+                            }}
+                            onMouseEnter={() => sfx.playTick('hover')}
                             className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 border border-white/10 hover:border-white/35 text-white/70 hover:text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 hover:scale-105 active:scale-95 cursor-pointer z-30 shadow-lg"
                             data-cursor="Prev Slide"
                           >
@@ -832,7 +977,11 @@ export const FeaturedWorks: React.FC = () => {
 
                           {/* Right button */}
                           <button
-                            onClick={() => setActiveSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1))}
+                            onClick={() => {
+                              sfx.playTick('click');
+                              setActiveSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+                            }}
+                            onMouseEnter={() => sfx.playTick('hover')}
                             className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 border border-white/10 hover:border-white/35 text-white/70 hover:text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 hover:scale-105 active:scale-95 cursor-pointer z-30 shadow-lg"
                             data-cursor="Next Slide"
                           >
@@ -851,7 +1000,11 @@ export const FeaturedWorks: React.FC = () => {
                             return (
                               <button
                                 key={idx}
-                                onClick={() => setActiveSlideIndex(idx)}
+                                onClick={() => {
+                                  sfx.playTick('click');
+                                  setActiveSlideIndex(idx);
+                                }}
+                                onMouseEnter={() => sfx.playTick('hover')}
                                 className={`h-[3px] rounded-full transition-all duration-500 ease-[var(--ease-luxury)] cursor-pointer ${
                                   isActive ? 'w-6 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'w-2 bg-white/30 hover:bg-white/60'
                                 }`}
@@ -880,6 +1033,7 @@ export const FeaturedWorks: React.FC = () => {
                 
                 <button
                   onClick={handleNextProject}
+                  onMouseEnter={() => sfx.playTick('hover')}
                   className="inline-flex items-center gap-3 bg-white text-black font-heading font-semibold uppercase tracking-wider text-[12px] rounded-full px-6 py-3.5 hover:bg-black hover:text-white border border-white hover:border-white/20 transition-all duration-300 cursor-pointer select-none"
                   data-cursor="Next Gateway"
                   data-magnetic
@@ -905,7 +1059,11 @@ export const FeaturedWorks: React.FC = () => {
         >
           {/* Close Button Anchor */}
           <button
-            onClick={() => setLightboxImage(null)}
+            onClick={() => {
+              sfx.playTick('click');
+              setLightboxImage(null);
+            }}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="fixed top-6 right-6 sm:top-8 sm:right-10 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10200] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md"
             data-cursor="Close"
           >
@@ -927,7 +1085,7 @@ export const FeaturedWorks: React.FC = () => {
             className="relative max-w-[90vw] max-h-[80vh] flex items-center justify-center animate-zoom-in"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
           >
-            <img
+            <ProgressiveImage
               src={lightboxImage}
               alt="Full Poster View"
               className="max-w-full max-h-[76vh] sm:max-h-[78vh] object-contain rounded-xl border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.95)]"

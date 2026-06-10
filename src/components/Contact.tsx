@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { sfx } from '../utils/sfx';
 
 const services = [
   'Theatrical Key Art',
@@ -78,6 +79,7 @@ ${formData.name}`;
     if (!formData.name || !formData.email || !formData.subject || !formData.brief) return;
     if (selectedService === 'Other' && !customService.trim()) return;
 
+    sfx.playTick('click');
     setLoading(true);
     // Simulate beautiful luxury network resolve
     setTimeout(() => {
@@ -142,6 +144,8 @@ ${formData.name}`;
               href="https://www.instagram.com/pixelcraft.exe"
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => sfx.playTick('hover')}
+              onClick={() => sfx.playTick('click')}
               className="text-white/60 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 duration-300"
               data-cursor="Instagram"
               data-magnetic
@@ -153,6 +157,8 @@ ${formData.name}`;
               href="https://www.behance.net/Pixelcraftbysujith"
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => sfx.playTick('hover')}
+              onClick={() => sfx.playTick('click')}
               className="text-white/60 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 duration-300"
               data-cursor="Behance"
               data-magnetic
@@ -164,6 +170,8 @@ ${formData.name}`;
               href="https://in.pinterest.com/pixelcraftbysujith/"
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => sfx.playTick('hover')}
+              onClick={() => sfx.playTick('click')}
               className="text-white/60 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 duration-300"
               data-cursor="Pinterest"
               data-magnetic
@@ -173,6 +181,8 @@ ${formData.name}`;
             <span className="text-white/10 select-none">/</span>
             <a
               href="mailto:sujithputta02@gmail.com"
+              onMouseEnter={() => sfx.playTick('hover')}
+              onClick={() => sfx.playTick('click')}
               className="text-white/60 hover:text-white underline underline-offset-4 decoration-white/20 hover:decoration-white/60 duration-300"
               data-cursor="Email"
               data-magnetic
@@ -262,7 +272,11 @@ ${formData.name}`;
                       <button
                         key={service}
                         type="button"
-                        onClick={() => setSelectedService(service)}
+                        onClick={() => {
+                          sfx.playTick('click');
+                          setSelectedService(service);
+                        }}
+                        onMouseEnter={() => sfx.playTick('hover')}
                         className={`px-3.5 py-1.5 rounded-full text-[10.5px] font-heading font-semibold uppercase tracking-wider transition-all duration-300 select-none cursor-pointer border ${
                           isSelected
                             ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
@@ -300,7 +314,11 @@ ${formData.name}`;
                       <button
                         key={time}
                         type="button"
-                        onClick={() => setSelectedTimeline(time)}
+                        onClick={() => {
+                          sfx.playTick('click');
+                          setSelectedTimeline(time);
+                        }}
+                        onMouseEnter={() => sfx.playTick('hover')}
                         className={`px-3.5 py-1.5 rounded-full text-[10.5px] font-heading font-semibold uppercase tracking-wider transition-all duration-300 select-none cursor-pointer border ${
                           isSelected
                             ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
@@ -339,6 +357,7 @@ ${formData.name}`;
               <button
                 type="submit"
                 disabled={loading}
+                onMouseEnter={() => sfx.playTick('hover')}
                 className="w-full inline-flex items-center justify-center bg-white hover:bg-black text-black hover:text-white border border-white hover:border-white/20 rounded-full font-heading font-semibold uppercase tracking-wider text-[12px] py-3.5 mt-2 transition-all duration-300 cursor-pointer disabled:opacity-40 chrome-sweep-effect shadow-[0_4px_15px_rgba(255,255,255,0.06)] hover:shadow-disco-neon"
                 data-cursor={loading ? "Sending..." : "Submit Inquiry"}
                 data-magnetic

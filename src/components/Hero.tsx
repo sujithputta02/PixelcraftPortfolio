@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { sfx } from '../utils/sfx';
 
 // Custom Typewriter Hook
 const useTypewriter = (text: string, speed = 38, startDelay = 600) => {
@@ -71,12 +72,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
   }, []);
 
   const handleCopyEmail = () => {
+    sfx.playTick('click');
     navigator.clipboard.writeText("sujithputta02@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handlePillClick = (action: string) => {
+    sfx.playTick('click');
     if (action === 'projects') {
       onNavClick('works');
     } else if (action === 'hire' || action === 'pitch') {
@@ -135,6 +138,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           {/* Action Pills */}
           <button
             onClick={() => handlePillClick('pitch')}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="inline-flex items-center justify-center bg-white text-black border border-white/10 rounded-full text-[13px] sm:text-[15px] px-4.5 sm:px-5.5 py-1.5 mx-1 mb-2 hover:bg-black hover:text-white hover:border-white/30 cursor-pointer duration-300 font-body select-none"
             data-cursor="Submit idea"
             data-magnetic
@@ -144,6 +148,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           
           <button
             onClick={() => handlePillClick('hire')}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="inline-flex items-center justify-center bg-white text-black border border-white/10 rounded-full text-[13px] sm:text-[15px] px-4.5 sm:px-5.5 py-1.5 mx-1 mb-2 hover:bg-black hover:text-white hover:border-white/30 cursor-pointer duration-300 font-body select-none"
             data-cursor="Collaborate"
             data-magnetic
@@ -153,6 +158,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           
           <button
             onClick={() => handlePillClick('hire')}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="inline-flex items-center justify-center bg-white text-black border border-white/10 rounded-full text-[13px] sm:text-[15px] px-4.5 sm:px-5.5 py-1.5 mx-1 mb-2 hover:bg-black hover:text-white hover:border-white/30 cursor-pointer duration-300 font-body select-none"
             data-cursor="Contact"
             data-magnetic
@@ -162,6 +168,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           
           <button
             onClick={() => handlePillClick('about')}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="inline-flex items-center justify-center bg-white text-black border border-white/10 rounded-full text-[13px] sm:text-[15px] px-4.5 sm:px-5.5 py-1.5 mx-1 mb-2 hover:bg-black hover:text-white hover:border-white/30 cursor-pointer duration-300 font-body select-none"
             data-cursor="Philosophy"
             data-magnetic
@@ -173,6 +180,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           <div className="relative inline-block mb-2 mx-1 select-none">
             <button
               onClick={handleCopyEmail}
+              onMouseEnter={() => sfx.playTick('hover')}
               className="inline-flex items-center gap-2 sm:gap-2.5 bg-transparent text-white border border-white/30 hover:border-white rounded-full text-[13px] sm:text-[15px] px-4.5 sm:px-5.5 py-1.5 hover:bg-white hover:text-black cursor-pointer duration-300 font-body transition-colors"
               data-cursor="Copy email"
               data-magnetic
@@ -220,6 +228,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
             <img
               src="/Pixelcraft Discomorphism wb.png"
               alt="PixelCraft Discomorphic Logo"
+              onClick={() => {
+                sfx.playTick('click');
+              }}
+              onMouseEnter={() => sfx.playTick('hover')}
               className="w-12 h-12 sm:w-16 sm:h-16 object-contain filter drop-shadow-[0_0_10px_rgba(255,0,127,0.45)] drop-shadow-[0_0_4px_rgba(0,255,255,0.35)] transition-transform duration-700 ease-[var(--ease-luxury)] hover:scale-115 hover:rotate-[15deg] cursor-pointer select-none"
               loading="lazy"
               data-cursor="Discomorphism"
@@ -245,6 +257,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           <div className="flex gap-4">
             <button
               onClick={() => handlePillClick('projects')}
+              onMouseEnter={() => sfx.playTick('hover')}
               className="text-[13px] sm:text-[15px] font-heading font-medium uppercase tracking-[0.12em] text-white bg-white/10 hover:bg-white hover:text-black border border-white/20 hover:border-white rounded-full px-5 py-2 duration-300 select-none cursor-pointer"
               data-cursor="Gallery"
               data-magnetic
@@ -253,6 +266,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
             </button>
             <button
               onClick={() => handlePillClick('projects')}
+              onMouseEnter={() => sfx.playTick('hover')}
               className="text-[13px] sm:text-[15px] font-heading font-medium uppercase tracking-[0.12em] text-white/70 hover:text-white border border-transparent hover:border-white/20 rounded-full px-5 py-2 duration-300 select-none cursor-pointer"
               data-cursor="Exhibition"
               data-magnetic
@@ -266,7 +280,11 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
 
       {/* Animated Minimal Line Scroll Indicator */}
       <div 
-        onClick={() => onNavClick('about')}
+        onClick={() => {
+          sfx.playTick('click');
+          onNavClick('about');
+        }}
+        onMouseEnter={() => sfx.playTick('hover')}
         className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-40 hover:opacity-100 transition-opacity duration-300 hidden sm:flex z-20"
         data-cursor="Scroll"
         data-magnetic

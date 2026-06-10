@@ -1,4 +1,5 @@
 import React from 'react';
+import { sfx } from '../utils/sfx';
 
 const skillsGroup1 = [
   'Creative Direction',
@@ -123,6 +124,7 @@ export const Skills: React.FC = () => {
           {gridCapabilities.map((cap, index) => (
             <div
               key={index}
+              onMouseEnter={() => sfx.playTick('hover')}
               className="bg-white/[0.015] border border-white/5 hover:border-white/15 p-6 sm:p-8 rounded-2xl text-left transition-colors duration-300 backdrop-blur-md"
             >
               <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6">

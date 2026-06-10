@@ -18,6 +18,67 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem('pixelcraft_theme') as 'light' | 'dark') || 'dark';
+  });
+
+  const [ripple, setRipple] = useState<{
+    active: boolean;
+    x: number;
+    y: number;
+    theme: 'light' | 'dark';
+    animating: boolean;
+  }>({
+    active: false,
+    x: 0,
+    y: 0,
+    theme: 'light',
+    animating: false,
+  });
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  }, [theme]);
+
+  const toggleTheme = (e: React.MouseEvent) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    const targetTheme = theme === 'dark' ? 'light' : 'dark';
+
+    setRipple({
+      active: true,
+      x,
+      y,
+      theme: targetTheme,
+      animating: false,
+    });
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        setRipple(prev => ({ ...prev, animating: true }));
+      }, 50);
+    });
+
+    setTimeout(() => {
+      setTheme(targetTheme);
+      if (targetTheme === 'light') {
+        document.documentElement.classList.add('light');
+        localStorage.setItem('pixelcraft_theme', 'light');
+      } else {
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('pixelcraft_theme', 'dark');
+      }
+    }, 900);
+
+    setTimeout(() => {
+      setRipple(prev => ({ ...prev, active: false }));
+    }, 1300);
+  };
+
   useEffect(() => {
     const start = Date.now();
     const duration = 1600; // Smooth 1.6-second cinematic entrance loader
@@ -49,6 +110,20 @@ function App() {
 
   return (
     <div className="relative min-h-screen bg-[#050505] text-[#F5F5F5] select-none selection:bg-white selection:text-black">
+      
+      {/* Dynamic Theme Ripple Overlay */}
+      {ripple.active && (
+        <div
+          className={`fixed inset-0 z-[99998] pointer-events-none transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            ripple.animating ? 'clip-circle-full' : 'clip-circle-zero'
+          }`}
+          style={{
+            backgroundColor: ripple.theme === 'light' ? '#FFFFFF' : '#050505',
+            '--x': `${ripple.x}px`,
+            '--y': `${ripple.y}px`,
+          } as React.CSSProperties}
+        />
+      )}
       
       {/* Cinematic Luxury Preloader Screen */}
       <div 
@@ -96,13 +171,22 @@ function App() {
       {/* 2. Interactive Horizontal Mouse-Scrub Background Video overlay */}
       <BackgroundVideo />
 
-      {/* Discomorphism Floating Iridescent Background Spheres */}
-      <div className="fixed top-1/4 left-[10%] w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-gradient-to-tr from-[#ff007f]/12 via-[#8a2be2]/10 to-transparent blur-[100px] pointer-events-none z-0 animate-disco-1" />
-      <div className="fixed bottom-1/3 right-[5%] w-[380px] sm:w-[480px] h-[380px] sm:h-[480px] rounded-full bg-gradient-to-br from-[#00ffff]/10 via-[#8a2be2]/12 to-transparent blur-[120px] pointer-events-none z-0 animate-disco-2" />
-      <div className="fixed top-1/2 left-[40%] w-[260px] sm:w-[360px] h-[260px] sm:h-[360px] rounded-full bg-gradient-to-r from-[#ff007f]/8 via-[#00ffff]/8 to-transparent blur-[90px] pointer-events-none z-0 animate-disco-3" />
+      {/* Discomorphism Floating Liquid Glass Background Spheres */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-[0.16]" 
+        style={{ filter: 'url(#liquid-gooey-effect)' }}
+      >
+        {/* Glow Spheres with higher opacity so the contrast filter works properly */}
+        <div className="absolute top-1/4 left-[10%] w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-gradient-to-tr from-[#ff007f] via-[#8a2be2] to-transparent animate-disco-1" />
+        <div className="absolute bottom-1/3 right-[5%] w-[380px] sm:w-[480px] h-[380px] sm:h-[480px] rounded-full bg-gradient-to-br from-[#00ffff] via-[#8a2be2] to-transparent animate-disco-2" />
+        <div className="absolute top-1/2 left-[40%] w-[260px] sm:w-[360px] h-[260px] sm:h-[360px] rounded-full bg-gradient-to-r from-[#ff007f] via-[#00ffff] to-transparent animate-disco-3" />
+        {/* A couple of extra floating spheres for more organic interactive merging */}
+        <div className="absolute top-1/3 left-[50%] w-[180px] sm:w-[220px] h-[180px] sm:h-[220px] rounded-full bg-gradient-to-bl from-[#00ffff] to-[#ff007f] animate-[disco-float-2_15s_ease-in-out_infinite]" />
+        <div className="absolute bottom-1/4 left-[25%] w-[200px] sm:w-[260px] h-[200px] sm:h-[260px] rounded-full bg-gradient-to-tr from-[#ff007f] to-[#8a2be2] animate-[disco-float-1_18s_ease-in-out_infinite]" />
+      </div>
 
       {/* 3. Floating Glass Navigation Header */}
-      <Navbar onNavClick={handleNavClick} />
+      <Navbar onNavClick={handleNavClick} toggleTheme={toggleTheme} theme={theme} />
 
       {/* Main Structural Section Choreography */}
       <main className="relative w-full overflow-hidden">
@@ -141,6 +225,16 @@ function App() {
 
       {/* Section 9: System Editorial Footer alignments */}
       <Footer />
+
+      {/* SVG Liquid Gooey Filter Definition */}
+      <svg className="absolute w-0 h-0 pointer-events-none select-none" style={{ display: 'none' }} aria-hidden="true">
+        <defs>
+          <filter id="liquid-gooey-effect">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="blur" />
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" />
+          </filter>
+        </defs>
+      </svg>
 
     </div>
   );

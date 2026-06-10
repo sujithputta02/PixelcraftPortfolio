@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { sfx } from '../utils/sfx';
+import { ProgressiveImage } from './ProgressiveImage';
 
 interface NewArrivalsProps {
   onNavClick?: (sectionId: string) => void;
@@ -85,6 +87,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
   };
 
   const handleArrowScroll = (direction: 'left' | 'right') => {
+    sfx.playTick('click');
     const slider = sliderRef.current;
     if (!slider) return;
     const cardWidth = slider.clientWidth > 768 ? 340 : 280; // card width + gap
@@ -101,11 +104,13 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
   }, []);
 
   const handleCardClick = (image: string) => {
+    sfx.playTick('click');
     setActiveImage(image);
     document.body.style.overflow = 'hidden';
   };
 
   const handleCloseLightbox = () => {
+    sfx.playTick('click');
     setActiveImage(null);
     document.body.style.overflow = '';
   };
@@ -155,6 +160,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
             <div className="flex items-center gap-3.5 mt-8 sm:mt-12 lg:mt-24">
               <button
                 onClick={() => handleArrowScroll('left')}
+                onMouseEnter={() => sfx.playTick('hover')}
                 className="w-12 h-12 rounded-full border border-white/10 hover:border-white/20 bg-white/[0.02] hover:bg-white text-white hover:text-black flex items-center justify-center transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
                 aria-label="Previous Slide"
                 data-cursor="Prev"
@@ -168,6 +174,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
 
               <button
                 onClick={() => handleArrowScroll('right')}
+                onMouseEnter={() => sfx.playTick('hover')}
                 className="w-12 h-12 rounded-full border border-white/10 hover:border-white/20 bg-white/[0.02] hover:bg-white text-white hover:text-black flex items-center justify-center transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
                 aria-label="Next Slide"
                 data-cursor="Next"
@@ -187,7 +194,11 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
             {/* View All Pill Link row */}
             <div className="flex justify-end items-center mb-1 pr-1 sm:pr-4">
               <button
-                onClick={() => onNavClick?.('works')}
+                onClick={() => {
+                  sfx.playTick('click');
+                  onNavClick?.('works');
+                }}
+                onMouseEnter={() => sfx.playTick('hover')}
                 className="bg-[#ff007f] hover:bg-[#ff007f]/90 text-white rounded-full px-6 py-2.5 text-[11px] font-heading font-semibold tracking-wider uppercase transition-all duration-300 shadow-[0_4px_15px_rgba(255,0,127,0.35)] hover:scale-[1.03] select-none cursor-pointer"
                 data-cursor="Showcase"
                 data-magnetic
@@ -204,10 +215,11 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               data-cursor="Drag view"
             >
-              {arrivalsData.map((item) => (
+               {arrivalsData.map((item) => (
                 <div
                   key={item.id}
                   onClick={() => handleCardClick(item.image)}
+                  onMouseEnter={() => sfx.playTick('hover')}
                   className="w-[240px] sm:w-[280px] flex-shrink-0 snap-start flex flex-col group cursor-pointer"
                 >
                   {/* Card Image Container with discomorphism styling */}
@@ -224,7 +236,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                       </div>
                     )}
 
-                    <img
+                    <ProgressiveImage
                       src={item.image}
                       alt={item.title}
                       className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-[1000ms] ease-out"
@@ -262,7 +274,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
 
       </div>
 
-      {/* Fullscreen Details Lightbox Modal */}
+       {/* Fullscreen Details Lightbox Modal */}
       {activeImage && createPortal(
         <div
           onClick={handleCloseLightbox}
@@ -271,6 +283,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
           {/* Close button */}
           <button
             onClick={handleCloseLightbox}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="fixed top-6 right-6 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[100005] cursor-pointer"
             data-cursor="Close"
           >
@@ -282,7 +295,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
 
           {/* Lightbox Image */}
           <div className="max-w-4xl max-h-[85vh] relative flex items-center justify-center">
-            <img
+            <ProgressiveImage
               src={activeImage}
               alt="Poster Detail View"
               className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_20px_60px_rgba(255,0,127,0.15)]"

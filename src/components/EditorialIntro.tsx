@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { ProgressiveImage } from './ProgressiveImage';
+import { sfx } from '../utils/sfx';
 
 export const EditorialIntro: React.FC = () => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -68,15 +70,24 @@ export const EditorialIntro: React.FC = () => {
           <div className="flex flex-col gap-6 sm:gap-8 mb-12 sm:mb-16">
             <p className="text-[20px] sm:text-[24px] md:text-[28px] font-body font-light text-white/90 leading-relaxed tracking-tight">
               "I’m <strong className="font-semibold text-white">Sujith Putta</strong>, a visual designer focused on{' '}
-              <span className="hover:text-[#ff007f] hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#ff007f]/45 underline-offset-4">
+              <span 
+                onMouseEnter={() => sfx.playTick('hover')}
+                className="hover:text-[#ff007f] hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#ff007f]/45 underline-offset-4"
+              >
                 cinematic poster design
               </span>
               ,{' '}
-              <span className="hover:text-[#00ffff] hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#00ffff]/45 underline-offset-4">
+              <span 
+                onMouseEnter={() => sfx.playTick('hover')}
+                className="hover:text-[#00ffff] hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#00ffff]/45 underline-offset-4"
+              >
                 digital storytelling
               </span>
               , and{' '}
-              <span className="hover:text-[#8a2be2] hover:drop-shadow-[0_0_12px_rgba(138,43,226,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#8a2be2]/45 underline-offset-4">
+              <span 
+                onMouseEnter={() => sfx.playTick('hover')}
+                className="hover:text-[#8a2be2] hover:drop-shadow-[0_0_12px_rgba(138,43,226,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#8a2be2]/45 underline-offset-4"
+              >
                 creative branding
               </span>
               ."
@@ -111,6 +122,7 @@ export const EditorialIntro: React.FC = () => {
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            onMouseEnter={() => sfx.playTick('hover')}
             style={{
               transform: 'perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--card-scale, 1), var(--card-scale, 1), var(--card-scale, 1))',
               boxShadow: 'var(--card-shadow, none)',
@@ -146,7 +158,7 @@ export const EditorialIntro: React.FC = () => {
             
             {/* Image Container with high contrast masking */}
             <div className="w-full aspect-[4/5] rounded-xl overflow-hidden bg-[#0A0A0A] border border-white/5 mb-4 sm:mb-5 relative">
-              <img
+              <ProgressiveImage
                 src="/images/Sujithprofile.png"
                 alt="Sujith Putta Profile"
                 className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"

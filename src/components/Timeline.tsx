@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { sfx } from '../utils/sfx';
 
 interface TimelineItem {
   year: string;
@@ -125,6 +126,7 @@ export const Timeline: React.FC = () => {
 
                   {/* Glassmorphic Description Card */}
                   <div
+                    onMouseEnter={() => sfx.playTick('hover')}
                     className={`bg-white/[0.015] border p-6 rounded-2xl transition-all duration-[800ms] backdrop-blur-md ${
                       isActive
                         ? 'border-white/12 translate-y-0 opacity-100 bg-white/[0.025]'

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { ProgressiveImage } from './ProgressiveImage';
+import { sfx } from '../utils/sfx';
 
 interface CreativeVaultProps {
   onNavClick?: (sectionId: string) => void;
@@ -28,16 +30,12 @@ const backgroundCards: VaultItem[] = [
   { id: 'the-odyssey', title: 'The Odyssey', image: '/Poster/The odyssey Post.png', category: 'Mythological Concept', instagramUrl: 'https://www.instagram.com/p/DYHpnNmEVni/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
   { id: 'raga-revenge', title: 'Raga of Revenge', image: '/Poster/Raga of Revenge-DC.png', category: 'Action Thriller', instagramUrl: 'https://www.instagram.com/p/DYxAIF6POYM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
   { id: 'spiderman-bnd', title: 'Spider-Man BND', image: '/Poster/Spiderman BND Post.png', category: 'Cinematic IMAX', instagramUrl: 'https://www.instagram.com/p/DWGSiHvkUC7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'black-panther', title: 'Black Panther', image: '/Poster/All the Stars are Closer - Black Panther Poster.png', category: 'Wakanda Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' }
+  { id: 'black-panther', title: 'Black Panther', image: '/Poster/All the Stars are Closer - Black Panther Poster.png', category: 'Wakanda Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'king-steve', title: 'King Steve', image: '/Poster/Kingsteve poster.png', category: 'Pop Culture Character Design', instagramUrl: 'https://www.instagram.com/p/DUcXzeIkRF4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'obsession', title: 'OBSESSION (2026)', image: '/Poster/OBSESSION Poster.png', category: 'Cinematic Horror Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'iphone-17-pro', title: 'iPhone 17 Pro Concept', image: '/Poster/IPhone 17 Pro Poster.png', category: 'Product Key Art & Speculative CGI' },
+  { id: 'hamza-returns', title: 'The Hamza Returns', image: '/Poster/The Hamza returns.jpg', category: 'Cinematic Concept', instagramUrl: 'https://www.instagram.com/p/DWT4PbNkR_g/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' }
 ];
-
-const defaultSpotlight: VaultItem = {
-  id: 'king-steve',
-  title: 'King Steve',
-  image: '/Poster/Kingsteve poster.png',
-  category: 'Character Design',
-  instagramUrl: 'https://www.instagram.com/p/DUcXzeIkRF4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
-};
 
 const initialLikesData: Record<string, number> = {
   'king-steve': 142,
@@ -55,222 +53,223 @@ const initialLikesData: Record<string, number> = {
   'the-odyssey': 112,
   'raga-revenge': 89,
   'spiderman-bnd': 156,
-  'black-panther': 245
+  'black-panther': 245,
+  'obsession': 288,
+  'iphone-17-pro': 132,
+  'hamza-returns': 115
 };
 
-interface StaticBackgroundGridProps {
+interface MarqueeCardProps {
+  item: VaultItem;
   onCardClick: (image: string) => void;
-  onHoverEnter: (item: VaultItem) => void;
-  onHoverLeave: () => void;
+  handleLike: (cardId: string, instagramUrl?: string) => void;
+  isLiked: boolean;
+  likesCount: number;
+  isHeartPulsing: boolean;
 }
 
-const StaticBackgroundGrid = React.memo<StaticBackgroundGridProps>(({ onCardClick, onHoverEnter, onHoverLeave }) => {
+const MarqueeCard: React.FC<MarqueeCardProps> = ({
+  item,
+  onCardClick,
+  handleLike,
+  isLiked,
+  likesCount,
+  isHeartPulsing,
+}) => {
   return (
-    <div className="grid grid-cols-2 gap-4">
-      {backgroundCards.map((item) => (
-        <div
-          key={item.id}
-          onClick={() => onCardClick(item.image)}
-          onMouseEnter={() => onHoverEnter(item)}
-          onMouseLeave={onHoverLeave}
-          className="flex flex-col group cursor-pointer"
-        >
-          <div className="w-full aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 relative">
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+    <div
+      onClick={() => onCardClick(item.image)}
+      className="w-[140px] sm:w-[170px] md:w-[210px] lg:w-[240px] aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/10 cursor-pointer relative transition-all duration-500 hover:scale-105 hover:z-50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] group shrink-0"
+    >
+      <ProgressiveImage
+        src={item.image}
+        alt={item.title}
+        className="w-full h-full object-cover grayscale-0 opacity-100 md:grayscale md:opacity-70 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700"
+        loading="lazy"
+      />
+      {/* Overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/10 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
+      
+      {/* Floating Info Badge Overlay */}
+      <div className="absolute bottom-3 left-3 right-3 md:bottom-4 md:left-4 md:right-4 z-20 flex flex-col text-left opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 pointer-events-auto">
+        <span className="text-[8px] md:text-[9px] font-heading font-semibold uppercase text-white/50 tracking-wider">
+          {item.category}
+        </span>
+        <h4 className="text-[10px] md:text-[12px] font-heading font-bold text-white tracking-tight uppercase leading-tight mt-0.5">
+          {item.title}
+        </h4>
+        
+        {/* Inline Likes Controller */}
+        <div className="flex items-center justify-between mt-2 md:mt-3 pt-1.5 md:pt-2 border-t border-white/10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike(item.id, item.instagramUrl);
+            }}
+            className="flex items-center gap-1 md:gap-1.5 text-white bg-white/10 hover:bg-white hover:text-black border border-white/5 rounded-full px-2 md:px-2.5 py-0.5 md:py-1 transition-all duration-200 select-none cursor-pointer"
+          >
+            <svg
+              width="8"
+              height="8"
+              viewBox="0 0 24 24"
+              fill={isLiked ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              strokeWidth="2.5"
+              className={`text-red-500 transition-transform ${isHeartPulsing ? 'animate-heart-pop' : ''}`}
+            >
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            <span className="text-[8px] md:text-[9px] font-heading font-semibold">{likesCount}</span>
+          </button>
+          
+          <div className="w-4 h-4 md:w-5 md:h-5 rounded-full border border-white/15 bg-white/5 flex items-center justify-center">
+            <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-white">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </div>
-          <span className="text-[12px] font-heading font-semibold text-white/70 tracking-tight mt-2 block pl-1">
-            {item.title}
-          </span>
         </div>
-      ))}
+      </div>
     </div>
   );
-});
+};
 
-interface StaticBackgroundColumnsProps {
+interface InfiniteMarqueeWallProps {
   onCardClick: (image: string) => void;
-  onHoverEnter: (item: VaultItem) => void;
-  onHoverLeave: () => void;
+  handleLike: (cardId: string, instagramUrl?: string) => void;
+  likedMap: Record<string, boolean>;
+  likesMap: Record<string, number>;
+  isHeartPulsing: boolean;
+  activeHeartId: string | null;
 }
 
-const StaticBackgroundColumns = React.memo<StaticBackgroundColumnsProps>(({ onCardClick, onHoverEnter, onHoverLeave }) => {
+const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
+  onCardClick,
+  handleLike,
+  likedMap,
+  likesMap,
+  isHeartPulsing,
+  activeHeartId,
+}) => {
+  const row1 = [
+    backgroundCards[0],
+    backgroundCards[1],
+    backgroundCards[2],
+    backgroundCards[3],
+    backgroundCards[4],
+    backgroundCards[5],
+    backgroundCards[6]
+  ];
+  const row2 = [
+    backgroundCards[7],
+    backgroundCards[8],
+    backgroundCards[9],
+    backgroundCards[10],
+    backgroundCards[11],
+    backgroundCards[12]
+  ];
+  const row3 = [
+    backgroundCards[13],
+    backgroundCards[14],
+    backgroundCards[15],
+    backgroundCards[16],
+    backgroundCards[17],
+    backgroundCards[18]
+  ];
+
   return (
-    <>
-      {/* Column 1: normal */}
-      <div className="flex flex-col gap-6 w-full opacity-35 hover:opacity-40 transition-opacity duration-700">
-        {[backgroundCards[0], backgroundCards[5], backgroundCards[10]].map((item) => (
-          <div
-            key={item.id}
-            onClick={() => onCardClick(item.image)}
-            onMouseEnter={() => onHoverEnter(item)}
-            onMouseLeave={onHoverLeave}
-            className="rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/15 cursor-pointer relative transition-all duration-500 hover:scale-[1.03] shadow-md group aspect-[3/4.2] w-full"
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-              loading="lazy"
+    <div className="w-full flex flex-col gap-6 overflow-hidden relative py-8">
+      {/* Row 1: Left */}
+      <div className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row1">
+        <div className="flex gap-6 shrink-0 animate-marquee-l group-hover/row1:[animation-play-state:paused]">
+          {row1.map((item) => (
+            <MarqueeCard
+              key={item.id}
+              item={item}
+              onCardClick={onCardClick}
+              handleLike={handleLike}
+              isLiked={likedMap[item.id] ?? false}
+              likesCount={likesMap[item.id] ?? 0}
+              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-10" />
-            <div className="absolute bottom-4 left-4 z-20 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <span className="text-[12px] font-heading font-semibold text-white block">
-                {item.title}
-              </span>
-              <span className="text-[9px] font-heading font-medium uppercase text-white/40 block mt-0.5">
-                {item.category}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Column 2: shifted up by -45px (hidden on tablet) */}
-      <div className="hidden lg:flex flex-col gap-6 w-full -translate-y-[45px] opacity-35 hover:opacity-40 transition-opacity duration-700">
-        {[backgroundCards[1], backgroundCards[6], backgroundCards[11]].map((item) => (
-          <div
-            key={item.id}
-            onClick={() => onCardClick(item.image)}
-            onMouseEnter={() => onHoverEnter(item)}
-            onMouseLeave={onHoverLeave}
-            className="rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/15 cursor-pointer relative transition-all duration-500 hover:scale-[1.03] shadow-md group aspect-[3/4.2] w-full"
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-10" />
-            <div className="absolute bottom-4 left-4 z-20 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <span className="text-[12px] font-heading font-semibold text-white block">
-                {item.title}
-              </span>
-              <span className="text-[9px] font-heading font-medium uppercase text-white/40 block mt-0.5">
-                {item.category}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Column 3: center column */}
-      <div className="flex flex-col gap-6 w-full relative z-25">
-        {/* Top card shifted way up -90px */}
-        <div
-          onClick={() => onCardClick(backgroundCards[2].image)}
-          onMouseEnter={() => onHoverEnter(backgroundCards[2])}
-          onMouseLeave={onHoverLeave}
-          className="-translate-y-[90px] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/15 cursor-pointer relative transition-all duration-500 hover:scale-[1.03] shadow-md group aspect-[3/4.2] w-full opacity-35 hover:opacity-40 transition-opacity duration-700"
-        >
-          <img
-            src={backgroundCards[2].image}
-            alt={backgroundCards[2].title}
-            className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-10" />
-          <div className="absolute bottom-4 left-4 z-20 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <span className="text-[12px] font-heading font-semibold text-white block">
-              {backgroundCards[2].title}
-            </span>
-            <span className="text-[9px] font-heading font-medium uppercase text-white/40 block mt-0.5">
-              {backgroundCards[2].category}
-            </span>
-          </div>
+          ))}
         </div>
-
-        {/* Bottom card shifted way down +90px */}
-        <div
-          onClick={() => onCardClick(backgroundCards[12].image)}
-          onMouseEnter={() => onHoverEnter(backgroundCards[12])}
-          onMouseLeave={onHoverLeave}
-          className="translate-y-[90px] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/15 cursor-pointer relative transition-all duration-500 hover:scale-[1.03] shadow-md group aspect-[3/4.2] w-full opacity-35 hover:opacity-40 transition-opacity duration-700"
-        >
-          <img
-            src={backgroundCards[12].image}
-            alt={backgroundCards[12].title}
-            className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-10" />
-          <div className="absolute bottom-4 left-4 z-20 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <span className="text-[12px] font-heading font-semibold text-white block">
-              {backgroundCards[12].title}
-            </span>
-            <span className="text-[9px] font-heading font-medium uppercase text-white/40 block mt-0.5">
-              {backgroundCards[12].category}
-            </span>
-          </div>
+        <div className="flex gap-6 shrink-0 animate-marquee-l group-hover/row1:[animation-play-state:paused]" aria-hidden="true">
+          {row1.map((item) => (
+            <MarqueeCard
+              key={`${item.id}-dup`}
+              item={item}
+              onCardClick={onCardClick}
+              handleLike={handleLike}
+              isLiked={likedMap[item.id] ?? false}
+              likesCount={likesMap[item.id] ?? 0}
+              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
+            />
+          ))}
         </div>
       </div>
 
-      {/* Column 4: shifted up by -45px (hidden on tablet) */}
-      <div className="hidden lg:flex flex-col gap-6 w-full -translate-y-[45px] opacity-35 hover:opacity-40 transition-opacity duration-700">
-        {[backgroundCards[3], backgroundCards[7], backgroundCards[13]].map((item) => (
-          <div
-            key={item.id}
-            onClick={() => onCardClick(item.image)}
-            onMouseEnter={() => onHoverEnter(item)}
-            onMouseLeave={onHoverLeave}
-            className="rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/15 cursor-pointer relative transition-all duration-500 hover:scale-[1.03] shadow-md group aspect-[3/4.2] w-full"
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-              loading="lazy"
+      {/* Row 2: Right */}
+      <div className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row2">
+        <div className="flex gap-6 shrink-0 animate-marquee-r group-hover/row2:[animation-play-state:paused]">
+          {row2.map((item) => (
+            <MarqueeCard
+              key={item.id}
+              item={item}
+              onCardClick={onCardClick}
+              handleLike={handleLike}
+              isLiked={likedMap[item.id] ?? false}
+              likesCount={likesMap[item.id] ?? 0}
+              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-10" />
-            <div className="absolute bottom-4 left-4 z-20 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <span className="text-[12px] font-heading font-semibold text-white block">
-                {item.title}
-              </span>
-              <span className="text-[9px] font-heading font-medium uppercase text-white/40 block mt-0.5">
-                {item.category}
-              </span>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="flex gap-6 shrink-0 animate-marquee-r group-hover/row2:[animation-play-state:paused]" aria-hidden="true">
+          {row2.map((item) => (
+            <MarqueeCard
+              key={`${item.id}-dup`}
+              item={item}
+              onCardClick={onCardClick}
+              handleLike={handleLike}
+              isLiked={likedMap[item.id] ?? false}
+              likesCount={likesMap[item.id] ?? 0}
+              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Column 5: normal */}
-      <div className="flex flex-col gap-6 w-full opacity-35 hover:opacity-40 transition-opacity duration-700">
-        {[backgroundCards[4], backgroundCards[8], backgroundCards[14]].map((item) => (
-          <div
-            key={item.id}
-            onClick={() => onCardClick(item.image)}
-            onMouseEnter={() => onHoverEnter(item)}
-            onMouseLeave={onHoverLeave}
-            className="rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/15 cursor-pointer relative transition-all duration-500 hover:scale-[1.03] shadow-md group aspect-[3/4.2] w-full"
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-              loading="lazy"
+      {/* Row 3: Left */}
+      <div className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row3">
+        <div className="flex gap-6 shrink-0 animate-marquee-l group-hover/row3:[animation-play-state:paused]">
+          {row3.map((item) => (
+            <MarqueeCard
+              key={item.id}
+              item={item}
+              onCardClick={onCardClick}
+              handleLike={handleLike}
+              isLiked={likedMap[item.id] ?? false}
+              likesCount={likesMap[item.id] ?? 0}
+              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent pointer-events-none z-10" />
-            <div className="absolute bottom-4 left-4 z-20 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <span className="text-[12px] font-heading font-semibold text-white block">
-                {item.title}
-              </span>
-              <span className="text-[9px] font-heading font-medium uppercase text-white/40 block mt-0.5">
-                {item.category}
-              </span>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="flex gap-6 shrink-0 animate-marquee-l group-hover/row3:[animation-play-state:paused]" aria-hidden="true">
+          {row3.map((item) => (
+            <MarqueeCard
+              key={`${item.id}-dup`}
+              item={item}
+              onCardClick={onCardClick}
+              handleLike={handleLike}
+              isLiked={likedMap[item.id] ?? false}
+              likesCount={likesMap[item.id] ?? 0}
+              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
+            />
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
-});
+};
 
 export const CreativeVault: React.FC<CreativeVaultProps> = () => {
   const [likesMap, setLikesMap] = useState<Record<string, number>>(initialLikesData);
@@ -288,13 +287,8 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
   });
 
   const [isHeartPulsing, setIsHeartPulsing] = useState(false);
+  const [activeHeartId, setActiveHeartId] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState<string | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<VaultItem | null>(null);
-
-  const [currentSpotlight, setCurrentSpotlight] = useState<VaultItem>(defaultSpotlight);
-  const [prevSpotlight, setPrevSpotlight] = useState<VaultItem | null>(null);
-  const [fadeKey, setFadeKey] = useState(0);
-
   // Fetch likes from SQLite database on mount
   useEffect(() => {
     const fetchLikes = async () => {
@@ -316,22 +310,10 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
     localStorage.setItem('pixelcraft_liked_status', JSON.stringify(likedMap));
   }, [likedMap]);
 
-  // Spotlight contents syncs dynamically with the hovered card
-  useEffect(() => {
-    if (hoveredCard && hoveredCard.id !== currentSpotlight.id) {
-      setPrevSpotlight(currentSpotlight);
-      setCurrentSpotlight(hoveredCard);
-      setFadeKey(prev => prev + 1);
-    }
-  }, [hoveredCard, currentSpotlight]);
-
-  const activeLikes = likesMap[currentSpotlight.id] ?? 0;
-  const activeLiked = likedMap[currentSpotlight.id] ?? false;
-
-  const handleLikeClick = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleCardLike = async (cardId: string, instagramUrl?: string) => {
+    sfx.playTick('click');
+    setActiveHeartId(cardId);
     setIsHeartPulsing(true);
-    const cardId = currentSpotlight.id;
     const isCurrentlyLiked = likedMap[cardId] ?? false;
     const nextLikedState = !isCurrentlyLiked;
 
@@ -349,7 +331,7 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
 
     // 3. If liking, open the real Instagram post in a new tab so they can add a real like there
     if (nextLikedState) {
-      window.open(currentSpotlight.instagramUrl || 'https://www.instagram.com/pixelcraft.exe', '_blank');
+      window.open(instagramUrl || 'https://www.instagram.com/pixelcraft.exe', '_blank');
     }
 
     // 4. Dispatch POST request in background to update the SQLite database
@@ -383,27 +365,24 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
 
   useEffect(() => {
     if (isHeartPulsing) {
-      const timer = setTimeout(() => setIsHeartPulsing(false), 300);
+      const timer = setTimeout(() => {
+        setIsHeartPulsing(false);
+        setActiveHeartId(null);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isHeartPulsing]);
 
   const handleCardClick = useCallback((image: string) => {
+    sfx.playTick('click');
     setActiveImage(image);
     document.body.style.overflow = 'hidden';
   }, []);
 
   const handleCloseLightbox = useCallback(() => {
+    sfx.playTick('click');
     setActiveImage(null);
     document.body.style.overflow = '';
-  }, []);
-
-  const handleHoverEnter = useCallback((item: VaultItem) => {
-    setHoveredCard(item);
-  }, []);
-
-  const handleHoverLeave = useCallback(() => {
-    setHoveredCard(null);
   }, []);
 
   return (
@@ -420,19 +399,24 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
         .animate-heart-pop {
           animation: heart-pop 0.3s ease-out;
         }
-        @keyframes spotlight-fade {
-          from {
-            opacity: 0;
-            transform: scale(0.97);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
+        @keyframes marquee-l {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(calc(-100% - 24px)); }
         }
-        .animate-spotlight-fade {
-          animation: spotlight-fade 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          will-change: opacity, transform;
+        @keyframes marquee-r {
+          0% { transform: translateX(calc(-100% - 24px)); }
+          100% { transform: translateX(0); }
+        }
+        .animate-marquee-l {
+          animation: marquee-l 32s linear infinite;
+        }
+        .animate-marquee-r {
+          animation: marquee-r 32s linear infinite;
+        }
+        .group\/row1:hover .animate-marquee-l,
+        .group\/row2:hover .animate-marquee-r,
+        .group\/row3:hover .animate-marquee-l {
+          animation-play-state: paused;
         }
       `}</style>
 
@@ -452,164 +436,20 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
             </h2>
           </div>
           <p className="max-w-xs text-[14px] sm:text-[16px] font-body text-white/45 leading-relaxed">
-            Hover over background thumbnails to sync and spotlight them in the center featured showcase layout.
+            Interact with the digital marquee rows to pause, like items, or tap to view posters in high-definition full screen.
           </p>
         </div>
 
-        {/* Responsive Grid System Layout */}
-        
-        {/* Mobile Layout (Featured Card stacked on top, grid below) */}
-        <div className="block md:hidden text-left">
-          {/* Center spotlight card displaying the active item */}
-          <div
-            onClick={() => handleCardClick(currentSpotlight.image)}
-            className="w-full max-w-[330px] aspect-[3/4.2] rounded-3xl bg-gradient-to-br from-orange-500 to-red-600 p-4 shadow-[0_20px_45px_rgba(239,68,68,0.25)] relative overflow-hidden mx-auto mb-12 cursor-pointer group flex flex-col justify-between"
-          >
-            {/* Heart Button */}
-            <button
-              onClick={handleLikeClick}
-              className="absolute top-5 right-5 z-35 bg-white text-black font-heading font-semibold text-[9px] uppercase tracking-wider rounded-full px-3 py-1.5 flex items-center gap-1 shadow-lg active:scale-95"
-            >
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-                fill={activeLiked ? 'currentColor' : 'none'}
-                stroke="currentColor"
-                strokeWidth="2.5"
-                className={`text-red-500 transition-transform ${isHeartPulsing ? 'animate-heart-pop' : ''}`}
-              >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-              <span>{activeLikes}</span>
-            </button>
-
-            {/* Speech bubble badge */}
-            <div className="absolute top-16 left-5 z-35 bg-orange-600 border border-orange-400/30 text-white font-heading font-semibold text-[9px] tracking-wider uppercase px-2.5 py-1 rounded-full rounded-bl-none shadow-md">
-              @creator
-            </div>
-
-            {/* Poster image container */}
-            <div className="w-full h-[82%] rounded-2xl overflow-hidden bg-black/20 border border-white/5 relative z-10">
-              {prevSpotlight && (
-                <img
-                  src={prevSpotlight.image}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover opacity-100 z-0"
-                />
-              )}
-              <img
-                key={fadeKey}
-                src={currentSpotlight.image}
-                alt={currentSpotlight.title}
-                className="absolute inset-0 w-full h-full object-cover animate-spotlight-fade z-10"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none z-20" />
-            </div>
-
-            {/* Bottom creator details */}
-            <div className="absolute bottom-5 left-5 right-5 z-20 flex items-center gap-3">
-              <img
-                src="/images/Sujithprofile.png"
-                alt="Sujith Putta"
-                className="w-8 h-8 rounded-full object-cover border border-white/20"
-              />
-              <div className="text-left leading-none">
-                <span className="text-[12px] font-heading font-bold text-white block">
-                  {currentSpotlight.id === 'king-steve' ? 'Sujith Putta' : currentSpotlight.title}
-                </span>
-                <span className="text-[9px] font-heading font-medium text-white/70 block mt-0.5">
-                  {currentSpotlight.id === 'king-steve' ? 'from PixelCraft' : currentSpotlight.category}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Background grid list */}
-          <StaticBackgroundGrid
+        {/* Responsive Digital Art Exhibition Infinite Marquee */}
+        <div className="w-full relative select-none mt-8 md:mt-12 lg:mt-16">
+          <InfiniteMarqueeWall
             onCardClick={handleCardClick}
-            onHoverEnter={handleHoverEnter}
-            onHoverLeave={handleHoverLeave}
+            handleLike={handleCardLike}
+            likedMap={likedMap}
+            likesMap={likesMap}
+            isHeartPulsing={isHeartPulsing}
+            activeHeartId={activeHeartId}
           />
-        </div>
-
-        {/* Tablet & Desktop View (Wavy columns with centered spotlight) */}
-        <div className="hidden md:flex justify-between items-center w-full h-[760px] lg:h-[880px] gap-6 relative select-none mt-8 md:mt-12 lg:mt-16">
-          <StaticBackgroundColumns
-            onCardClick={handleCardClick}
-            onHoverEnter={handleHoverEnter}
-            onHoverLeave={handleHoverLeave}
-          />
-          
-          {/* Spotlight Center Card (centered, overlapping adjacent columns) */}
-          <div
-            onClick={() => handleCardClick(currentSpotlight.image)}
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-[290px] lg:w-[330px] aspect-[3/4.2] rounded-3xl bg-gradient-to-br from-orange-500 via-orange-600 to-red-700 p-5 shadow-[0_30px_70px_rgba(239,68,68,0.35)] overflow-hidden cursor-pointer group border border-orange-400/20 flex flex-col justify-between transition-all duration-500 ${
-              hoveredCard
-                ? 'opacity-100 scale-100 pointer-events-auto'
-                : 'opacity-0 scale-[0.95] pointer-events-none'
-            }`}
-          >
-            {/* Heart Button */}
-            <button
-              onClick={handleLikeClick}
-              className="absolute top-7 right-7 z-40 bg-white text-black font-heading font-semibold text-[10px] uppercase tracking-wider rounded-full px-3.5 py-2 flex items-center gap-1.5 shadow-lg hover:scale-105 active:scale-95 duration-200"
-              data-cursor="Like"
-            >
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill={activeLiked ? 'currentColor' : 'none'}
-                stroke="currentColor"
-                strokeWidth="2.5"
-                className={`text-red-500 transition-transform ${isHeartPulsing ? 'animate-heart-pop' : ''}`}
-              >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-              <span>{activeLikes}</span>
-            </button>
-
-            {/* Speech bubble badge */}
-            <div className="absolute top-20 left-7 z-40 bg-orange-600 border border-orange-400/35 text-white font-heading font-semibold text-[9.5px] tracking-wider uppercase px-3 py-1 rounded-full rounded-bl-none shadow-md select-none pointer-events-none">
-              @creator
-            </div>
-
-            {/* Poster Inner Wrapper with Crossfading Preloaded Images */}
-            <div className="w-full h-[83%] rounded-2xl overflow-hidden bg-black/20 border border-white/5 relative z-10">
-              {prevSpotlight && (
-                <img
-                  src={prevSpotlight.image}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover opacity-100 z-0"
-                />
-              )}
-              <img
-                key={fadeKey}
-                src={currentSpotlight.image}
-                alt={currentSpotlight.title}
-                className="absolute inset-0 w-full h-full object-cover animate-spotlight-fade z-10"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
-            </div>
-
-            {/* Creator bottom tag */}
-            <div className="absolute bottom-6 left-6 right-6 z-20 flex items-center gap-3">
-              <img
-                src="/images/Sujithprofile.png"
-                alt="Sujith Putta"
-                className="w-9 h-9 rounded-full object-cover border border-white/20"
-              />
-              <div className="text-left leading-none">
-                <span className="text-[13px] font-heading font-bold text-white tracking-tight block">
-                  {currentSpotlight.id === 'king-steve' ? 'Sujith Putta' : currentSpotlight.title}
-                </span>
-                <span className="text-[10px] font-heading font-medium text-white/70 block mt-0.5">
-                  {currentSpotlight.id === 'king-steve' ? 'from PixelCraft' : currentSpotlight.category}
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -623,6 +463,7 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
           {/* Close button */}
           <button
             onClick={handleCloseLightbox}
+            onMouseEnter={() => sfx.playTick('hover')}
             className="fixed top-6 right-6 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[100005] cursor-pointer"
             data-cursor="Close"
           >
@@ -634,7 +475,7 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
 
           {/* Lightbox Image */}
           <div className="max-w-4xl max-h-[85vh] relative flex items-center justify-center">
-            <img
+            <ProgressiveImage
               src={activeImage}
               alt="Poster Detail View"
               className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_20px_60px_rgba(255,0,127,0.15)]"
