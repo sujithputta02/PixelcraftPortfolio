@@ -250,7 +250,7 @@ const projectsData: Project[] = [
     development: 'Compositing high-speed motion blurs, adjusting depth of field, and setting up IMAX typography in Canva.',
     tools: ['Canva', 'Affinity Designer'],
     results: 'A highly dynamic cinematic poster design capturing the adrenaline of web-swinging.',
-    galleryImages: ['/Poster/Spiderman BND Post.png'],
+    galleryImages: ['/Poster/Spiderman BND Post.png', '/Poster/Spiderman BND v-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/246134291/Spider-Man-Brand-New-Day-Cinematic-IMAX-Poster',
     instagramUrl: 'https://www.instagram.com/p/DWGSiHvkUC7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/pWbeAJDl3'
