@@ -16,6 +16,12 @@ interface ArrivalItem {
 
 const arrivalsData: ArrivalItem[] = [
   {
+    id: 'spiderman-bnd-v2',
+    title: 'Spider-Man BND V-2',
+    image: '/Poster/Spiderman BND v-2.webp',
+    category: 'Cinematic IMAX'
+  },
+  {
     id: 'obsession',
     title: 'OBSESSION',
     image: '/Poster/OBSESSION Poster.png',
@@ -226,7 +232,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                   <div className="w-full aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 border-disco-hover transition-all duration-500 relative shadow-lg">
                     
                     {/* Pulsing red arrival dot for the main item */}
-                    {item.id === 'obsession' && (
+                    {item.id === 'spiderman-bnd-v2' && (
                       <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-red-500/30 rounded-full px-2.5 py-1">
                         <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
                         <span className="w-1.5 h-1.5 bg-red-500 rounded-full absolute" />

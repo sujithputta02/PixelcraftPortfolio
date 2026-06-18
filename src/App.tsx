@@ -14,9 +14,19 @@ import { Testimonials } from './components/Testimonials';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 
+const getLoaderMessage = (p: number) => {
+  if (p < 25) return 'CURATING EXHIBITS';
+  if (p < 50) return 'RESOLVING COMPOSITION DETAILS';
+  if (p < 75) return 'CALIBRATING VISUAL CONTRAST';
+  if (p < 95) return 'TIGHTENING TYPOGRAPHY METRICS';
+  if (p < 100) return 'PREPARING GALLERY SHOWROOM';
+  return 'WELCOME TO THE ARCHIVE';
+};
+
 function App() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [contentFade, setContentFade] = useState(false);
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     return (localStorage.getItem('pixelcraft_theme') as 'light' | 'dark') || 'dark';
@@ -81,7 +91,7 @@ function App() {
 
   useEffect(() => {
     const start = Date.now();
-    const duration = 1600; // Smooth 1.6-second cinematic entrance loader
+    const duration = 1800; // Elegant 1.8-second cinematic entrance loader
 
     const updateProgress = () => {
       const elapsed = Date.now() - start;
@@ -93,8 +103,12 @@ function App() {
         requestAnimationFrame(updateProgress);
       } else {
         setTimeout(() => {
-          setLoading(false);
-        }, 800); // Sync hide with CSS transition completion
+          setContentFade(true); // Fade out the central spinner and logs first
+        }, 300);
+
+        setTimeout(() => {
+          setLoading(false); // Unmount the preloader screen after shutters fully open
+        }, 1500); // Allow time for shutters to slide out
       }
     };
 
@@ -126,44 +140,95 @@ function App() {
       )}
       
       {/* Cinematic Luxury Preloader Screen */}
-      <div 
-        className="fixed inset-0 bg-[#050505] z-[99999] flex flex-col justify-center items-center select-none transition-all duration-[750ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-        style={{
-          opacity: progress < 100 ? 1 : 0,
-          transform: progress < 100 ? 'scale(1) translateY(0)' : 'scale(1.02) translateY(-40px)',
-          pointerEvents: progress < 100 ? 'auto' : 'none',
-          visibility: loading ? 'visible' : 'hidden'
-        }}
-      >
-        {/* Glowing Discomorphic Logo */}
-        <div className="mb-7 relative select-none">
-          <div className="absolute inset-0 rounded-full bg-[#ff007f]/15 blur-[35px] animate-[pulse_3s_infinite] pointer-events-none" />
-          <img
-            src="/Pixelcraft Discomorphism wb.png"
-            alt="PixelCraft Logo"
-            className="w-18 h-18 sm:w-20 sm:h-20 object-contain filter drop-shadow-[0_0_12px_rgba(255,0,127,0.45)] drop-shadow-[0_0_6px_rgba(0,255,255,0.35)] animate-[spin_12s_linear_infinite]"
+      {loading && (
+        <div className="fixed inset-0 z-[99999] select-none pointer-events-none overflow-hidden">
+          {/* Top Shutter Panel */}
+          <div 
+            className={`fixed top-0 left-0 w-full h-[50vh] transition-all duration-[750ms] border-b transition-transform duration-[1000ms] ease-[cubic-bezier(0.85,0,0.15,1)] pointer-events-auto z-10 ${
+              theme === 'light' ? 'bg-[#F9F9F9] border-black/5' : 'bg-[#050505] border-white/5'
+            } ${
+              progress === 100 && contentFade ? '-translate-y-full' : 'translate-y-0'
+            }`}
           />
-        </div>
+          {/* Bottom Shutter Panel */}
+          <div 
+            className={`fixed bottom-0 left-0 w-full h-[50vh] transition-all duration-[750ms] border-t transition-transform duration-[1000ms] ease-[cubic-bezier(0.85,0,0.15,1)] pointer-events-auto z-10 ${
+              theme === 'light' ? 'bg-[#F9F9F9] border-black/5' : 'bg-[#050505] border-white/5'
+            } ${
+              progress === 100 && contentFade ? 'translate-y-full' : 'translate-y-0'
+            }`}
+          />
 
-        {/* Technical Progress Count-Up */}
-        <div className="flex flex-col items-center gap-3.5 w-full max-w-[280px]">
-          <span className="text-[34px] sm:text-[40px] font-heading font-extrabold text-white tracking-tighter tabular-nums leading-none">
-            {progress.toString().padStart(3, '0')}%
-          </span>
-          
-          {/* Specular Progress Bar Track */}
-          <div className="w-full h-[2px] bg-white/10 rounded-full relative overflow-hidden">
-            <div 
-              className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#ff007f] via-[#ffffff] to-[#00ffff] rounded-full transition-all duration-[80ms] ease-out shadow-[0_0_8px_rgba(255,255,255,0.8)]"
-              style={{ width: `${progress}%` }}
-            />
+          {/* Center Content Container */}
+          <div 
+            className={`fixed inset-0 z-[100000] flex flex-col justify-center items-center pointer-events-none transition-all duration-[600ms] ease-out ${
+              theme === 'light' ? 'text-[#111111]' : 'text-white'
+            } ${
+              contentFade ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+            }`}
+          >
+            {/* Elegant Minimalist Frame */}
+            <div className="flex flex-col items-center max-w-lg px-8 text-center select-none">
+              
+              {/* Monospace Telemetry Heading */}
+              <div className={`text-[9px] sm:text-[10px] font-mono tracking-[0.3em] uppercase mb-8 ${
+                theme === 'light' ? 'text-black/30' : 'text-white/30'
+              }`}>
+                [ EST. 2026 // CREATIVE EXHIBITION ]
+              </div>
+
+              {/* Majestic Serif Name (high-fashion editorial look) */}
+              <h1 className="text-[28px] sm:text-[40px] md:text-[44px] font-light tracking-[0.25em] leading-none uppercase select-none font-heading">
+                SUJITH PUTTA
+              </h1>
+              
+              <div className={`text-[9px] sm:text-[10px] font-mono tracking-[0.4em] uppercase mt-4 mb-12 ${
+                theme === 'light' ? 'text-black/45' : 'text-white/45'
+              }`}>
+                SELECTED WORKS & ART DIRECTION
+              </div>
+
+              {/* Progress Container */}
+              <div className="w-[260px] sm:w-[340px] flex flex-col items-center">
+                
+                {/* Monospace progress status details */}
+                <div className={`w-full flex justify-between items-end mb-2.5 font-mono text-[9px] tracking-widest ${
+                  theme === 'light' ? 'text-black/40' : 'text-white/40'
+                }`}>
+                  <span className="animate-pulse">{getLoaderMessage(progress)}</span>
+                  <span className={`font-semibold ${theme === 'light' ? 'text-black' : 'text-white'}`}>{progress.toString().padStart(3, '0')} / 100</span>
+                </div>
+
+                {/* Pure solid progress bar line (no neon, no gradients) */}
+                <div className={`w-full h-[1px] relative ${
+                  theme === 'light' ? 'bg-black/10' : 'bg-white/10'
+                }`}>
+                  <div 
+                    className={`absolute left-0 top-0 bottom-0 transition-all duration-[80ms] ease-out ${
+                      theme === 'light' ? 'bg-black' : 'bg-white'
+                    }`}
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Corner creative alignment labels */}
+            <div className={`absolute bottom-8 left-8 font-mono text-[9px] leading-relaxed tracking-widest hidden md:block ${
+              theme === 'light' ? 'text-black/35' : 'text-white/20'
+            }`}>
+              <div>[ SUJITH PUTTA // GRAPHIC DESIGN ]</div>
+            </div>
+
+            <div className={`absolute bottom-8 right-8 font-mono text-[9px] text-right leading-relaxed tracking-widest hidden md:block ${
+              theme === 'light' ? 'text-black/35' : 'text-white/20'
+            }`}>
+              <div>[ DIGITAL SHOWROOM // 2026 ]</div>
+            </div>
+
           </div>
-
-          <span className="text-[9.5px] font-heading font-semibold uppercase tracking-[0.25em] text-white/35 mt-1 animate-pulse">
-            INITIALIZING SHOWROOM SYSTEM
-          </span>
         </div>
-      </div>
+      )}
       
       {/* 1. Global Interactive Canvas, Noise Grain, and Custom Cursor engines */}
       <CanvasOverlay />
@@ -192,7 +257,7 @@ function App() {
       <main className="relative w-full overflow-hidden">
         
         {/* Section 1: Cinematic Conversational Hero */}
-        <Hero onNavClick={handleNavClick} />
+        <Hero onNavClick={handleNavClick} theme={theme} />
 
         {/* Section 2: Editorial Intro & Profile exhibit */}
         <EditorialIntro />
