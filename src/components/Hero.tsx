@@ -163,7 +163,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           
           {/* Mockup Frame with custom 3D tilt */}
           <div
-            onClick={() => handleCardClick('/Poster/Spiderman BND v-2.webp')}
+            onClick={() => handleCardClick('/Poster/American Psycho Poster.webp')}
             onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -187,8 +187,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
             {/* Poster Image */}
             <div className="w-full h-full rounded-xl overflow-hidden relative">
               <ProgressiveImage
-                src="/Poster/Spiderman BND v-2.webp"
-                alt="Latest Release - Spider-Man BND V-2"
+                src="/Poster/American Psycho Poster.webp"
+                alt="Latest Release - American Psycho"
+                fetchPriority="high"
                 className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 ease-out"
               />
               {/* Cover shadow gradient */}
@@ -197,10 +198,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
               {/* Release Metadata Overlay inside Image bottom */}
               <div className="absolute bottom-4 left-4 right-4 text-left transition-opacity duration-300 z-20">
                 <span className="text-[14px] font-heading font-semibold text-white tracking-tight leading-none block">
-                  Spider-Man BND V-2
+                  American Psycho
                 </span>
                 <span className="text-[9px] font-mono tracking-widest uppercase text-[#ff7700] block mt-1.5">
-                  CINEMATIC IMAX // 2026
+                  PSYCHOLOGICAL THRILLER // 2026
                 </span>
               </div>
             </div>

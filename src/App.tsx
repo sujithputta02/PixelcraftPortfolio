@@ -34,52 +34,145 @@ function App() {
 
 
   useEffect(() => {
-    const totalImages = 151;
+    // 1. Determine loading step based on network connection (lower step = higher density/quality)
+    let step = 1;
+    if (typeof navigator !== 'undefined' && 'connection' in navigator) {
+      const conn = (navigator as any).connection;
+      if (conn) {
+        if (conn.saveData) {
+          step = 4; // Save data mode: load ~38 frames
+        } else {
+          const type = conn.effectiveType;
+          if (type === '2g') step = 6;      // Very slow network: load ~25 frames
+          if (type === '3g') step = 3;      // Slow network: load ~50 frames
+        }
+      }
+    }
+
+    const frameIndexes: number[] = [];
+    for (let i = 0; i < 151; i += step) {
+      frameIndexes.push(i);
+    }
+    // Ensure the last frame is always included so the scroll animation ends correctly
+    if (frameIndexes[frameIndexes.length - 1] !== 150) {
+      frameIndexes.push(150);
+    }
+
+    const totalToLoad = frameIndexes.length;
     const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
-    
+
+    // Initialize with first frame to display background immediately
+    const firstImg = new Image();
+    firstImg.src = '/sequence/frame_000_delay-0.066s.webp';
+
+    // Fill the array with firstImg initially to prevent empty flashes
+    for (let i = 0; i < totalToLoad; i++) {
+      loadedImages.push(firstImg);
+    }
+    setPreloadedImages([...loadedImages]);
+
     const startTime = Date.now();
     const minDuration = 1800; // Keep the intro animated at least 1.8s for cinematic style
-    
-    let targetProgress = 0;
+    let criticalLoaded = false;
     let animationFrameId: number;
 
-    const onImageLoaded = () => {
-      loadedCount++;
-      targetProgress = Math.floor((loadedCount / totalImages) * 100);
+    // Preload critical images: first frame of sequence, and the Hero image LCP candidate
+    const heroImg = new Image();
+    heroImg.src = '/Poster/American Psycho Poster.webp';
+
+    const checkCriticalLoaded = () => {
+      const firstDone = firstImg.complete || firstImg.naturalWidth > 0;
+      const heroDone = heroImg.complete || heroImg.naturalWidth > 0;
+      if (firstDone && heroDone) {
+        criticalLoaded = true;
+      }
     };
 
-    // Begin Preloading sequence frames
-    for (let i = 0; i < totalImages; i++) {
-      const img = new Image();
-      const frameNum = String(i).padStart(3, '0');
-      img.src = `/sequence/frame_${frameNum}_delay-0.066s.webp`;
-      img.onload = onImageLoaded;
-      img.onerror = onImageLoaded; // continue preloader even if image fails
-      loadedImages.push(img);
-    }
-    setPreloadedImages(loadedImages);
+    firstImg.onload = checkCriticalLoaded;
+    firstImg.onerror = checkCriticalLoaded;
+    heroImg.onload = checkCriticalLoaded;
+    heroImg.onerror = checkCriticalLoaded;
+
+    // Backup timer in case image loading hangs or fails
+    const backupTimer = setTimeout(() => {
+      criticalLoaded = true;
+    }, 1500);
+
+    let backgroundStarted = false;
+    const startBackgroundLoading = () => {
+      if (backgroundStarted) return;
+      backgroundStarted = true;
+
+      // Group indexes to load (skip index 0 as it's already firstImg)
+      const remainingIndexes = frameIndexes.slice(1);
+      const batchSize = 4; // Load 4 images concurrently to avoid choking the 6-connection pool
+
+      const loadBatch = (startIndex: number) => {
+        if (startIndex >= remainingIndexes.length) return;
+
+        const batch = remainingIndexes.slice(startIndex, startIndex + batchSize);
+        const promises = batch.map((frameIdx) => {
+          return new Promise<void>((resolve) => {
+            const img = new Image();
+            const frameNum = String(frameIdx).padStart(3, '0');
+            img.src = `/sequence/frame_${frameNum}_delay-0.066s.webp`;
+            
+            const onFinish = () => {
+              const stepIdx = frameIndexes.indexOf(frameIdx);
+              if (stepIdx !== -1) {
+                loadedImages[stepIdx] = img;
+                setPreloadedImages([...loadedImages]);
+              }
+              resolve();
+            };
+            
+            img.onload = onFinish;
+            img.onerror = onFinish;
+          });
+        });
+
+        Promise.all(promises).then(() => {
+          setTimeout(() => {
+            loadBatch(startIndex + batchSize);
+          }, 60); // brief cooldown delay between batches to let other requests pass
+        });
+      };
+
+      loadBatch(0);
+    };
 
     const updateProgress = () => {
       const elapsed = Date.now() - startTime;
       const timeRatio = Math.min(1, elapsed / minDuration);
-      const timeProgress = Math.floor(timeRatio * 100);
       
-      // Real loaded percentage combined with min time-duration factor
-      const displayProgress = Math.min(timeProgress, targetProgress);
-      setProgress(displayProgress);
+      checkCriticalLoaded();
 
-      if (displayProgress < 100 || timeRatio < 1 || targetProgress < 100) {
+      let currentProgress = 0;
+      if (criticalLoaded) {
+        currentProgress = 100;
+      } else {
+        // Smoothly ramp up to 90% while waiting for critical assets
+        currentProgress = Math.min(90, Math.floor(timeRatio * 90));
+      }
+
+      setProgress(currentProgress);
+
+      if (currentProgress < 100 || timeRatio < 1) {
         animationFrameId = requestAnimationFrame(updateProgress);
       } else {
+        clearTimeout(backupTimer);
+        startBackgroundLoading();
         setTimeout(() => {
-          setLoading(false); // Unmount preloader
-        }, 1500);
+          setLoading(false);
+        }, 1000);
       }
     };
 
     animationFrameId = requestAnimationFrame(updateProgress);
-    return () => cancelAnimationFrame(animationFrameId);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearTimeout(backupTimer);
+    };
   }, []);
 
   // Global Scroll-Reveal System Setup
@@ -145,16 +238,38 @@ function App() {
             <div className="flex flex-col items-center max-w-lg px-8 text-center select-none">
               
               {/* Premium Sacramento Cursive Signature Animation */}
-              <div className="mb-6 flex items-center justify-center select-none text-[#ff7700]">
+              <div className="mb-6 flex items-center justify-center select-none text-[#d4af25]">
                 <svg 
                   viewBox="0 0 320 120" 
-                  className="w-full max-w-[320px] h-auto filter drop-shadow-[0_0_12px_rgba(255,119,0,0.35)]"
+                  className="w-full max-w-[320px] h-auto filter drop-shadow-[0_0_16px_rgba(212,175,37,0.45)]"
                 >
                   <defs>
                     <linearGradient id="reveal-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                       <stop offset="0%" stopColor="white" />
                       <stop offset="100%" stopColor="white" stopOpacity="0" />
                     </linearGradient>
+
+                    {/* Infinite looping metallic gold shimmer gradient */}
+                    <motion.linearGradient 
+                      id="gold-grad" 
+                      x1="-100%" 
+                      y1="0%" 
+                      x2="0%" 
+                      y2="0%"
+                      animate={{ x1: ["-100%", "100%"], x2: ["0%", "200%"] }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        repeatType: "loop", 
+                        duration: 3, 
+                        ease: "linear" 
+                      }}
+                    >
+                      <stop offset="0%" stopColor="#B38728" />
+                      <stop offset="25%" stopColor="#FBF5B7" />
+                      <stop offset="50%" stopColor="#FFFFFF" />
+                      <stop offset="75%" stopColor="#FBF5B7" />
+                      <stop offset="100%" stopColor="#AA771C" />
+                    </motion.linearGradient>
                     
                     <mask id="sign-mask">
                       {/* Animated gradient reveal moving from left to right */}
@@ -179,7 +294,7 @@ function App() {
                     dominantBaseline="middle"
                     className="font-cursive text-7xl fill-none"
                     style={{
-                      stroke: '#ff7700',
+                      stroke: 'url(#gold-grad)',
                       strokeWidth: '1.5px',
                     }}
                     initial={{ strokeDasharray: 500, strokeDashoffset: 500 }}
@@ -197,7 +312,7 @@ function App() {
                     dominantBaseline="middle"
                     className="font-cursive text-7xl"
                     style={{
-                      fill: '#ffffff',
+                      fill: 'url(#gold-grad)',
                     }}
                     mask="url(#sign-mask)"
                     initial={{ opacity: 0 }}
@@ -210,7 +325,7 @@ function App() {
                   {/* Cursive Underline Flourish */}
                   <motion.path
                     d="M 65,102 Q 160,107 270,95"
-                    stroke="rgba(255,119,0,0.45)"
+                    stroke="url(#gold-grad)"
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     fill="none"

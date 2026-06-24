@@ -16,25 +16,28 @@ interface VaultItem {
 }
 
 const backgroundCards: VaultItem[] = [
-  { id: 'spider-noir', title: 'Spider-Man Noir', image: '/Poster/spider noir poster.png', category: 'Atmospheric Key Art', instagramUrl: 'https://www.instagram.com/p/DVYbj2sEchE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'spidey-sense', title: 'Spidey Sense', image: '/Poster/spidey sense - spiderman Poster.png', category: 'Comic Concept', instagramUrl: 'https://www.instagram.com/p/DZAPWjbvor8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'dear-el', title: 'Dear, El !', image: '/Poster/Dear, El ! - Written by Mike wheeler v-2.png', category: 'Pop Culture Editorial', instagramUrl: 'https://www.instagram.com/p/DTaPo7MEfEi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'doctor-doom', title: 'Doctor Doom', image: '/Poster/Doctor Doom Poster.png', category: 'Marvel Concept', instagramUrl: 'https://www.instagram.com/p/DX63e8kkZ_8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'dune-part-three', title: 'Dune: Part Three', image: '/Poster/Dune Part-3 Lisan al-gaib post.png', category: 'Theatrical Key Art', instagramUrl: 'https://www.instagram.com/p/DWgj6dwkfcN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'interstellar', title: 'Interstellar', image: '/Poster/Interstellar Post.png', category: 'Cosmic Theatrical', instagramUrl: 'https://www.instagram.com/p/DU0jt7pkbNN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'dudeholic', title: 'DUDEHOLIC', image: '/Poster/Dudeholic Poster.png', category: 'Music Editorial', instagramUrl: 'https://www.instagram.com/p/DZAPWjbvor8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'max-katebush', title: "Max's Kate Bush", image: '/Poster/Max X Katebush Poster.png', category: 'Cinematic Character', instagramUrl: 'https://www.instagram.com/p/DU-jWwpEd2N/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'michael-jackson', title: 'Michael Jackson', image: '/Poster/Michael Poster.png', category: 'Pop Culture Tribute', instagramUrl: 'https://www.instagram.com/p/DXHa2uUDwIg/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'superman', title: 'Superman Key Art', image: "/Poster/James Gunn's Superman.png", category: 'Cinematic Film Poster', instagramUrl: 'https://www.instagram.com/p/DWrG_l3kUZF/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'oppenheimer', title: 'Oppenheimer', image: '/Poster/Oppenheimer Poster.jpg', category: 'Cinematic Concept', instagramUrl: 'https://www.instagram.com/p/DTSkf6ikes1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'the-odyssey', title: 'The Odyssey', image: '/Poster/The odyssey Post.png', category: 'Mythological Concept', instagramUrl: 'https://www.instagram.com/p/DYHpnNmEVni/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'raga-revenge', title: 'Raga of Revenge', image: '/Poster/Raga of Revenge-DC.png', category: 'Action Thriller', instagramUrl: 'https://www.instagram.com/p/DYxAIF6POYM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'spiderman-bnd', title: 'Spider-Man BND', image: '/Poster/Spiderman BND Post.png', category: 'Cinematic IMAX', instagramUrl: 'https://www.instagram.com/p/DWGSiHvkUC7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'black-panther', title: 'Black Panther', image: '/Poster/All the Stars are Closer - Black Panther Poster.png', category: 'Wakanda Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'king-steve', title: 'King Steve', image: '/Poster/Kingsteve poster.png', category: 'Pop Culture Character Design', instagramUrl: 'https://www.instagram.com/p/DUcXzeIkRF4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'obsession', title: 'OBSESSION (2026)', image: '/Poster/OBSESSION Poster.png', category: 'Cinematic Horror Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 'iphone-17-pro', title: 'iPhone 17 Pro Concept', image: '/Poster/IPhone 17 Pro Poster.png', category: 'Product Key Art & Speculative CGI' },
-  { id: 'hamza-returns', title: 'The Hamza Returns', image: '/Poster/The Hamza returns.jpg', category: 'Cinematic Concept', instagramUrl: 'https://www.instagram.com/p/DWT4PbNkR_g/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' }
+  { id: 'spider-noir', title: 'Spider-Man Noir', image: '/Poster/spider noir poster.webp', category: 'Atmospheric Key Art', instagramUrl: 'https://www.instagram.com/p/DVYbj2sEchE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'spidey-sense', title: 'Spidey Sense', image: '/Poster/spidey sense - spiderman Poster.webp', category: 'Comic Concept', instagramUrl: 'https://www.instagram.com/p/DZAPWjbvor8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'dear-el', title: 'Dear, El !', image: '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp', category: 'Pop Culture Editorial', instagramUrl: 'https://www.instagram.com/p/DTaPo7MEfEi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'doctor-doom', title: 'Doctor Doom', image: '/Poster/Doctor Doom Poster.webp', category: 'Marvel Concept', instagramUrl: 'https://www.instagram.com/p/DX63e8kkZ_8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'dune-part-three', title: 'Dune: Part Three', image: '/Poster/Dune Part-3 Lisan al-gaib post.webp', category: 'Theatrical Key Art', instagramUrl: 'https://www.instagram.com/p/DWgj6dwkfcN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'interstellar', title: 'Interstellar', image: '/Poster/Interstellar Post.webp', category: 'Cosmic Theatrical', instagramUrl: 'https://www.instagram.com/p/DU0jt7pkbNN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'dudeholic', title: 'DUDEHOLIC', image: '/Poster/Dudeholic Poster.webp', category: 'Music Editorial', instagramUrl: 'https://www.instagram.com/p/DZAPWjbvor8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'max-katebush', title: "Max's Kate Bush", image: '/Poster/Max X Katebush Poster.webp', category: 'Cinematic Character', instagramUrl: 'https://www.instagram.com/p/DU-jWwpEd2N/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'michael-jackson', title: 'Michael Jackson', image: '/Poster/Michael Poster.webp', category: 'Pop Culture Tribute', instagramUrl: 'https://www.instagram.com/p/DXHa2uUDwIg/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'superman', title: 'Superman Key Art', image: "/Poster/James Gunn's Superman.webp", category: 'Cinematic Film Poster', instagramUrl: 'https://www.instagram.com/p/DWrG_l3kUZF/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'oppenheimer', title: 'Oppenheimer', image: '/Poster/Oppenheimer Poster.webp', category: 'Cinematic Concept', instagramUrl: 'https://www.instagram.com/p/DTSkf6ikes1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'the-odyssey', title: 'The Odyssey', image: '/Poster/The odyssey Post.webp', category: 'Mythological Concept', instagramUrl: 'https://www.instagram.com/p/DYHpnNmEVni/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'raga-revenge', title: 'Raga of Revenge', image: '/Poster/Raga of Revenge-DC.webp', category: 'Action Thriller', instagramUrl: 'https://www.instagram.com/p/DYxAIF6POYM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'spiderman-bnd', title: 'Spider-Man BND', image: '/Poster/Spiderman BND Post.webp', category: 'Cinematic IMAX', instagramUrl: 'https://www.instagram.com/p/DWGSiHvkUC7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'black-panther', title: 'Black Panther', image: '/Poster/All the Stars are Closer - Black Panther Poster.webp', category: 'Wakanda Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'king-steve', title: 'King Steve', image: '/Poster/Kingsteve poster.webp', category: 'Pop Culture Character Design', instagramUrl: 'https://www.instagram.com/p/DUcXzeIkRF4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'obsession', title: 'OBSESSION (2026)', image: '/Poster/OBSESSION Poster.webp', category: 'Cinematic Horror Key Art', instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'iphone-17-pro', title: 'iPhone 17 Pro Concept', image: '/Poster/IPhone 17 Pro Poster.webp', category: 'Product Key Art & Speculative CGI' },
+  { id: 'hamza-returns', title: 'The Hamza Returns', image: '/Poster/The Hamza returns.webp', category: 'Cinematic Concept', instagramUrl: 'https://www.instagram.com/p/DWT4PbNkR_g/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 'american-psycho', title: 'American Psycho', image: '/Poster/American Psycho Poster.webp', category: 'Psychological Thriller' },
+  { id: 'spiderman-bnd-v2', title: 'Spider-Man BND V-2', image: '/Poster/Spiderman BND v-2.webp', category: 'Cinematic IMAX' },
+  { id: 'tastico', title: 'Tastico', image: '/Poster/Tastico thumbnail.webp', category: 'Premium UI Showcase' }
 ];
 
 interface MarqueeCardProps {
@@ -49,7 +52,7 @@ const MarqueeCard: React.FC<MarqueeCardProps> = ({ item, onCardClick }) => {
       className="always-dark w-[140px] sm:w-[170px] md:w-[210px] lg:w-[240px] aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/10 cursor-pointer relative transition-all duration-500 hover:scale-105 hover:z-50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] group shrink-0"
     >
       <ProgressiveImage
-        src={item.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}
+        src={item.image}
         alt={item.title}
         className="w-full h-full object-cover grayscale-0 opacity-100 md:grayscale md:opacity-70 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700"
         loading="lazy"
@@ -95,23 +98,26 @@ const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({ onCardClick, 
     backgroundCards[3],
     backgroundCards[4],
     backgroundCards[5],
-    backgroundCards[6]
+    backgroundCards[6],
+    backgroundCards[7]
   ];
   const row2 = [
-    backgroundCards[7],
     backgroundCards[8],
     backgroundCards[9],
     backgroundCards[10],
     backgroundCards[11],
-    backgroundCards[12]
+    backgroundCards[12],
+    backgroundCards[13],
+    backgroundCards[14]
   ];
   const row3 = [
-    backgroundCards[13],
-    backgroundCards[14],
     backgroundCards[15],
     backgroundCards[16],
     backgroundCards[17],
-    backgroundCards[18]
+    backgroundCards[18],
+    backgroundCards[19],
+    backgroundCards[20],
+    backgroundCards[21]
   ];
 
   return (

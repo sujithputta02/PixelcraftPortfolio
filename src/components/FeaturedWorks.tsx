@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { sfx } from '../utils/sfx';
-import { ProgressiveImage } from './ProgressiveImage';
+import { ProgressiveImage, preloadImage } from './ProgressiveImage';
 
 interface Project {
   id: string;
@@ -23,10 +23,24 @@ interface Project {
 
 const projectsData: Project[] = [
   {
+    id: 'american-psycho',
+    title: 'American Psycho — Graphic Novel Key Art',
+    taxonomy: 'Cinematic Editorial Design',
+    image: '/Poster/American Psycho Poster.webp',
+    gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
+    overview: 'A striking graphic novel-style key art tribute to the psychological thriller "American Psycho". The design captures the dual nature of Patrick Bateman—the polished corporate mask juxtaposed with his chaotic inner descent. Incorporating stylized halftone textures, a blood-spattered palette, and bold retro-modern typography, the artwork illustrates the themes of consumerism, vanity, and moral decay.',
+    challenge: 'Balancing stark high-contrast blood red splatter overlays and business suit grayscale rendering without muddling detail, and typesetting Bateman\'s iconic business card details as micro-typography.',
+    creativeDirection: 'Halftone retro patterns, stark red/black/white graphic gradients, sharp high-fashion silhouette shadows, and clean corporate geometric typography grids.',
+    development: 'Vector silhouette illustration in Affinity Designer, layered mask textures and noise grains in Canva, and typesetting corporate business card elements.',
+    tools: ['Canva', 'Affinity Designer', 'Digital Painting'],
+    results: 'Acclaimed for its striking use of minimalist high-contrast typography, receiving outstanding visual recognition in graphic design design portfolios.',
+    galleryImages: ['/Poster/American Psycho Poster.webp'],
+  },
+  {
     id: 'obsession',
     title: 'OBSESSION (2026)',
     taxonomy: 'Cinematic Horror Key Art',
-    image: '/Poster/OBSESSION Poster.png',
+    image: '/Poster/OBSESSION Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-7',
     overview: 'This poster is a study of the fraught and conflicted relationship between desire and destruction, expressed in a minimalist but symbolic visual style. Two characters are on opposite sides of a broken platform, separated by an insurmountable gap representing emotional distance, isolation and the effects of unhealthy attachment. The mysterious One Wish Willow is central to the story and its events, and a reminder that one wish can change reality and the line between love and obsession can get blurred. The black, dripping structures are symbols of corruption and decay. The bright red background is a symbol of passion, danger, desire and psychological instability. The composition is designed to evoke the film’s themes of longing, control and the devastating price of getting exactly what you want. Employing bold typography, cinematic storytelling and symbolic imagery, the composition creates a striking, emotionally potent theatrical poster.',
     challenge: 'Creating a clean visual balance between the heavy, dripping obsidian textures representing corruption and decay and the high-saturation crimson backdrop without introducing color bleed or losing micro-grain definition.',
@@ -34,7 +48,7 @@ const projectsData: Project[] = [
     development: 'Compositing character profile outlines on isolated platforms, painting procedural ink dripping silhouettes, and typesetting title layers in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Digital Painting'],
     results: 'A highly striking, emotionally potent conceptual poster that captured extensive engagement across design portals and curated feature showcases.',
-    galleryImages: ['/Poster/OBSESSION Poster.png', '/Poster/All the Stars are Closer - Black Panther Poster.png'],
+    galleryImages: ['/Poster/OBSESSION Poster.webp', '/Poster/All the Stars are Closer - Black Panther Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/250684349/OBSESSION-%282026%29-Cinematic-Horror-Poster-Concept',
     pinterestUrl: 'https://pin.it/4hmd5zpmG',
     instagramUrl: 'https://www.instagram.com/p/DZRsAWJRIfI/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
@@ -43,7 +57,7 @@ const projectsData: Project[] = [
     id: 'black-panther',
     title: 'All The Stars Are Closer — Black Panther',
     taxonomy: 'Cinematic Key Art Design',
-    image: '/Poster/All the Stars are Closer - Black Panther Poster.png',
+    image: '/Poster/All the Stars are Closer - Black Panther Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-5', // Prominent col-span-5 as second featured project (symmetrical with obsession)
     overview: 'An elite cinematic key art print paying homage to the sovereign majesty and ancestral lineage of Wakanda. This visual masterpiece blends cosmic stellar grids, dramatic light ray structures, and a rich, hand-painted Vibranium suit surface structure to deliver a profound, museum-grade tribute to the iconic cultural phenomenon.',
     challenge: 'Achieving a perfect equilibrium between the ultra-fine tactile micro-textures of the woven Vibranium battle-suit and high-intensity, multi-directional golden solar key-light specular flares. The complex rendering demanded absolute luminance precision to prevent saturation blowout while keeping deep shadow detail fully intact.',
@@ -51,7 +65,7 @@ const projectsData: Project[] = [
     development: 'Premium visual composition and canvas layout designed in Canva, with intricate layer masking, custom neon-glow ambient reflections, and analog grain overlays rendered in Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Digital Painting'],
     results: 'Acclaimed as a standout cinematic key art portfolio showcase, generating over 120,000+ impressions and selected for curated feature galleries on Behance, Pinterest, and premium digital art showcases.',
-    galleryImages: ['/Poster/All the Stars are Closer - Black Panther Poster.png', '/Poster/spider noir poster.png'],
+    galleryImages: ['/Poster/All the Stars are Closer - Black Panther Poster.webp', '/Poster/spider noir poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/238573703/Black-Panther-Wakanda-Forever',
     pinterestUrl: 'https://pin.it/3sUlTT7cE'
   },
@@ -59,7 +73,7 @@ const projectsData: Project[] = [
     id: 'dear-el-v2',
     title: "Dear, El ! - written by Mike Wheeler",
     taxonomy: 'Pop Culture Editorial Design',
-    image: '/Poster/Dear, El ! - Written by Mike wheeler v-2.png',
+    image: '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-5', // Prominent second slot in row 1
     overview: 'An atmospheric and emotional pop-culture key art design depicting the intense climax of Stranger Things Season 5. This evocative piece visualizes Mike Wheeler\'s internal thoughts and profound grief after losing Eleven (aka Jane Hopper). It illustrates his heartbreaking journey as he struggles to accept the ultimate hope that she still lives and has escaped her dimensional prison.',
     challenge: 'Conveying heavy typographic letter-text structures and micro-textured vintage polaroids while maintaining a powerful dramatic focus that is highly readable under an analog-style low-key retro noise canvas.',
@@ -67,7 +81,7 @@ const projectsData: Project[] = [
     development: 'Typographic layout alignment and typesetting in Canva, paired with procedural texture layering, shadow modeling, and specular atmospheric outer glow mapping in Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Procreate'],
     results: 'Widely shared across popular Stranger Things designer curation portals, earning over 80,000+ views and active pins.',
-    galleryImages: ['/Poster/Dear, El ! - Written by Mike wheeler v-2.png', '/Poster/Dear, El ! - Written by mike wheeler v-1.png'],
+    galleryImages: ['/Poster/Dear, El ! - Written by Mike wheeler v-2.webp', '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/241386897/Dear-El-written-by-Mike-Wheeler',
     instagramUrl: 'https://www.instagram.com/p/DTaPo7MEfEi/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
   },
@@ -75,7 +89,7 @@ const projectsData: Project[] = [
     id: 'dudeholic',
     title: 'DUDEHOLIC — Music & Memories',
     taxonomy: 'Pop Culture Music Editorial',
-    image: '/Poster/Dudeholic Poster.png',
+    image: '/Poster/Dudeholic Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-7', // Symmetrical 7/5 split with dear-el-v2
     overview: 'A fan tribute poster inspired by DUDE, visuals inspired by Sai Abhyankkar’s music and screen presence of Pradeep Ranganathan and Mamitha Baiju. The art is made for fellow Dudeholics who relate to music through memories, and combines retro cassette aesthetics, nostalgic photography and cinematic storytelling. ☔🎵',
     challenge: 'Blending dynamic retro cassette tapes and detailed musical analog layers with high-fidelity movie stills of Pradeep and Mamitha, preserving micro-details and soft rainy nostalgic lighting overlays.',
@@ -83,7 +97,7 @@ const projectsData: Project[] = [
     development: 'Retro asset compositing, color correction under rain-ambient LUT layers, and typesetting of technical labels in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Praised by Sai Abhyankkar and thousands of Dudeholic fans across design groups, gaining massive organic reach.',
-    galleryImages: ['/Poster/Dudeholic Poster.png', '/Poster/Michael Poster.png'],
+    galleryImages: ['/Poster/Dudeholic Poster.webp', '/Poster/Michael Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/250295613/DUDEHOLIC-Music-Memories',
     instagramUrl: 'https://www.instagram.com/p/DZAPWjbvor8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/AYVa2M11X'
@@ -92,7 +106,7 @@ const projectsData: Project[] = [
     id: 'dune-part-three',
     title: 'Dune: Part Three – Lisan al-Gaib Official Style Poster',
     taxonomy: 'Cinematic Theatrical Key Art',
-    image: '/Poster/Dune Part-3 Lisan al-gaib post.png',
+    image: '/Poster/Dune Part-3 Lisan al-gaib post.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 2, Slot 2 (Symmetrical with Dudeholic)
     overview: 'A concept poster for Dune: Part Three (Lisan al-Gaib), the upcoming epic conclusion to Denis Villeneuve’s Dune trilogy. Featuring Timothée Chalamet as Paul Atreides walking into destiny against the burning sun of Arrakis. Release Date: 18 December 2026. Inspired by the official teaser campaign, this poster captures the epic scale, cinematic lighting, and mysterious atmosphere of the Dune universe. #DunePartThree #LisanAlGaib #DuneMovie',
     challenge: 'Balancing the vast atmospheric dust horizons and extreme scale of the desert sun of Arrakis with a high-contrast Paul Atreides silhouette, avoiding loss of micro-grain texture details.',
@@ -100,7 +114,7 @@ const projectsData: Project[] = [
     development: 'Layering composite landscape assets, digital light painting of bright solar flares, and calibrating typographic letter spacing in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Recognized across international movie design portals for outstanding atmospheric and epic scale visualization.',
-    galleryImages: ['/Poster/Dune Part-3 Lisan al-gaib post.png', '/Poster/Dear, El ! - Written by Mike wheeler v-2.png'],
+    galleryImages: ['/Poster/Dune Part-3 Lisan al-gaib post.webp', '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/246673177/Dune-Part-Three-Lisan-al-Gaib-Official-Style-Poster',
     instagramUrl: 'https://www.instagram.com/p/DWgj6dwkfcN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/6gFhLqmb1'
@@ -109,7 +123,7 @@ const projectsData: Project[] = [
     id: 'doctor-doom',
     title: 'Avengers: Doomsday – Doctor Doom Concept Poster',
     taxonomy: 'Cinematic Key Art Design',
-    image: '/Poster/Doctor Doom Poster.png',
+    image: '/Poster/Doctor Doom Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 3, Slot 1 (Symmetrical with Interstellar)
     overview: 'A cinematic concept poster for Avengers: Doomsday, featuring Doctor Doom in a dark, futuristic setting inspired by Stark Industries. The design explores a hypothetical storyline where Tony Stark’s legacy intersects with Doom’s rise, using dramatic lighting, green tonal grading, and bold typography to create a high-impact visual.',
     challenge: 'Synthesizing high-contrast brutalist Stark Industrial metal textures with detailed neon emerald reflections on Doctor Doom\'s mask, ensuring clear dramatic depth without losing visual balance.',
@@ -117,7 +131,7 @@ const projectsData: Project[] = [
     development: 'Photo compositing Stark manufacturing backgrounds, digital light painting of neon green reflections, and editorial typography design in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Winner of speculator movie art showcase challenges, gaining massive fan reception and active digital collection pins.',
-    galleryImages: ['/Poster/Doctor Doom Poster.png', '/Poster/spidey sense - spiderman Poster.png'],
+    galleryImages: ['/Poster/Doctor Doom Poster.webp', '/Poster/spidey sense - spiderman Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/248814817/Avengers-Doomsday-Doctor-Doom-Concept-Poster',
     instagramUrl: 'https://www.instagram.com/p/DX63e8kkZ_8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/angMw1L4w'
@@ -126,7 +140,7 @@ const projectsData: Project[] = [
     id: 'interstellar',
     title: 'Interstellar Cinematic Poster',
     taxonomy: 'Cinematic Theatrical Key Art',
-    image: '/Poster/Interstellar Post.png',
+    image: '/Poster/Interstellar Post.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 3, Slot 2 (Symmetrical with Doctor Doom)
     overview: 'This poster explores the contrast between cosmic complexity and human isolation in Interstellar. By pairing the geometric intensity of the tesseract with the vast emptiness of the frozen planet, the design emphasises scale and vulnerability. Subtle textures and restrained typography create a theatrical, IMAX-inspired finish.',
     challenge: 'Rendering the intricate, infinite dimensional lines of the tesseract boundary while maintaining high visual definition over the sweeping desolate horizon of the ice planet without generating harsh visual clutter.',
@@ -134,7 +148,7 @@ const projectsData: Project[] = [
     development: 'Digital multi-layered composite styling, vector-based geometric tesseract modeling, and procedural film-grain synthesis processed within Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Highly praised in sci-fi design showcases for its capture of cosmic scale, earning extensive custom feature pins.',
-    galleryImages: ['/Poster/Interstellar Post.png', '/Poster/All the Stars are Closer - Black Panther Poster.png'],
+    galleryImages: ['/Poster/Interstellar Post.webp', '/Poster/All the Stars are Closer - Black Panther Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/244228475/Interstellar-Cinematic-Poster',
     pinterestUrl: 'https://pin.it/4pPevYHyp',
     instagramUrl: 'https://www.instagram.com/p/DU0jt7pkbNN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
@@ -143,7 +157,7 @@ const projectsData: Project[] = [
     id: 'michael-jackson',
     title: 'Michael Jackson – King of Pop Tribute Poster',
     taxonomy: 'Pop Culture Key Art',
-    image: '/Poster/Michael Poster.png',
+    image: '/Poster/Michael Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 4, Slot 1 (Symmetrical with James Gunn\'s Superman)
     overview: '🌟 THE LEGEND LIVES FOREVER 🌟 Tribute poster celebrating Michael Jackson – the undisputed King of Pop 👑 🎤 Currently trending with the Michael biopic release 🔥 This digital collage captures three iconic moments of the legend: the powerful stage presence, the signature fedora swagger, and the raw energy that defined a generation. Designed as a bold, high-contrast homage with the classic red-white-black palette that MJ himself loved. His voice still gives us chills, his moves still inspire the world, and his legacy remains immortal. Perfect timing, as the official Michael biopic hits theatres on April 24, 2026.',
     challenge: 'Creating a clean, high-contrast black-and-white visual identity that captures raw musical energy.',
@@ -151,7 +165,7 @@ const projectsData: Project[] = [
     development: 'Sourcing historical stage poses, isolating high-fidelity silhouettes in Canva, and building custom retro halftone overlays.',
     tools: ['Canva', 'Affinity Designer', 'Typography'],
     results: 'Selected by music collectors for high-end poster print exhibitions.',
-    galleryImages: ['/Poster/Michael Poster.png', '/Poster/Max X Katebush Poster.png'],
+    galleryImages: ['/Poster/Michael Poster.webp', '/Poster/Max X Katebush Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/247588965/Michael-Jackson-King-of-Pop-Tribute-Poster',
     pinterestUrl: 'https://pin.it/1gPHcZLbt',
     instagramUrl: 'https://www.instagram.com/p/DXHa2uUDwIg/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
@@ -160,7 +174,7 @@ const projectsData: Project[] = [
     id: 'superman',
     title: 'James Gunn’s Superman – Emotional Key Art',
     taxonomy: 'Cinematic Film Poster',
-    image: "/Poster/James Gunn's Superman.png",
+    image: "/Poster/James Gunn's Superman.webp",
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 4, Slot 2 (Symmetrical with Michael Jackson)
     overview: 'Fan art of James Gunn’s Superman (2025) official key art captured the vibrant light streaks, emotional Kent family moments, and Superman’s bond with Krypto — the perfect blend of hope and heroism. Also included is a subtle nod to the film’s standout dialogue in which Lex Luthor refers to Clark as "human… the clerk", underscoring his grounded, human side. Personal project • Inspired by DC Studios & David Corenswet All rights to the original belong to DC Studios / Warner Bros',
     challenge: 'Synthesizing modern celestial lighting patterns with nostalgic comic layouts, keeping the warm red and yellow tones soft yet heroic.',
@@ -168,7 +182,7 @@ const projectsData: Project[] = [
     development: 'Multi-layer painting in Canva, composite stellar nebula graphics, and custom chest-shield detailing.',
     tools: ['Canva', 'Affinity Designer', 'Motion Design'],
     results: 'Praised by fan-communities worldwide for capturing the true emotional core of James Gunn\'s upcoming film.',
-    galleryImages: ["/Poster/James Gunn's Superman.png", '/Poster/All the Stars are Closer - Black Panther Poster.png'],
+    galleryImages: ["/Poster/James Gunn's Superman.webp", '/Poster/All the Stars are Closer - Black Panther Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/246968433/James-Gunns-Superman-Emotional-Key-Art',
     pinterestUrl: 'https://pin.it/21s53oC5t',
     instagramUrl: 'https://www.instagram.com/p/DWrG_l3kUZF/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
@@ -177,7 +191,7 @@ const projectsData: Project[] = [
     id: 'oppenheimer',
     title: 'Oppenheimer Poster',
     taxonomy: 'Cinematic Concept Poster',
-    image: '/Poster/Oppenheimer Poster.jpg',
+    image: '/Poster/Oppenheimer Poster.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
     overview: 'A portrait of Oppenheimer against a fiery explosion and symbolising intellect, consequences and the destructive weights of creation.',
     challenge: 'Blending the sharp portrait of Oppenheimer with the chaotic energy of an atomic explosion.',
@@ -185,7 +199,7 @@ const projectsData: Project[] = [
     development: 'Compositing fire textures and portrait photography in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer'],
     results: 'A powerful and evocative tribute to Christopher Nolan\'s film.',
-    galleryImages: ['/Poster/Oppenheimer Poster.jpg'],
+    galleryImages: ['/Poster/Oppenheimer Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/241859361/Oppenheimer-Poster',
     instagramUrl: 'https://www.instagram.com/p/DTSkf6ikes1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
   },
@@ -193,7 +207,7 @@ const projectsData: Project[] = [
     id: 'raga-of-revenge',
     title: 'Raga of Revenge – DC Fan Poster',
     taxonomy: 'Cinematic Concept Poster',
-    image: '/Poster/Raga of Revenge-DC.png',
+    image: '/Poster/Raga of Revenge-DC.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
     overview: 'A dark and intense fan-made poster concept for the upcoming Tamil film DC – Raga of Revenge starring Lokesh Kanagaraj and Wamiqa Gabbi, directed by Arun Matheswaran with a powerful musical score by Rockstar Anirudh Ravichander. Vengeance, chaos, emotion, and all these are expressed in cinematic reds, superposed visuals, and bold fonts to give this artwork a raw action-thriller feel inspired by contemporary Tamil cinema.',
     challenge: 'Balancing intense reds and chaotic compositions while keeping the central subjects sharp and legible.',
@@ -201,7 +215,7 @@ const projectsData: Project[] = [
     development: 'Compositing dramatic lighting maps, mixing rough grunge overlays, and custom typography in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer'],
     results: 'A raw, atmospheric tribute that captures the grim aesthetics of the film.',
-    galleryImages: ['/Poster/Raga of Revenge-DC.png'],
+    galleryImages: ['/Poster/Raga of Revenge-DC.webp'],
     behanceUrl: 'https://www.behance.net/gallery/250018985/Raga-of-Revenge-DC-Fan-Poster',
     pinterestUrl: 'https://pin.it/7Gbaem53A',
     instagramUrl: 'https://www.instagram.com/p/DYxAIF6POYM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
@@ -210,7 +224,7 @@ const projectsData: Project[] = [
     id: 'spidey-sense',
     title: 'Spidey Sense - Spider man poster',
     taxonomy: 'Comic Concept Poster',
-    image: '/Poster/spidey sense - spiderman Poster.png',
+    image: '/Poster/spidey sense - spiderman Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-4',
     overview: 'A comic-style poster featuring Spider-Man hanging upside down, designed with bold colors, retro typography, and authentic comic elements like an Issue #1 box, sound-effect bubble, and web-patterned background.',
     challenge: 'Balancing deep night street outlines with high-intensity neon colors without generating visual bleeding.',
@@ -218,14 +232,14 @@ const projectsData: Project[] = [
     development: 'Isolating dynamic spider-man actions, blending neon radial gradients, and laying down dark ink outline maps in Affinity.',
     tools: ['Canva', 'Affinity Designer', 'Typography'],
     results: 'Winner of speculator fan poster showcases and prints sold across online visual shops.',
-    galleryImages: ['/Poster/spidey sense - spiderman Poster.png', '/Poster/spider noir poster.png'],
+    galleryImages: ['/Poster/spidey sense - spiderman Poster.webp', '/Poster/spider noir poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/238677679/Spidey-Sense-Spider-man-poster'
   },
   {
     id: 'spiderman-noir',
     title: 'Spider- Man Noir',
     taxonomy: 'Atmospheric Key Art',
-    image: '/Poster/spider noir poster.png',
+    image: '/Poster/spider noir poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-8',
     overview: 'A cinematic noir-inspired fan poster exploring contrast, depth, and focal lighting. The design emphasises monochrome storytelling with a single coloured element to create visual tension and hierarchy. Created using layered adjustments, grain textures, and controlled glow effects to enhance depth.',
     challenge: 'Generating maximum depth using a strictly monochromatic color palette with minimal secondary accent lights.',
@@ -233,7 +247,7 @@ const projectsData: Project[] = [
     development: 'Compositing classic brick alleys, blending procedural rain maps, drawing wet cobblestone reflections, and styling trenchcoats in Affinity.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Praised by poster designers for its outstanding mood settings, lighting details, and cinematic framing.',
-    galleryImages: ['/Poster/spider noir poster.png', '/Poster/spidey sense - spiderman Poster.png'],
+    galleryImages: ['/Poster/spider noir poster.webp', '/Poster/spidey sense - spiderman Poster.webp'],
     behanceUrl: 'https://www.behance.net/gallery/245054525/Spider-Man-Noir',
     instagramUrl: 'https://www.instagram.com/p/DVYbj2sEchE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/1YnB7GpBv'
@@ -242,7 +256,7 @@ const projectsData: Project[] = [
     id: 'spiderman-bnd',
     title: 'Spider-Man: Brand New Day – Cinematic IMAX Poster',
     taxonomy: 'Cinematic Concept Poster',
-    image: '/Poster/Spiderman BND Post.png',
+    image: '/Poster/Spiderman BND Post.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-12',
     overview: 'IMAX-style Spider-Man poster using motion, depth, and cinematic effects in Canva Pro.',
     challenge: 'Generating intense motion blur and cinematic depth without losing focus on the central character.',
@@ -250,7 +264,7 @@ const projectsData: Project[] = [
     development: 'Compositing high-speed motion blurs, adjusting depth of field, and setting up IMAX typography in Canva.',
     tools: ['Canva', 'Affinity Designer'],
     results: 'A highly dynamic cinematic poster design capturing the adrenaline of web-swinging.',
-    galleryImages: ['/Poster/Spiderman BND Post.png', '/Poster/Spiderman BND v-2.webp'],
+    galleryImages: ['/Poster/Spiderman BND Post.webp', '/Poster/Spiderman BND v-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/246134291/Spider-Man-Brand-New-Day-Cinematic-IMAX-Poster',
     instagramUrl: 'https://www.instagram.com/p/DWGSiHvkUC7/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/pWbeAJDl3'
@@ -259,15 +273,15 @@ const projectsData: Project[] = [
     id: 'hamza-returns',
     title: 'The Hamza Returns – The Revenge Cinematic Movie Poster',
     taxonomy: 'Cinematic Concept Poster',
-    image: '/Poster/The Hamza returns.jpg',
+    image: '/Poster/The Hamza returns.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
-    overview: 'A powerful cinematic concept poster for The Hamza Returns – The Revenge. Honsla. Eendhan. Badla. Portraying the character of Hamza Ali Mazari, he is an Indian spy in the Dhurandhar movie an Indian cinema. In the pouring rain and blood-red glow, Hamza makes his explosive return. Dark, intense, and unapologetic — this poster captures the raw emotion and high-stakes revenge saga. Designed with a gritty, cinematic feel perfect for a revenge thriller. Concept & Design by Pixel Craft',
+    overview: 'A powerful cinematic concept poster for The Hamza Returns – The Revenge. Honsla. Eendhan. Badla. Portraying the character of Hamza Ali Mazari, he is an Indian spy in the Dhurandhar movie an Indian cinema. In the pouring rain and blood-red glow, Hamza makes his explosive return. Dark, intense, and unapologetic — this poster captures the raw emotion and high-stakes revenge saga. Gritty, cinematic feel perfect for a revenge thriller. Concept & Design by Pixel Craft',
     challenge: 'Achieving a gritty, rain-slicked cinematic mood while maintaining sharp character focus.',
     creativeDirection: 'Blood-red neon glow, atmospheric rain effects, and dark dramatic contrast.',
     development: 'Compositing rain textures, grading with red cinematic tones, and layering dramatic typography in Canva.',
     tools: ['Canva', 'Affinity Designer'],
     results: 'A highly intense and emotional poster concept for an action thriller.',
-    galleryImages: ['/Poster/The Hamza returns.jpg'],
+    galleryImages: ['/Poster/The Hamza returns.webp'],
     behanceUrl: 'https://www.behance.net/gallery/246673825/The-Hamza-Returns-The-Revenge-Cinematic-Movie-Poster',
     instagramUrl: 'https://www.instagram.com/p/DWT4PbNkR_g/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/6TmfnjB2w'
@@ -276,7 +290,7 @@ const projectsData: Project[] = [
     id: 'the-odyssey',
     title: 'The Odyssey — Concept Art Poster',
     taxonomy: 'Cinematic Concept Poster',
-    image: '/Poster/The odyssey Post.png',
+    image: '/Poster/The odyssey Post.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
     overview: 'A cinematic concept art poster inspired by The Odyssey, reimagined through a grand mythological and fantasy-driven visual style. This artwork depicts the chaos of ancient oceans, mythical beings and epic storytelling in a contemporary cinematic composition. The poster is dramatic in scale, atmospheric in detail and bold in typography. It blends mythology and cinematic aesthetics to create a visually immersive experience influenced by the narrative style of Christopher Nolan.',
     challenge: 'Achieving a grand, mythological scale while maintaining a contemporary, cinematic visual style.',
@@ -284,7 +298,7 @@ const projectsData: Project[] = [
     development: 'Compositing ocean textures, blending mythical elements, and applying cinematic color grading in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer'],
     results: 'A visually immersive and dramatic concept art poster.',
-    galleryImages: ['/Poster/The odyssey Post.png'],
+    galleryImages: ['/Poster/The odyssey Post.webp'],
     behanceUrl: 'https://www.behance.net/gallery/250019213/The-Odyssey-Concept-Art-Poster',
     instagramUrl: 'https://www.instagram.com/p/DYHpnNmEVni/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/7gNfeyObh'
@@ -293,7 +307,7 @@ const projectsData: Project[] = [
     id: 'max-katebush',
     title: 'Max’s Kate Bush - Stranger Things',
     taxonomy: 'Cinematic Character Art',
-    image: '/Poster/Max X Katebush Poster.png',
+    image: '/Poster/Max X Katebush Poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-5', // Row 7, Slot 1 (Symmetrical with Stranger Things)
     overview: 'This poster is about the importance of Kate Bush’s "Running Up That Hill" song and how it saves Max’s life in Stranger Things. Visualizing her escape from Vecna’s red mindscape, the design captures the visceral power of music and survival under atmospheric volumetric dust. #StrangerThings #KateBush #RunningUpThatHill',
     challenge: 'Balancing high-intensity neon red specular highlights and levitation shadow planes while keeping dense typographic overlays readable under thick Upside Down air mists.',
@@ -301,7 +315,7 @@ const projectsData: Project[] = [
     development: 'Constructing dense typography pairing layouts in Canva, and applying custom outer glow shaders, paper grain blends, and color calibrating in Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Motion Design'],
     results: 'Highly celebrated across digital illustration portals for capturing the emotional apex of the season, garnering over 110,000+ views.',
-    galleryImages: ['/Poster/Max X Katebush Poster.png', '/Poster/Stranger Things Poster.png'],
+    galleryImages: ['/Poster/Max X Katebush Poster.webp', '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/241101139/Maxs-Kate-Bush-Stranger-Things',
     pinterestUrl: 'https://pin.it/FIJ1LaYEV',
     instagramUrl: 'https://www.instagram.com/p/DU-jWwpEd2N/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
@@ -311,15 +325,15 @@ const projectsData: Project[] = [
     id: 'king-steve',
     title: 'King Steve - A Baby Sitter',
     taxonomy: 'Pop Culture Character Design',
-    image: '/Poster/Kingsteve poster.png',
+    image: '/Poster/Kingsteve poster.webp',
     gridSpan: 'col-span-12 md:col-span-6 lg:col-span-6', // Row 8, Slot 2 (Symmetrical with Mike\'s Letter V1)
-    overview: 'Step into the vibrant world of the 1980s with our captivating King Steve character design poster from the hit Netflix series, Stranger Things. This eye-catching artwork showcases Steve Harrington, the beloved babysitter, in all his retro glory. Adorned in classic 80s fashion, complete with a stylish hairdo and a charming smile, King Steve embodies the spirit of adventure and nostalgia. Perfect for fans of the series, this poster captures the essence of friendship, bravery, and the unforgettable moments that define the Stranger Things universe. Bring home a piece of the Upside Down and celebrate the iconic character that has stolen hearts!',
+    overview: 'Step into the vibrant world of the 1980s with our captivating King Steve character design poster from the hit Netflix series, Stranger Things. This eye-catching artwork showcases Steve Harrington, the babysitter, in all his retro glory. Adorned in classic 80s fashion, complete with a stylish hairdo and a charming smile, King Steve embodies the spirit of adventure and nostalgia. Perfect for fans of the series, this poster captures the essence of friendship, bravery, and the unforgettable moments that define the Stranger Things universe. Bring home a piece of the Upside Down and celebrate the iconic character that has stolen hearts!',
     challenge: 'Capturing the vibrant 1980s neon chromatic aberration overlays while keeping Steve Harrington\'s iconic hair textures and charming expression perfectly sharp and noise-free under heavy retro film-grain plates.',
     creativeDirection: 'Vibrant 1980s synthwave color palette featuring warm magenta ambient lights, glowing cyan outline highlights, bold vintage type systems, and rich retro noise textures.',
     development: 'Advanced layout spacing and typography sizing calibrated in Canva, paired with synthetic neon coloring grids and custom vector grain synthesis inside Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Procreate'],
     results: 'Voted a fan-favorite Stranger Things tribute piece in digital character design hubs, generating over 95,000+ views and curated features.',
-    galleryImages: ['/Poster/Kingsteve poster.png', '/Poster/Stranger Things Poster.png'],
+    galleryImages: ['/Poster/Kingsteve poster.webp', '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/243693205/King-Steve-A-Baby-Sitter',
     instagramUrl: 'https://www.instagram.com/p/DUcXzeIkRF4/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
     pinterestUrl: 'https://pin.it/4PFgzzRKX'
@@ -328,7 +342,7 @@ const projectsData: Project[] = [
     id: 'iphone-17-pro',
     title: 'iPhone 17 Pro Concept',
     taxonomy: 'Product Key Art & Speculative CGI',
-    image: '/Poster/IPhone 17 Pro Poster.png',
+    image: '/Poster/IPhone 17 Pro Poster.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12', // Row 9 Hero Wide Showcase
     overview: 'A high-fidelity speculative product key art poster visualizing the next-generation iPhone 17 Pro. Capturing a hyper-minimalist titanium body and deep liquid obsidian glass surfaces, the design explores absolute pixel-perfect specular light lines and premium metallic frame reflections.',
     challenge: 'Simulating mathematically precise, ultra-fine physical industrial reflections and subtle glass bevel refraction indices without introducing heavy digital distortion on deep dark gradients.',
@@ -336,13 +350,13 @@ const projectsData: Project[] = [
     development: 'Constructing high-precision metallic vector frame sweeps and alignment in Canva, paired with intricate specular light tracing and gradient synthesis inside Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Lauded by modern product design communities for its hyper-realistic light modeling and high-luxury editorial visual layout.',
-    galleryImages: ['/Poster/IPhone 17 Pro Poster.png', '/images/Tastico.png']
+    galleryImages: ['/Poster/IPhone 17 Pro Poster.webp', '/images/Tastico.png']
   },
   {
     id: 'tastico',
     title: 'Tastico - Worth every bite',
     taxonomy: 'Premium UI Showcase',
-    image: '/Poster/Tastico thumbnail.png',
+    image: '/Poster/Tastico thumbnail.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
     overview: 'An ultra-premium, high-fidelity landing experience displaying visual identity, dynamic bento modules, and responsive graphic interfaces.',
     challenge: 'Fusing clean mobile applications UI with luxury artistic presentations.',
@@ -391,6 +405,13 @@ export const FeaturedWorks: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevActiveIndex, setPrevActiveIndex] = useState<number | null>(null);
   const [fadeKey, setFadeKey] = useState(0);
+
+  // Preload all project images on mount to avoid flashing loaders during hover
+  useEffect(() => {
+    projectsData.forEach((project) => {
+      preloadImage(project.image);
+    });
+  }, []);
 
   const handleTitleHover = (index: number) => {
     if (index === activeIndex) return;
@@ -569,7 +590,8 @@ export const FeaturedWorks: React.FC = () => {
                 <ProgressiveImage
                   src={projectsData[prevActiveIndex].image}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover opacity-100 z-0 grayscale"
+                  containerClassName="absolute inset-0 z-0"
+                  className="absolute inset-0 w-full h-full object-cover opacity-100 grayscale"
                 />
               )}
               
@@ -577,7 +599,8 @@ export const FeaturedWorks: React.FC = () => {
                 key={fadeKey}
                 src={projectsData[activeIndex].image}
                 alt={projectsData[activeIndex].title}
-                className="absolute inset-0 w-full h-full object-cover animate-spotlight-fade z-10"
+                containerClassName="absolute inset-0 z-10"
+                className="absolute inset-0 w-full h-full object-cover animate-spotlight-fade"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-15" />

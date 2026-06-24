@@ -16,6 +16,12 @@ interface ArrivalItem {
 
 const arrivalsData: ArrivalItem[] = [
   {
+    id: 'american-psycho',
+    title: 'American Psycho',
+    image: '/Poster/American Psycho Poster.webp',
+    category: 'Psychological Thriller'
+  },
+  {
     id: 'spiderman-bnd-v2',
     title: 'Spider-Man BND V-2',
     image: '/Poster/Spiderman BND v-2.webp',
@@ -24,37 +30,37 @@ const arrivalsData: ArrivalItem[] = [
   {
     id: 'obsession',
     title: 'OBSESSION',
-    image: '/Poster/OBSESSION Poster.png',
+    image: '/Poster/OBSESSION Poster.webp',
     category: 'Cinematic Horror'
   },
   {
     id: 'dudeholic',
     title: 'DUDEHOLIC',
-    image: '/Poster/Dudeholic Poster.png',
+    image: '/Poster/Dudeholic Poster.webp',
     category: 'Music Editorial'
   },
   {
     id: 'dune-part-three',
     title: 'Dune: Part Three',
-    image: '/Poster/Dune Part-3 Lisan al-gaib post.png',
+    image: '/Poster/Dune Part-3 Lisan al-gaib post.webp',
     category: 'Theatrical Key Art'
   },
   {
     id: 'doctor-doom',
     title: 'Avengers: Doomsday',
-    image: '/Poster/Doctor Doom Poster.png',
+    image: '/Poster/Doctor Doom Poster.webp',
     category: 'Marvel Concept'
   },
   {
     id: 'raga-of-revenge',
     title: 'Raga of Revenge',
-    image: '/Poster/Raga of Revenge-DC.png',
+    image: '/Poster/Raga of Revenge-DC.webp',
     category: 'Action Thriller'
   },
   {
     id: 'the-odyssey',
     title: 'The Odyssey',
-    image: '/Poster/The odyssey Post.png',
+    image: '/Poster/The odyssey Post.webp',
     category: 'Mythological Concept'
   }
 ];
@@ -240,7 +246,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                   <div className="w-full aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 border-disco-hover transition-all duration-500 relative shadow-lg">
                     
                     {/* Pulsing red arrival dot for the main item */}
-                    {item.id === 'spiderman-bnd-v2' && (
+                    {item.id === 'american-psycho' && (
                       <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-red-500/30 rounded-full px-2.5 py-1">
                         <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
                         <span className="w-1.5 h-1.5 bg-red-500 rounded-full absolute" />

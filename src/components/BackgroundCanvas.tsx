@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
+const FIRST_FRAME_PLACEHOLDER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAJABADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCmnJEjKOfyp3mBSXUKCBVaLqv1ol+8frQ9QWh//9k=";
 
 interface BackgroundCanvasProps {
   preloadedImages: HTMLImageElement[];
@@ -8,6 +10,7 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ preloadedIma
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const targetProgressRef = useRef(0);
   const currentFrameRef = useRef(0);
+  const [hasRendered, setHasRendered] = useState(false);
 
   // Track the scroll position of the entire page using a ref to avoid React re-renders on scroll
   useEffect(() => {
@@ -119,6 +122,10 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ preloadedIma
       const img = preloadedImages[frameToDraw];
       if (img && (img.complete || img.naturalWidth > 0)) {
         drawCoverImage(img);
+        setHasRendered((prev) => {
+          if (!prev) return true;
+          return prev;
+        });
       }
 
       animationId = requestAnimationFrame(renderLoop);
@@ -133,17 +140,26 @@ export const BackgroundCanvas: React.FC<BackgroundCanvasProps> = ({ preloadedIma
   }, [preloadedImages]);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#050505]">
+      {/* Blurred first frame placeholder from metadata */}
+      <img
+        src={FIRST_FRAME_PLACEHOLDER}
+        alt=""
+        className={`absolute inset-0 w-full h-full object-cover filter blur-3xl scale-110 transition-opacity duration-[1500ms] ease-out z-0 ${
+          hasRendered ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
+
       <canvas 
         ref={canvasRef} 
-        className="w-full h-full block transition-all duration-500" 
+        className="w-full h-full block transition-all duration-500 relative z-10" 
         style={{
           filter: 'none'
         }}
       />
       {/* Dark luxury overlay for optimal readability of foreground content */}
-      <div className="absolute inset-0 transition-colors duration-500 pointer-events-none bg-[#050505]/65" />
-      <div className="absolute inset-0 bg-gradient-to-b transition-all duration-500 pointer-events-none from-[#050505]/85 via-transparent to-[#050505]/98" />
+      <div className="absolute inset-0 transition-colors duration-500 pointer-events-none bg-[#050505]/65 z-20" />
+      <div className="absolute inset-0 bg-gradient-to-b transition-all duration-500 pointer-events-none from-[#050505]/85 via-transparent to-[#050505]/98 z-30" />
     </div>
   );
 };

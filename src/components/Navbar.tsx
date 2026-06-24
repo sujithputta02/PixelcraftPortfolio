@@ -52,7 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
           >
             {/* The Main Discomorphic Logo Image - Rendered natively with a vibrant metallic neon drop-shadow */}
             <img
-              src="/Pixelcraft Discomorphism wb.png"
+              src="/Pixelcraft Discomorphism wb.webp"
               alt="PixelCraft Main Logo"
               className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow-[0_0_8px_rgba(255,119,0,0.45)] drop-shadow-[0_0_4px_rgba(0,136,255,0.35)] transition-transform duration-700 ease-[var(--ease-luxury)] group-hover:scale-115 group-hover:rotate-[15deg]"
             />

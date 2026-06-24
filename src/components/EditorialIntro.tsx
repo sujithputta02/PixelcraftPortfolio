@@ -168,7 +168,7 @@ export const EditorialIntro: React.FC = () => {
             {/* Image Container with high contrast masking */}
             <div className="w-full aspect-[4/5] rounded-xl overflow-hidden bg-[#0A0A0A] border border-white/5 mb-4 sm:mb-5 relative">
               <ProgressiveImage
-                src="/images/Sujithprofile.png"
+                src="/images/Sujithprofile.webp"
                 alt="Sujith Putta Profile"
                 className="w-full h-full object-cover grayscale opacity-85 group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700 ease-out"
                 loading="lazy"
