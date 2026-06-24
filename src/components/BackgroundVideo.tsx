@@ -35,16 +35,51 @@ export const BackgroundVideo: React.FC = () => {
     const video = videoRef.current;
     if (!video) return;
 
+    let isInsideTimeline = false;
+
+    const checkTimelineActive = () => {
+      const timelineEl = document.getElementById('timeline');
+      if (timelineEl) {
+        const rect = timelineEl.getBoundingClientRect();
+        // If the timeline top is scrolled past and bottom hasn't exited the screen
+        isInsideTimeline = (rect.top <= 0 && rect.bottom >= window.innerHeight);
+      } else {
+        isInsideTimeline = false;
+      }
+    };
+
+    const handleScroll = () => {
+      checkTimelineActive();
+      if (isInsideTimeline) {
+        if (!video.paused) {
+          video.pause();
+        }
+      } else {
+        if (isTouchDevice && video.paused) {
+          video.play().catch(() => {});
+        }
+      }
+    };
+
     // If it's a touch/mobile device, we loop and autoplay natively instead of scrubbing on touch
     if (isTouchDevice) {
       video.loop = true;
       video.play().catch((err) => {
         console.log("Mobile video autoplay blocked or failed:", err);
       });
-      return;
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
     }
 
     const handleMouseMove = (e: MouseEvent) => {
+      checkTimelineActive();
+      if (isInsideTimeline) return; // Freeze video scrubbing inside timeline
+
       if (!video || !video.duration || isNaN(video.duration)) return;
 
       const currentX = e.clientX;
@@ -71,6 +106,8 @@ export const BackgroundVideo: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
     // Continuous smooth scrubbing loop using RAF
     let animationId: number;
@@ -80,6 +117,7 @@ export const BackgroundVideo: React.FC = () => {
         video &&
         targetTime.current !== null &&
         !video.seeking &&
+        !isInsideTimeline &&
         now - lastSeekTime.current > 65 // Throttle to ~15 seeks/sec (highly optimized)
       ) {
         if (Math.abs(video.currentTime - targetTime.current) > 0.02) {
@@ -96,6 +134,7 @@ export const BackgroundVideo: React.FC = () => {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(animationId);
     };
   }, [isLoaded, isTouchDevice]);
@@ -142,7 +181,7 @@ export const BackgroundVideo: React.FC = () => {
         }}
       />
       {/* Cinematic dark ambient overlay to ensure perfect contrast for reading primary typography */}
-      <div className="fixed inset-0 bg-gradient-to-b from-[#050505]/75 via-[#050505]/35 to-[#050505]/98 z-0 pointer-events-none select-none" />
+      <div className="fixed inset-0 bg-gradient-to-b from-[#050505]/75 via-[#050505]/35 to-[#050505]/98 z-0 pointer-events-none select-none video-overlay" />
     </>
   );
 };

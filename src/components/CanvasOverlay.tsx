@@ -191,13 +191,16 @@ export const CanvasOverlay: React.FC = () => {
         <>
           <div
             ref={cursorRef}
-            className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 pointer-events-none z-[10000] flex items-center justify-center transition-all duration-300 ease-out ${
+            className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/40 pointer-events-none z-[10000] flex items-center justify-center ${
               isVisible ? 'opacity-100' : 'opacity-0'
             } ${
               isHovered
                 ? 'w-16 h-16 bg-white/10 backdrop-blur-[2px] border-white scale-110'
                 : 'w-8 h-8 scale-100'
             }`}
+            style={{
+              transition: 'width 0.25s ease-out, height 0.25s ease-out, background-color 0.25s ease-out, border-color 0.25s ease-out, opacity 0.2s ease-out, box-shadow 0.25s ease-out'
+            }}
           >
             {isHovered && cursorText && (
               <span className="text-[9px] uppercase tracking-[0.2em] font-heading font-semibold text-white pointer-events-none animate-fade-in">
@@ -211,13 +214,22 @@ export const CanvasOverlay: React.FC = () => {
             )}
           </div>
 
-          {/* Instant cursor dot */}
+          {/* Instant cursor dot wrapper (no translate transition) */}
           <div
             ref={cursorDotRef}
-            className={`fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[10001] transition-transform duration-300 ease-out ${
-              isVisible ? 'opacity-100' : 'opacity-0'
-            } ${isHovered ? 'scale-0' : 'scale-100'}`}
-          />
+            className="fixed top-0 left-0 pointer-events-none z-[10001]"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transition: 'opacity 0.15s ease-out'
+            }}
+          >
+            {/* Inner visual dot (scales on hover) */}
+            <div
+              className={`w-1.5 h-1.5 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 transition-transform duration-250 ease-out ${
+                isHovered ? 'scale-0' : 'scale-100'
+              }`}
+            />
+          </div>
         </>
       )}
     </>

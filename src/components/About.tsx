@@ -1,19 +1,31 @@
 import React, { useState, useRef } from 'react';
-import { ProgressiveImage } from './ProgressiveImage';
+import { useRive } from '@rive-app/react-canvas';
 import { sfx } from '../utils/sfx';
 
 export const About: React.FC = () => {
   const panelRef = useRef<HTMLDivElement>(null);
   const [panelTilt, setPanelTilt] = useState<React.CSSProperties>({});
-  const [isEmblemHovered, setIsEmblemHovered] = useState(false);
+
+  const { RiveComponent } = useRive({
+    src: '/little_machine.riv',
+    stateMachines: 'State Machine 1',
+    autoplay: true,
+  });
+
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
+    if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+    const card = panelRef.current;
+    if (!card) return;
+    setRect(card.getBoundingClientRect());
+  };
 
   const handlePanelMove = (e: React.MouseEvent<HTMLDivElement>) => {
     // Disable interactive tilt on small devices/touch screens to avoid visual rendering/flickering issues in Safari
     if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
-    const card = panelRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
+    if (!rect) return;
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const xc = rect.width / 2;
@@ -24,7 +36,7 @@ export const About: React.FC = () => {
     setPanelTilt({
       transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`,
       transition: 'transform 0.1s ease-out',
-      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 0, 127, 0.18)'
+      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 119, 0, 0.18)'
     });
   };
 
@@ -38,7 +50,7 @@ export const About: React.FC = () => {
 
   return (
     <section
-      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-[#0E0E0E] z-10 select-none overflow-hidden border-b border-white/5"
+      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-transparent z-10 select-none overflow-hidden border-b border-white/5"
     >
       
       {/* Structural Accent Lights */}
@@ -47,7 +59,7 @@ export const About: React.FC = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
         
         {/* Left Column: Highly stylized Mission Callout */}
-        <div className="lg:col-span-6 flex flex-col items-start text-left select-none">
+        <div className="lg:col-span-6 flex flex-col items-start text-left select-none reveal">
           
           <div className="flex items-center gap-3 mb-6">
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45">
@@ -59,35 +71,29 @@ export const About: React.FC = () => {
             </h2>
           </div>
 
-          {/* Premium Discomorphism Logo Emblem Showcase - Rendered natively with a vibrant metallic neon drop-shadow */}
+          {/* Premium Rive Interactive Emblem Showcase */}
           <div 
-            className="mb-8 relative select-none cursor-pointer" 
-            data-cursor="Core Emblem" 
-            data-magnetic
+            className="mb-8 relative select-none cursor-pointer w-28 h-28 sm:w-36 sm:h-36 rounded-full border border-white/10 bg-white/[0.02] overflow-hidden flex items-center justify-center shadow-[0_8px_30px_rgba(0,0,0,0.8)] transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105 hover:border-white/20" 
+            data-cursor="Interact" 
             onMouseEnter={() => {
-              setIsEmblemHovered(true);
               sfx.playTick('hover');
             }}
-            onMouseLeave={() => setIsEmblemHovered(false)}
+            onMouseLeave={() => {}}
             onClick={() => sfx.playTick('click')}
           >
             {/* Ambient neon backdrop glow */}
-            <div className="absolute inset-0 rounded-full bg-[#ff007f]/10 blur-[30px] animate-[pulse_5s_infinite] pointer-events-none" />
-            <ProgressiveImage
-              src="/Pixelcraft Discomorphism wb.png"
-              alt="PixelCraft Discomorphism Logo"
-              className={`w-28 h-28 sm:w-36 sm:h-36 object-contain filter drop-shadow-[0_0_12px_rgba(255,0,127,0.45)] drop-shadow-[0_0_6px_rgba(0,255,255,0.35)] transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isEmblemHovered ? 'scale-110 rotate-[24deg] filter drop-shadow-[0_0_20px_rgba(0,255,255,0.55)]' : 'scale-100 rotate-0'
-              }`}
-              loading="lazy"
-            />
+            <div className="absolute inset-0 rounded-full bg-[#ff7700]/10 blur-[30px] animate-[pulse_5s_infinite] pointer-events-none z-0" />
+            
+            <div className="w-[125%] h-[125%] absolute inset-0 flex items-center justify-center z-10 scale-[1.05]">
+              {RiveComponent && <RiveComponent className="w-full h-full object-cover" />}
+            </div>
           </div>
 
           <div className="flex flex-col gap-1 pr-4 sm:pr-8 select-none">
             <span className="text-[20px] sm:text-[24px] font-heading font-light tracking-widest uppercase text-white/40 block">
               The goal is simple:
             </span>
-            <h3 className="text-[34px] sm:text-[46px] md:text-[56px] font-heading font-extrabold tracking-[-0.03em] uppercase leading-none text-disco drop-shadow-[0_0_10px_rgba(255,0,127,0.25)]">
+            <h3 className="text-[34px] sm:text-[46px] md:text-[56px] font-heading font-extrabold tracking-[-0.03em] uppercase leading-none text-disco drop-shadow-[0_0_10px_rgba(255,119,0,0.25)]">
               Create visuals
             </h3>
             <h3 className="text-[34px] sm:text-[46px] md:text-[56px] font-heading font-extrabold tracking-[-0.03em] uppercase leading-none text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.05)]">
@@ -97,13 +103,13 @@ export const About: React.FC = () => {
 
         </div>
 
-        {/* Right Column: Detailed Narrative block */}
         <div 
           ref={panelRef}
+          onMouseEnter={handleMouseEnter}
           onMouseMove={handlePanelMove}
           onMouseLeave={handlePanelLeave}
           style={panelTilt}
-          className="lg:col-span-6 flex flex-col items-start text-left bg-white/[0.015] border border-white/5 p-6 sm:p-8 rounded-2xl backdrop-blur-md transition-all duration-500 relative overflow-hidden"
+          className="lg:col-span-6 flex flex-col items-start text-left bg-white/[0.015] border border-white/5 p-6 sm:p-8 rounded-2xl backdrop-blur-md transition-all duration-500 relative overflow-hidden reveal reveal-delay-200"
         >
           {/* Subtle discomorphism tile backdrop */}
           <div className="disco-tile-grid opacity-10 pointer-events-none" />

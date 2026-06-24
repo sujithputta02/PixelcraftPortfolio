@@ -4,7 +4,7 @@
   --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'HelveticaNowDisplayW01-Rg', 'Helvetica Neue', Arial, sans-serif;
   --font-sacramento: 'Sacramento', cursive;
-  
+
   /* Strict Luxury Color Specs */
   --bg-primary: #050505;
   --bg-secondary: #0E0E0E;
@@ -15,20 +15,20 @@
   --text-secondary: #A3A3A3;
   --accent-glow: rgba(255, 255, 255, 0.12);
   --border-primary: rgba(255, 255, 255, 0.05);
-  
+
   /* Easing curves */
   --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .light {
   --bg-primary: #FFFFFF;
-  --bg-secondary: #EBEBEF;
-  --bg-card: #DFDFE5;
-  --bg-darker: #D1D1D6;
-  --card-surface: rgba(0, 0, 0, 0.04);
-  --text-primary: #1D1D1F;
-  --text-secondary: #5A5A5F;
-  --accent-glow: rgba(0, 0, 0, 0.06);
+  --bg-secondary: #F5F5F7;
+  --bg-card: rgba(255, 255, 255, 0.45);
+  --bg-darker: rgba(255, 255, 255, 0.25);
+  --card-surface: rgba(0, 0, 0, 0.03);
+  --text-primary: #000000;
+  --text-secondary: #2C2C2E;
+  --accent-glow: rgba(0, 0, 0, 0.04);
   --border-primary: rgba(0, 0, 0, 0.08);
 }
 
@@ -36,6 +36,7 @@
 .clip-circle-zero {
   clip-path: circle(0% at var(--x, 0px) var(--y, 0px));
 }
+
 .clip-circle-full {
   clip-path: circle(150% at var(--x, 0px) var(--y, 0px));
 }
@@ -51,7 +52,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--text-primary);
 }
 
@@ -78,22 +84,28 @@ h1, h2, h3, h4, h5, h6 {
 .scroll-bar-custom::-webkit-scrollbar {
   width: 4px;
 }
+
 .scroll-bar-custom::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
+
 .scroll-bar-custom::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
 }
+
 .scroll-bar-custom::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 
 /* Blinking Cursor Keyframes */
 @keyframes cursor-blink {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
@@ -105,15 +117,41 @@ h1, h2, h3, h4, h5, h6 {
 
 /* CSS Film Grain Overlay */
 @keyframes noise-loop {
-  0% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -5%); }
-  20% { transform: translate(-10%, 5%); }
-  30% { transform: translate(5%, -10%); }
-  40% { transform: translate(-5%, 15%); }
-  55% { transform: translate(15%, -5%); }
-  70% { transform: translate(0, 10%); }
-  85% { transform: translate(-15%, 5%); }
-  100% { transform: translate(5%, -5%); }
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-5%, -5%);
+  }
+
+  20% {
+    transform: translate(-10%, 5%);
+  }
+
+  30% {
+    transform: translate(5%, -10%);
+  }
+
+  40% {
+    transform: translate(-5%, 15%);
+  }
+
+  55% {
+    transform: translate(15%, -5%);
+  }
+
+  70% {
+    transform: translate(0, 10%);
+  }
+
+  85% {
+    transform: translate(-15%, 5%);
+  }
+
+  100% {
+    transform: translate(5%, -5%);
+  }
 }
 
 .noise-overlay {
@@ -133,13 +171,23 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Custom animations for tickers */
 @keyframes scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes scroll-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-scroll-left {
@@ -157,6 +205,7 @@ h1, h2, h3, h4, h5, h6 {
   body.custom-cursor-active {
     cursor: none;
   }
+
   body.custom-cursor-active a,
   body.custom-cursor-active button,
   body.custom-cursor-active select,
@@ -169,19 +218,50 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Discomorphism Theme Animations and Classes */
 @keyframes disco-float-1 {
-  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.28; }
-  33% { transform: translate(60px, -90px) scale(1.25) rotate(120deg); opacity: 0.38; }
-  66% { transform: translate(-40px, 50px) scale(0.85) rotate(240deg); opacity: 0.2; }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.28;
+  }
+
+  33% {
+    transform: translate(60px, -90px) scale(1.25) rotate(120deg);
+    opacity: 0.38;
+  }
+
+  66% {
+    transform: translate(-40px, 50px) scale(0.85) rotate(240deg);
+    opacity: 0.2;
+  }
 }
 
 @keyframes disco-float-2 {
-  0%, 100% { transform: translate(0, 0) scale(1.1) rotate(0deg); opacity: 0.24; }
-  50% { transform: translate(-80px, 80px) scale(0.8) rotate(-180deg); opacity: 0.35; }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1.1) rotate(0deg);
+    opacity: 0.24;
+  }
+
+  50% {
+    transform: translate(-80px, 80px) scale(0.8) rotate(-180deg);
+    opacity: 0.35;
+  }
 }
 
 @keyframes disco-float-3 {
-  0%, 100% { transform: translate(0, 0) scale(0.9) rotate(0deg); opacity: 0.2; }
-  50% { transform: translate(80px, 60px) scale(1.15) rotate(180deg); opacity: 0.32; }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(0.9) rotate(0deg);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translate(80px, 60px) scale(1.15) rotate(180deg);
+    opacity: 0.32;
+  }
 }
 
 .animate-disco-1 {
@@ -207,7 +287,7 @@ div[style*="liquid-gooey-effect"] {
 }
 
 .text-disco {
-  background: linear-gradient(135deg, #ff007f, #8a2be2, #00ffff, #ff007f);
+  background: linear-gradient(135deg, #0088ff, #ff7700, #ffffff, #0088ff);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -216,16 +296,24 @@ div[style*="liquid-gooey-effect"] {
 }
 
 @keyframes disco-gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Hyper-Reflective Chrome Cards */
 .card-chrome {
   background: linear-gradient(135deg, rgba(14, 14, 14, 0.95), rgba(5, 5, 5, 0.98));
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.22),
     inset 0 -1px 1px rgba(0, 0, 0, 0.8),
     0 4px 10px rgba(0, 0, 0, 0.9),
@@ -238,7 +326,7 @@ div[style*="liquid-gooey-effect"] {
   position: relative;
   border: 1px solid transparent;
   background: linear-gradient(#0c0c0c, #050505) padding-box,
-              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff, #ff007f) border-box;
+    linear-gradient(135deg, #0088ff, #3f3f46, #ff7700, #0088ff) border-box;
   background-size: 200% 200%;
   animation: disco-gradient 6s linear infinite;
 }
@@ -248,33 +336,55 @@ div[style*="liquid-gooey-effect"] {
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(24px);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 2px rgba(255, 255, 255, 0.35),
     inset 0 -1px 2px rgba(0, 0, 0, 0.5),
     0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .border-disco-hover {
+  position: relative;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.border-disco-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  /* border thickness */
+  background: linear-gradient(135deg, #0088ff, #3f3f46, #ff7700);
+  background-size: 200% 200%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.border-disco-hover:hover::before {
+  opacity: 1;
 }
 
 .border-disco-hover:hover {
   border-color: transparent !important;
-  background: linear-gradient(#0c0c0c, #050505) padding-box,
-              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff) border-box;
-  box-shadow: 
-    0 0 30px rgba(255, 0, 127, 0.28),
-    0 0 15px rgba(0, 255, 255, 0.15);
+  box-shadow:
+    0 0 30px rgba(0, 136, 255, 0.28),
+    0 0 15px rgba(255, 119, 0, 0.15);
   transform: translateY(-3px) scale(1.01);
 }
 
 /* High Contrast Neon Specular glows */
 .glow-neon-pink {
-  box-shadow: 0 0 40px rgba(255, 0, 127, 0.35);
+  box-shadow: 0 0 40px rgba(255, 119, 0, 0.35);
 }
 
 .glow-neon-cyan {
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.35);
+  box-shadow: 0 0 40px rgba(0, 136, 255, 0.35);
 }
 
 /* Genuine Discomorphism System Styling */
@@ -283,7 +393,7 @@ div[style*="liquid-gooey-effect"] {
 .disco-card {
   background: linear-gradient(135deg, rgba(8, 8, 8, 0.98) 0%, rgba(3, 3, 3, 0.99) 100%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 2px rgba(255, 255, 255, 0.28),
     inset 0 -1px 3px rgba(0, 0, 0, 0.9),
     0 8px 30px rgba(0, 0, 0, 0.85);
@@ -295,18 +405,32 @@ div[style*="liquid-gooey-effect"] {
 /* Iridescent Chrome Border: highly reflective liquid mercury with holographic shifting gradient */
 .border-disco-chrome {
   position: relative;
-  border: 1px solid transparent !important;
-  background: linear-gradient(#080808, #030303) padding-box,
-              linear-gradient(135deg, #ff007f, #ffffff, #00ffff, #8a2be2, #ff007f) border-box;
+  border: none !important;
+}
+
+.border-disco-chrome::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  /* border thickness */
+  background: linear-gradient(135deg, #0088ff, #ffffff, #ff7700, #0088ff);
   background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 5;
   animation: disco-gradient 6s linear infinite;
 }
 
 /* Interactive Neon Glow: dual pink & cyan shadow projection */
 .shadow-disco-neon {
-  box-shadow: 
-    0 0 35px rgba(255, 0, 127, 0.2),
-    0 0 20px rgba(0, 255, 255, 0.15),
+  box-shadow:
+    0 0 35px rgba(0, 136, 255, 0.2),
+    0 0 20px rgba(255, 119, 0, 0.15),
     0 10px 40px rgba(0, 0, 0, 0.9);
 }
 
@@ -314,12 +438,12 @@ div[style*="liquid-gooey-effect"] {
   background: linear-gradient(135deg, rgba(12, 12, 12, 0.99) 0%, rgba(4, 4, 4, 1) 100%);
   border: 1px solid transparent !important;
   background: linear-gradient(#0c0c0c, #040404) padding-box,
-              linear-gradient(135deg, #ff007f, #ffffff, #00ffff) border-box;
-  box-shadow: 
+    linear-gradient(135deg, #0088ff, #ffffff, #ff7700) border-box;
+  box-shadow:
     inset 0 1px 3px rgba(255, 255, 255, 0.4),
     0 15px 40px rgba(0, 0, 0, 0.95),
-    0 0 40px rgba(255, 0, 127, 0.28),
-    0 0 25px rgba(0, 255, 255, 0.2);
+    0 0 40px rgba(0, 136, 255, 0.28),
+    0 0 25px rgba(255, 119, 0, 0.2);
   transform: translateY(-4px) scale(1.015);
 }
 
@@ -327,7 +451,7 @@ div[style*="liquid-gooey-effect"] {
 .disco-tile-grid {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px);
   background-size: 14px 14px;
@@ -337,8 +461,13 @@ div[style*="liquid-gooey-effect"] {
 
 /* Shimmer metallic shine sweep across elements */
 @keyframes chrome-sweep-ani {
-  0% { transform: translate(-100%, -100%) rotate(45deg); }
-  100% { transform: translate(100%, 100%) rotate(45deg); }
+  0% {
+    transform: translate(-100%, -100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translate(100%, 100%) rotate(45deg);
+  }
 }
 
 .chrome-sweep-effect {
@@ -353,12 +482,10 @@ div[style*="liquid-gooey-effect"] {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent 45%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 55%
-  );
+  background: linear-gradient(45deg,
+      transparent 45%,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent 55%);
   transform: translate(-100%, -100%) rotate(45deg);
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
@@ -371,8 +498,17 @@ div[style*="liquid-gooey-effect"] {
 
 /* Twinkling star sparkles */
 @keyframes disco-twinkle {
-  0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
-  50% { opacity: 0.95; transform: scale(1.15) rotate(90deg); }
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.15) rotate(90deg);
+  }
 }
 
 .disco-sparkle {
@@ -411,23 +547,24 @@ div[style*="liquid-gooey-effect"] {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-none {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Platinum Chrome metallic gradient typography */
 .text-platinum-chrome {
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #e8e8e8 20%,
-    #a8a8a8 40%,
-    #ffffff 50%,
-    #888888 60%,
-    #e8e8e8 80%,
-    #ffffff 100%
-  );
+  background: linear-gradient(135deg,
+      #ffffff 0%,
+      #e8e8e8 20%,
+      #a8a8a8 40%,
+      #ffffff 50%,
+      #888888 60%,
+      #e8e8e8 80%,
+      #ffffff 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -436,9 +573,17 @@ div[style*="liquid-gooey-effect"] {
 }
 
 @keyframes platinum-shine {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* ==========================================
@@ -466,49 +611,19 @@ div[style*="liquid-gooey-effect"] {
   background-color: var(--bg-darker) !important;
 }
 
-/* Section level background overrides for perfect Apple-style vertical alternation */
-.light #hero {
-  background-color: transparent !important;
-}
-
-.light #about {
-  background-color: var(--bg-secondary) !important;
-}
-
-.light #latest {
-  background-color: var(--bg-primary) !important;
-}
-
-.light #works {
-  background-color: var(--bg-secondary) !important;
-}
-
-.light #vault {
-  background-color: var(--bg-primary) !important;
-}
-
-.light #vault + section {
-  background-color: var(--bg-secondary) !important; /* About strategic manifesto */
-}
-
-.light #skills {
-  background-color: var(--bg-primary) !important;
-}
-
-.light #timeline {
-  background-color: var(--bg-secondary) !important;
-}
-
-.light #timeline + section {
-  background-color: var(--bg-primary) !important; /* Testimonials */
-}
-
-.light #contact {
-  background-color: var(--bg-secondary) !important;
-}
-
+/* Section level background overrides - keep transparent to reveal canvas background everywhere */
+.light #hero,
+.light #about,
+.light #latest,
+.light #works,
+.light #vault,
+.light #vault+section,
+.light #skills,
+.light #timeline,
+.light #timeline+section,
+.light #contact,
 .light footer {
-  background-color: var(--bg-primary) !important;
+  background-color: transparent !important;
 }
 
 /* Scrolling skills ticker side fading mask overrides */
@@ -528,9 +643,15 @@ div[style*="liquid-gooey-effect"] {
 
 /* Keep original visible video in light mode, no filters */
 .light video {
-  filter: none !important;
+  filter: brightness(1.4) contrast(1.05) !important;
   mix-blend-mode: normal !important;
-  opacity: 0.35 !important;
+  opacity: 0.65 !important;
+}
+
+.light .video-overlay {
+  background: none !important;
+  background-color: transparent !important;
+  opacity: 0 !important;
 }
 
 /* Background overlays (scrolled navbar background) */
@@ -580,7 +701,14 @@ div[style*="liquid-gooey-effect"] {
 .light .bg-white\/\[0\.02\],
 .light .bg-white\/\[0\.015\],
 .light .bg-white\/\[0\.025\] {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.light .bg-black\/40,
+.light .bg-black\/45,
+.light .bg-black\/30 {
+  background-color: rgba(0, 0, 0, 0.035) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Hardcoded hex text and background colors mapping */
@@ -624,16 +752,38 @@ div[style*="liquid-gooey-effect"] {
 .light .text-white\/25,
 .light .text-white\/20,
 .light .text-white\/15,
-.light .text-white\/10,
-.light .text-white\/5 {
+.light .text-white\/10 {
   color: rgba(29, 29, 31, 0.35) !important;
+}
+
+.light .text-white\/5 {
+  color: rgba(29, 29, 31, 0.02) !important;
+  /* Keep watermarks very faint in light mode */
+}
+
+.light input,
+.light textarea {
+  color: var(--text-primary) !important;
+}
+
+.light .placeholder-white\/25 {
+  color: rgba(0, 0, 0, 0.35) !important;
 }
 
 /* Exclude colored elements or specific buttons/states from black text overrides */
 .light button .text-white,
-.light .bg-\[\#ff007f\] .text-white,
+.light .bg-\[\#ff7700\] .text-white,
+.light .bg-\[\#ff7700\].text-white,
+.light .bg-\[\#ff7700\] [class*="text-white/"],
+.light .bg-\[\#ff7700\][class*="text-white/"],
 .light .bg-black .text-white,
+.light .bg-black.text-white,
+.light [class*="bg-black/"] .text-white,
+.light [class*="bg-black/"] [class*="text-white/"],
+.light [class*="bg-black/"].text-white,
+.light [class*="bg-black/"][class*="text-white/"],
 .light button.bg-white .text-black,
+.light button.bg-white.text-black,
 .light .text-red-500,
 .light .text-orange-500 {
   color: inherit !important;
@@ -646,14 +796,14 @@ div[style*="liquid-gooey-effect"] {
 
 /* Signature script text color on light mode */
 .light .text-white\/90.font-cursive {
-  color: #ff007f !important;
+  color: #ff7700 !important;
 }
 
 /* Custom interactive components overrides */
 .light .card-chrome {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 245, 247, 0.99));
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.8),
     inset 0 -1px 1px rgba(0, 0, 0, 0.05),
     0 4px 10px rgba(0, 0, 0, 0.04),
@@ -663,7 +813,7 @@ div[style*="liquid-gooey-effect"] {
 .light .glass-disco {
   background: rgba(0, 0, 0, 0.025);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 2px rgba(255, 255, 255, 0.85),
     inset 0 -1px 2px rgba(0, 0, 0, 0.02),
     0 8px 32px rgba(0, 0, 0, 0.04);
@@ -672,7 +822,7 @@ div[style*="liquid-gooey-effect"] {
 .light .disco-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(245, 245, 247, 1) 100%);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 2px rgba(255, 255, 255, 0.9),
     inset 0 -1px 3px rgba(0, 0, 0, 0.05),
     0 8px 30px rgba(0, 0, 0, 0.03);
@@ -680,49 +830,56 @@ div[style*="liquid-gooey-effect"] {
 
 .light .border-holographic {
   background: linear-gradient(#ffffff, #f5f5f7) padding-box,
-              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff, #ff007f) border-box;
+    linear-gradient(135deg, #0088ff, #3f3f46, #ff7700, #0088ff) border-box;
 }
 
 .light .border-disco-chrome {
-  background: linear-gradient(#ffffff, #f5f5f7) padding-box,
-              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff) border-box;
+  background: none;
+}
+
+.light .border-disco-chrome::before {
+  background: linear-gradient(135deg, #0088ff, #3f3f46, #ff7700);
 }
 
 .light .disco-tile-grid {
-  background-image: 
+  background-image:
     linear-gradient(rgba(0, 0, 0, 0.012) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.012) 1px, transparent 1px);
 }
 
 /* Hover adjustments for holographic border cards */
 .light .border-disco-hover:hover {
-  background: linear-gradient(#ffffff, #f5f5f7) padding-box,
-              linear-gradient(135deg, #ff007f, #8a2be2, #00ffff) border-box !important;
-  box-shadow: 
+  background: none !important;
+  box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.06),
-    0 0 20px rgba(255, 0, 127, 0.12) !important;
+    0 0 20px rgba(255, 119, 0, 0.12) !important;
+}
+
+.light .border-disco-hover::before {
+  background: linear-gradient(135deg, #0088ff, #3f3f46, #ff7700);
 }
 
 .light .disco-card-active {
   background: linear-gradient(#ffffff, #f5f5f7) padding-box,
-              linear-gradient(135deg, #ff007f, #ffffff, #00ffff) border-box !important;
-  box-shadow: 
+    linear-gradient(135deg, #0088ff, #ffffff, #ff7700) border-box !important;
+  box-shadow:
     inset 0 1px 3px rgba(255, 255, 255, 0.8),
     0 15px 40px rgba(0, 0, 0, 0.08),
-    0 0 25px rgba(255, 0, 127, 0.12) !important;
+    0 0 25px rgba(255, 119, 0, 0.12) !important;
 }
 
-.light [class*="animate-marquee"] > div:hover {
+.light [class*="animate-marquee"]>div:hover {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Sparkles adaptations for visibility in light mode */
 .light .disco-sparkle {
-  background: radial-gradient(circle, #ff007f 20%, transparent 60%) !important;
+  background: radial-gradient(circle, #ff7700 20%, transparent 60%) !important;
 }
+
 .light .disco-sparkle::before,
 .light .disco-sparkle::after {
-  background-color: #ff007f !important;
+  background-color: #ff7700 !important;
 }
 
 /* Pastel float liquid blobs opacity control */
@@ -732,35 +889,89 @@ div[style*="liquid-gooey-effect"] {
 
 /* Restore white text visibility inside dark overlay panels / lightboxes */
 .light [class*="bg-black/"] .text-white,
-.light [class*="bg-black/"] [class*="text-white/"] {
+.light [class*="bg-black/"] [class*="text-white/"],
+.light [class*="bg-black/"].text-white,
+.light [class*="bg-black/"][class*="text-white/"] {
   color: #FFFFFF !important;
 }
+
+.light [class*="bg-black/"] button.bg-white,
+.light [class*="bg-black/"] .bg-white {
+  background-color: #FFFFFF !important;
+}
+
+.light .text-white\/\[0\.03\] {
+  color: rgba(29, 29, 31, 0.03) !important;
+}
+
+.light .text-white\/\[0\.06\] {
+  color: rgba(29, 29, 31, 0.06) !important;
+}
+
+.light [class*="bg-black/"] .text-white\/\[0\.03\],
+.light [class*="bg-black/"] .text-white\/\[0\.06\] {
+  color: inherit !important;
+}
+
 .light .fixed.inset-0.bg-black\/98 *,
 .light .fixed.bg-black\/98 * {
   color: #FFFFFF !important;
 }
-.light [class*="bg-black"] .text-white\/90 { color: rgba(255, 255, 255, 0.9) !important; }
-.light [class*="bg-black"] .text-white\/80 { color: rgba(255, 255, 255, 0.8) !important; }
-.light [class*="bg-black"] .text-white\/70 { color: rgba(255, 255, 255, 0.7) !important; }
-.light [class*="bg-black"] .text-white\/60 { color: rgba(255, 255, 255, 0.6) !important; }
-.light [class*="bg-black"] .text-white\/50 { color: rgba(255, 255, 255, 0.5) !important; }
-.light [class*="bg-black"] .text-white\/45 { color: rgba(255, 255, 255, 0.45) !important; }
-.light [class*="bg-black"] .text-white\/40 { color: rgba(255, 255, 255, 0.4) !important; }
-.light [class*="bg-black"] .text-white\/35 { color: rgba(255, 255, 255, 0.35) !important; }
-.light [class*="bg-black"] .text-white\/30 { color: rgba(255, 255, 255, 0.3) !important; }
-.light [class*="bg-black"] .text-white\/20 { color: rgba(255, 255, 255, 0.2) !important; }
+
+.light [class*="bg-black"] .text-white\/90 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.light [class*="bg-black"] .text-white\/80 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.light [class*="bg-black"] .text-white\/70 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.light [class*="bg-black"] .text-white\/60 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.light [class*="bg-black"] .text-white\/50 {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.light [class*="bg-black"] .text-white\/45 {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.light [class*="bg-black"] .text-white\/40 {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.light [class*="bg-black"] .text-white\/35 {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.light [class*="bg-black"] .text-white\/30 {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.light [class*="bg-black"] .text-white\/20 {
+  color: rgba(255, 255, 255, 0.2) !important;
+}
 
 /* Custom Cursors light mode adaptation */
 .light .fixed.border-white\/40 {
   border-color: rgba(29, 29, 31, 0.4) !important;
 }
+
 .light .fixed.bg-white\/10 {
   background-color: rgba(29, 29, 31, 0.05) !important;
   border-color: rgba(29, 29, 31, 0.8) !important;
 }
+
 .light .fixed.bg-white\/10 span {
   color: var(--text-primary) !important;
 }
+
 .light .fixed.bg-white.rounded-full {
   background-color: var(--text-primary) !important;
 }
@@ -772,6 +983,7 @@ div[style*="liquid-gooey-effect"] {
   color: var(--text-primary) !important;
   border-color: var(--border-primary) !important;
 }
+
 .light input::placeholder,
 .light textarea::placeholder {
   color: var(--text-secondary) !important;
@@ -793,16 +1005,14 @@ div[style*="liquid-gooey-effect"] {
 
 /* Liquid Steel dark metallic typography overrides */
 .light .text-platinum-chrome {
-  background: linear-gradient(
-    135deg,
-    #1d1d1f 0%,
-    #434348 20%,
-    #8e9eab 40%,
-    #1d1d1f 50%,
-    #333333 60%,
-    #666666 80%,
-    #1d1d1f 100%
-  ) !important;
+  background: linear-gradient(135deg,
+      #1d1d1f 0%,
+      #434348 20%,
+      #8e9eab 40%,
+      #1d1d1f 50%,
+      #333333 60%,
+      #666666 80%,
+      #1d1d1f 100%) !important;
   background-size: 200% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
@@ -814,26 +1024,32 @@ div[style*="liquid-gooey-effect"] {
 .light [class*="shadow-[0_25px_60px"] {
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08) !important;
 }
+
 .light [class*="shadow-[0_15px_35px"] {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
 }
+
 .light [class*="shadow-[0_20px_50px"] {
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.07) !important;
 }
+
 .light [class*="shadow-"] {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
 }
+
 .light .shadow-disco-neon {
-  box-shadow: 
-    0 0 25px rgba(255, 0, 127, 0.12),
-    0 0 15px rgba(0, 255, 255, 0.08),
+  box-shadow:
+    0 0 25px rgba(255, 119, 0, 0.12),
+    0 0 15px rgba(0, 136, 255, 0.08),
     0 10px 30px rgba(0, 0, 0, 0.04) !important;
 }
+
 .light .glow-neon-pink {
-  box-shadow: 0 0 25px rgba(255, 0, 127, 0.15) !important;
+  box-shadow: 0 0 25px rgba(255, 119, 0, 0.15) !important;
 }
+
 .light .glow-neon-cyan {
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.15) !important;
+  box-shadow: 0 0 25px rgba(0, 136, 255, 0.15) !important;
 }
 
 /* Disable image and text drop-shadow filters in light mode to keep elements crisp and remove bounding box outlines */
@@ -852,27 +1068,90 @@ div[style*="liquid-gooey-effect"] {
 .light #hero [class*="text-white/"] {
   color: #FFFFFF !important;
 }
-.light #hero .text-white\/95 { color: rgba(255, 255, 255, 0.95) !important; }
-.light #hero .text-white\/90 { color: rgba(255, 255, 255, 0.90) !important; }
-.light #hero .text-white\/85 { color: rgba(255, 255, 255, 0.85) !important; }
-.light #hero .text-white\/80 { color: rgba(255, 255, 255, 0.80) !important; }
-.light #hero .text-white\/75 { color: rgba(255, 255, 255, 0.75) !important; }
-.light #hero .text-white\/70 { color: rgba(255, 255, 255, 0.70) !important; }
-.light #hero .text-white\/65 { color: rgba(255, 255, 255, 0.65) !important; }
-.light #hero .text-white\/60 { color: rgba(255, 255, 255, 0.60) !important; }
-.light #hero .text-white\/55 { color: rgba(255, 255, 255, 0.55) !important; }
-.light #hero .text-white\/50 { color: rgba(255, 255, 255, 0.50) !important; }
-.light #hero .text-white\/45 { color: rgba(255, 255, 255, 0.45) !important; }
-.light #hero .text-white\/40 { color: rgba(255, 255, 255, 0.40) !important; }
-.light #hero .text-white\/35 { color: rgba(255, 255, 255, 0.35) !important; }
-.light #hero .text-white\/30 { color: rgba(255, 255, 255, 0.30) !important; }
-.light #hero .text-white\/25 { color: rgba(255, 255, 255, 0.25) !important; }
-.light #hero .text-white\/20 { color: rgba(255, 255, 255, 0.20) !important; }
-.light #hero .text-white\/15 { color: rgba(255, 255, 255, 0.15) !important; }
-.light #hero .text-white\/10 { color: rgba(255, 255, 255, 0.10) !important; }
-.light #hero .text-white\/5  { color: rgba(255, 255, 255, 0.05) !important; }
-.light #hero .text-\[\#A3A3A3\] { color: #A3A3A3 !important; }
-.light #hero .text-\[\#F5F5F5\] { color: #F5F5F5 !important; }
+
+.light #hero .text-white\/95 {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.light #hero .text-white\/90 {
+  color: rgba(255, 255, 255, 0.90) !important;
+}
+
+.light #hero .text-white\/85 {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.light #hero .text-white\/80 {
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+
+.light #hero .text-white\/75 {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.light #hero .text-white\/70 {
+  color: rgba(255, 255, 255, 0.70) !important;
+}
+
+.light #hero .text-white\/65 {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.light #hero .text-white\/60 {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+
+.light #hero .text-white\/55 {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.light #hero .text-white\/50 {
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.light #hero .text-white\/45 {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.light #hero .text-white\/40 {
+  color: rgba(255, 255, 255, 0.40) !important;
+}
+
+.light #hero .text-white\/35 {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.light #hero .text-white\/30 {
+  color: rgba(255, 255, 255, 0.30) !important;
+}
+
+.light #hero .text-white\/25 {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.light #hero .text-white\/20 {
+  color: rgba(255, 255, 255, 0.20) !important;
+}
+
+.light #hero .text-white\/15 {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.light #hero .text-white\/10 {
+  color: rgba(255, 255, 255, 0.10) !important;
+}
+
+.light #hero .text-white\/5 {
+  color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.light #hero .text-\[\#A3A3A3\] {
+  color: #A3A3A3 !important;
+}
+
+.light #hero .text-\[\#F5F5F5\] {
+  color: #F5F5F5 !important;
+}
 
 /* Restore primary white buttons inside Hero */
 .light #hero button.bg-white {
@@ -880,6 +1159,7 @@ div[style*="liquid-gooey-effect"] {
   color: #000000 !important;
   border-color: transparent !important;
 }
+
 .light #hero button.bg-white:hover {
   background-color: #000000 !important;
   color: #FFFFFF !important;
@@ -888,16 +1168,14 @@ div[style*="liquid-gooey-effect"] {
 
 /* Restore silver SUJITH metallic title */
 .light #hero .text-platinum-chrome {
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #e8e8e8 20%,
-    #a8a8a8 40%,
-    #ffffff 50%,
-    #888888 60%,
-    #e8e8e8 80%,
-    #ffffff 100%
-  ) !important;
+  background: linear-gradient(135deg,
+      #ffffff 0%,
+      #e8e8e8 20%,
+      #a8a8a8 40%,
+      #ffffff 50%,
+      #888888 60%,
+      #e8e8e8 80%,
+      #ffffff 100%) !important;
   background-size: 200% auto !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
@@ -910,24 +1188,30 @@ div[style*="liquid-gooey-effect"] {
 .light nav:not(.bg-black\/65) [class*="text-white/"] {
   color: #FFFFFF !important;
 }
+
 .light nav:not(.bg-black\/65) button span.bg-white {
   background-color: #FFFFFF !important;
 }
+
 .light nav.bg-black\/65 .text-white,
 .light nav.bg-black\/65 [class*="text-white/"] {
   color: var(--text-primary) !important;
 }
+
 .light nav.bg-black\/65 button span.bg-white {
   background-color: var(--text-primary) !important;
 }
+
 .light nav.bg-black\/65 button.bg-white\/5 {
   color: var(--text-primary) !important;
   border-color: rgba(0, 0, 0, 0.1) !important;
 }
+
 .light nav:not(.bg-black\/65) button.bg-white\/5 {
   color: #FFFFFF !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
+
 .light nav.bg-black\/65 button.bg-white\/5 span {
   color: var(--text-primary) !important;
 }
@@ -950,35 +1234,49 @@ div[style*="liquid-gooey-effect"] {
 }
 
 /* Override light theme styles for elements inside .always-dark */
-.light .always-dark .bg-\[\#050505\] { background-color: #050505 !important; }
-.light .always-dark .bg-\[\#0E0E0E\] { background-color: #0E0E0E !important; }
-.light .always-dark .bg-\[\#0C0C0C\] { background-color: #0C0C0C !important; }
-.light .always-dark .bg-\[\#0A0A0A\] { background-color: #0A0A0A !important; }
+.light .always-dark .bg-\[\#050505\] {
+  background-color: #050505 !important;
+}
+
+.light .always-dark .bg-\[\#0E0E0E\] {
+  background-color: #0E0E0E !important;
+}
+
+.light .always-dark .bg-\[\#0C0C0C\] {
+  background-color: #0C0C0C !important;
+}
+
+.light .always-dark .bg-\[\#0A0A0A\] {
+  background-color: #0A0A0A !important;
+}
 
 /* Keep disco cards dark inside dark modal context */
 .light .always-dark .disco-card {
   background: linear-gradient(135deg, rgba(8, 8, 8, 0.98) 0%, rgba(3, 3, 3, 0.99) 100%) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 
+  box-shadow:
     inset 0 1px 2px rgba(255, 255, 255, 0.28),
     inset 0 -1px 3px rgba(0, 0, 0, 0.9),
     0 8px 30px rgba(0, 0, 0, 0.85) !important;
 }
 
 .light .always-dark .border-disco-chrome {
-  background: linear-gradient(#080808, #030303) padding-box,
-              linear-gradient(135deg, #ff007f, #ffffff, #00ffff, #8a2be2, #ff007f) border-box !important;
+  background: none !important;
+}
+
+.light .always-dark .border-disco-chrome::before {
+  background: linear-gradient(135deg, #0088ff, #ffffff, #ff7700, #0088ff) !important;
 }
 
 .light .always-dark .shadow-disco-neon {
-  box-shadow: 
-    0 0 35px rgba(255, 0, 127, 0.2),
-    0 0 20px rgba(0, 255, 255, 0.15),
+  box-shadow:
+    0 0 35px rgba(0, 136, 255, 0.2),
+    0 0 20px rgba(255, 119, 0, 0.15),
     0 10px 40px rgba(0, 0, 0, 0.9) !important;
 }
 
 .light .always-dark .disco-tile-grid {
-  background-image: 
+  background-image:
     linear-gradient(rgba(255, 255, 255, 0.024) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px) !important;
 }
@@ -996,26 +1294,85 @@ div[style*="liquid-gooey-effect"] {
 }
 
 /* Retain proper opacity white text inside always-dark containers in light mode */
-.light .always-dark .text-white { color: #FFFFFF !important; }
-.light .always-dark .text-white\/95 { color: rgba(255, 255, 255, 0.95) !important; }
-.light .always-dark .text-white\/90 { color: rgba(255, 255, 255, 0.90) !important; }
-.light .always-dark .text-white\/85 { color: rgba(255, 255, 255, 0.85) !important; }
-.light .always-dark .text-white\/80 { color: rgba(255, 255, 255, 0.80) !important; }
-.light .always-dark .text-white\/75 { color: rgba(255, 255, 255, 0.75) !important; }
-.light .always-dark .text-white\/70 { color: rgba(255, 255, 255, 0.70) !important; }
-.light .always-dark .text-white\/65 { color: rgba(255, 255, 255, 0.65) !important; }
-.light .always-dark .text-white\/60 { color: rgba(255, 255, 255, 0.60) !important; }
-.light .always-dark .text-white\/55 { color: rgba(255, 255, 255, 0.55) !important; }
-.light .always-dark .text-white\/50 { color: rgba(255, 255, 255, 0.50) !important; }
-.light .always-dark .text-white\/45 { color: rgba(255, 255, 255, 0.45) !important; }
-.light .always-dark .text-white\/40 { color: rgba(255, 255, 255, 0.40) !important; }
-.light .always-dark .text-white\/35 { color: rgba(255, 255, 255, 0.35) !important; }
-.light .always-dark .text-white\/30 { color: rgba(255, 255, 255, 0.30) !important; }
-.light .always-dark .text-white\/25 { color: rgba(255, 255, 255, 0.25) !important; }
-.light .always-dark .text-white\/20 { color: rgba(255, 255, 255, 0.20) !important; }
-.light .always-dark .text-white\/15 { color: rgba(255, 255, 255, 0.15) !important; }
-.light .always-dark .text-white\/10 { color: rgba(255, 255, 255, 0.10) !important; }
-.light .always-dark .text-white\/5  { color: rgba(255, 255, 255, 0.05) !important; }
+.light .always-dark .text-white {
+  color: #FFFFFF !important;
+}
+
+.light .always-dark .text-white\/95 {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.light .always-dark .text-white\/90 {
+  color: rgba(255, 255, 255, 0.90) !important;
+}
+
+.light .always-dark .text-white\/85 {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.light .always-dark .text-white\/80 {
+  color: rgba(255, 255, 255, 0.80) !important;
+}
+
+.light .always-dark .text-white\/75 {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.light .always-dark .text-white\/70 {
+  color: rgba(255, 255, 255, 0.70) !important;
+}
+
+.light .always-dark .text-white\/65 {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.light .always-dark .text-white\/60 {
+  color: rgba(255, 255, 255, 0.60) !important;
+}
+
+.light .always-dark .text-white\/55 {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.light .always-dark .text-white\/50 {
+  color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.light .always-dark .text-white\/45 {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.light .always-dark .text-white\/40 {
+  color: rgba(255, 255, 255, 0.40) !important;
+}
+
+.light .always-dark .text-white\/35 {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.light .always-dark .text-white\/30 {
+  color: rgba(255, 255, 255, 0.30) !important;
+}
+
+.light .always-dark .text-white\/25 {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.light .always-dark .text-white\/20 {
+  color: rgba(255, 255, 255, 0.20) !important;
+}
+
+.light .always-dark .text-white\/15 {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.light .always-dark .text-white\/10 {
+  color: rgba(255, 255, 255, 0.10) !important;
+}
+
+.light .always-dark .text-white\/5 {
+  color: rgba(255, 255, 255, 0.05) !important;
+}
 
 /* Keep button and tag styles dark in dark context */
 .light .always-dark .bg-white\/5,
@@ -1029,6 +1386,7 @@ div[style*="liquid-gooey-effect"] {
   background-color: #FFFFFF !important;
   color: #000000 !important;
 }
+
 .light .always-dark button.bg-white:hover {
   background-color: #000000 !important;
   color: #FFFFFF !important;
@@ -1050,4 +1408,140 @@ div[style*="liquid-gooey-effect"] {
 .light button[class*="bg-black"]:not(:hover),
 .light button[class*="bg-black"]:not(:hover) * {
   color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   Premium Scroll Reveal System
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1), transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+/* Horizontal slide reveals */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1), transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1), transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal.revealed,
+.reveal-left.revealed,
+.reveal-right.revealed {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Stagger transition delay helpers */
+.reveal-delay-50 {
+  transition-delay: 50ms;
+}
+
+.reveal-delay-100 {
+  transition-delay: 100ms;
+}
+
+.reveal-delay-150 {
+  transition-delay: 150ms;
+}
+
+.reveal-delay-200 {
+  transition-delay: 200ms;
+}
+
+.reveal-delay-250 {
+  transition-delay: 250ms;
+}
+
+.reveal-delay-300 {
+  transition-delay: 300ms;
+}
+
+.reveal-delay-350 {
+  transition-delay: 350ms;
+}
+
+.reveal-delay-400 {
+  transition-delay: 400ms;
+}
+
+.reveal-delay-450 {
+  transition-delay: 450ms;
+}
+
+.reveal-delay-500 {
+  transition-delay: 500ms;
+}
+
+.reveal-delay-600 {
+  transition-delay: 600ms;
+}
+
+.reveal-delay-700 {
+  transition-delay: 700ms;
+}
+
+.reveal-delay-800 {
+  transition-delay: 800ms;
+}
+
+/* ==========================================================================
+   Premium Animation Keyframes and Utility Classes
+   ========================================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spotlight-fade {
+  0% {
+    opacity: 0;
+    transform: scale(1.04);
+    filter: blur(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-spotlight-fade {
+  animation: spotlight-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

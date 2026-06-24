@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { ProgressiveImage } from './ProgressiveImage';
 import { sfx } from '../utils/sfx';
@@ -37,49 +37,16 @@ const backgroundCards: VaultItem[] = [
   { id: 'hamza-returns', title: 'The Hamza Returns', image: '/Poster/The Hamza returns.jpg', category: 'Cinematic Concept', instagramUrl: 'https://www.instagram.com/p/DWT4PbNkR_g/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' }
 ];
 
-const initialLikesData: Record<string, number> = {
-  'king-steve': 142,
-  'spider-noir': 98,
-  'spidey-sense': 124,
-  'dear-el': 210,
-  'doctor-doom': 165,
-  'dune-part-three': 304,
-  'interstellar': 188,
-  'dudeholic': 76,
-  'max-katebush': 143,
-  'michael-jackson': 275,
-  'superman': 220,
-  'oppenheimer': 195,
-  'the-odyssey': 112,
-  'raga-revenge': 89,
-  'spiderman-bnd': 156,
-  'black-panther': 245,
-  'obsession': 288,
-  'iphone-17-pro': 132,
-  'hamza-returns': 115
-};
-
 interface MarqueeCardProps {
   item: VaultItem;
-  onCardClick: (image: string) => void;
-  handleLike: (cardId: string, instagramUrl?: string) => void;
-  isLiked: boolean;
-  likesCount: number;
-  isHeartPulsing: boolean;
+  onCardClick: (image: string, instagramUrl?: string) => void;
 }
 
-const MarqueeCard: React.FC<MarqueeCardProps> = ({
-  item,
-  onCardClick,
-  handleLike,
-  isLiked,
-  likesCount,
-  isHeartPulsing,
-}) => {
+const MarqueeCard: React.FC<MarqueeCardProps> = ({ item, onCardClick }) => {
   return (
     <div
-      onClick={() => onCardClick(item.image)}
-      className="w-[140px] sm:w-[170px] md:w-[210px] lg:w-[240px] aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/10 cursor-pointer relative transition-all duration-500 hover:scale-105 hover:z-50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] group shrink-0"
+      onClick={() => onCardClick(item.image, item.instagramUrl)}
+      className="always-dark w-[140px] sm:w-[170px] md:w-[210px] lg:w-[240px] aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 hover:border-white/10 cursor-pointer relative transition-all duration-500 hover:scale-105 hover:z-50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.95)] group shrink-0"
     >
       <ProgressiveImage
         src={item.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}
@@ -99,30 +66,12 @@ const MarqueeCard: React.FC<MarqueeCardProps> = ({
           {item.title}
         </h4>
         
-        {/* Inline Likes Controller */}
+        {/* Sleek action badge instead of likes */}
         <div className="flex items-center justify-between mt-2 md:mt-3 pt-1.5 md:pt-2 border-t border-white/10">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleLike(item.id, item.instagramUrl);
-            }}
-            className="flex items-center gap-1 md:gap-1.5 text-white bg-white/10 hover:bg-white hover:text-black border border-white/5 rounded-full px-2 md:px-2.5 py-0.5 md:py-1 transition-all duration-200 select-none cursor-pointer"
-          >
-            <svg
-              width="8"
-              height="8"
-              viewBox="0 0 24 24"
-              fill={isLiked ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="2.5"
-              className={`text-red-500 transition-transform ${isHeartPulsing ? 'animate-heart-pop' : ''}`}
-            >
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            <span className="text-[8px] md:text-[9px] font-heading font-semibold">{likesCount}</span>
-          </button>
-          
-          <div className="w-4 h-4 md:w-5 md:h-5 rounded-full border border-white/15 bg-white/5 flex items-center justify-center">
+          <span className="text-[8px] md:text-[9px] font-heading font-medium text-white/40 group-hover:text-[#ff7700] transition-colors duration-300 uppercase tracking-wider">
+            View Project
+          </span>
+          <div className="w-4 h-4 md:w-5 md:h-5 rounded-full border border-white/15 bg-white/5 flex items-center justify-center group-hover:bg-[#ff7700] group-hover:border-[#ff7700] transition-all duration-300">
             <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-white">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
@@ -134,22 +83,11 @@ const MarqueeCard: React.FC<MarqueeCardProps> = ({
 };
 
 interface InfiniteMarqueeWallProps {
-  onCardClick: (image: string) => void;
-  handleLike: (cardId: string, instagramUrl?: string) => void;
-  likedMap: Record<string, boolean>;
-  likesMap: Record<string, number>;
-  isHeartPulsing: boolean;
-  activeHeartId: string | null;
+  onCardClick: (image: string, instagramUrl?: string) => void;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
-  onCardClick,
-  handleLike,
-  likedMap,
-  likesMap,
-  isHeartPulsing,
-  activeHeartId,
-}) => {
+const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({ onCardClick, containerRef }) => {
   const row1 = [
     backgroundCards[0],
     backgroundCards[1],
@@ -177,19 +115,25 @@ const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
   ];
 
   return (
-    <div className="w-full flex flex-col gap-6 overflow-hidden relative py-8">
+    <div 
+      ref={containerRef}
+      className="w-full flex flex-col gap-6 overflow-hidden relative py-8"
+      style={{
+        WebkitMaskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)',
+        maskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)'
+      }}
+    >
       {/* Row 1: Left */}
-      <div className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row1">
+      <div 
+        className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row1 transition-transform duration-100 ease-out"
+        style={{ transform: 'translate3d(calc(-1 * var(--scroll-offset, 0px)), 0, 0)' }}
+      >
         <div className="flex gap-6 shrink-0 animate-marquee-l group-hover/row1:[animation-play-state:paused]">
           {row1.map((item) => (
             <MarqueeCard
               key={item.id}
               item={item}
               onCardClick={onCardClick}
-              handleLike={handleLike}
-              isLiked={likedMap[item.id] ?? false}
-              likesCount={likesMap[item.id] ?? 0}
-              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
           ))}
         </div>
@@ -199,27 +143,22 @@ const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
               key={`${item.id}-dup`}
               item={item}
               onCardClick={onCardClick}
-              handleLike={handleLike}
-              isLiked={likedMap[item.id] ?? false}
-              likesCount={likesMap[item.id] ?? 0}
-              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
           ))}
         </div>
       </div>
 
       {/* Row 2: Right */}
-      <div className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row2">
+      <div 
+        className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row2 transition-transform duration-100 ease-out"
+        style={{ transform: 'translate3d(var(--scroll-offset, 0px), 0, 0)' }}
+      >
         <div className="flex gap-6 shrink-0 animate-marquee-r group-hover/row2:[animation-play-state:paused]">
           {row2.map((item) => (
             <MarqueeCard
               key={item.id}
               item={item}
               onCardClick={onCardClick}
-              handleLike={handleLike}
-              isLiked={likedMap[item.id] ?? false}
-              likesCount={likesMap[item.id] ?? 0}
-              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
           ))}
         </div>
@@ -229,27 +168,22 @@ const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
               key={`${item.id}-dup`}
               item={item}
               onCardClick={onCardClick}
-              handleLike={handleLike}
-              isLiked={likedMap[item.id] ?? false}
-              likesCount={likesMap[item.id] ?? 0}
-              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
           ))}
         </div>
       </div>
 
       {/* Row 3: Left */}
-      <div className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row3">
+      <div 
+        className="relative overflow-visible w-full flex gap-6 select-none py-2 group/row3 transition-transform duration-100 ease-out"
+        style={{ transform: 'translate3d(calc(-1 * var(--scroll-offset, 0px)), 0, 0)' }}
+      >
         <div className="flex gap-6 shrink-0 animate-marquee-l group-hover/row3:[animation-play-state:paused]">
           {row3.map((item) => (
             <MarqueeCard
               key={item.id}
               item={item}
               onCardClick={onCardClick}
-              handleLike={handleLike}
-              isLiked={likedMap[item.id] ?? false}
-              likesCount={likesMap[item.id] ?? 0}
-              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
           ))}
         </div>
@@ -259,10 +193,6 @@ const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
               key={`${item.id}-dup`}
               item={item}
               onCardClick={onCardClick}
-              handleLike={handleLike}
-              isLiked={likedMap[item.id] ?? false}
-              likesCount={likesMap[item.id] ?? 0}
-              isHeartPulsing={isHeartPulsing && activeHeartId === item.id}
             />
           ))}
         </div>
@@ -272,133 +202,79 @@ const InfiniteMarqueeWall: React.FC<InfiniteMarqueeWallProps> = ({
 };
 
 export const CreativeVault: React.FC<CreativeVaultProps> = () => {
-  const [likesMap, setLikesMap] = useState<Record<string, number>>(initialLikesData);
-
-  const [likedMap, setLikedMap] = useState<Record<string, boolean>>(() => {
-    const saved = localStorage.getItem('pixelcraft_liked_status');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    return {};
-  });
-
-  const [isHeartPulsing, setIsHeartPulsing] = useState(false);
-  const [activeHeartId, setActiveHeartId] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState<string | null>(null);
-  // Fetch likes from SQLite database on mount
+  const [activeInsta, setActiveInsta] = useState<string | null>(null);
+  const marqueeContainerRef = useRef<HTMLDivElement>(null);
+
+  // Parallax Scroll linked translation effect using CSS Variables
   useEffect(() => {
-    const fetchLikes = async () => {
-      try {
-        const response = await fetch('http://localhost:5001/api/likes');
-        if (response.ok) {
-          const data = await response.json();
-          setLikesMap(data);
-        }
-      } catch (err) {
-        console.error('Failed to fetch likes from local SQLite database:', err);
+    const container = marqueeContainerRef.current;
+    if (!container) return;
+
+    let containerTop = 0;
+    let containerHeight = 0;
+
+    const updateDimensions = () => {
+      let el: HTMLElement | null = container;
+      let top = 0;
+      while (el) {
+        top += el.offsetTop;
+        el = el.offsetParent as HTMLElement;
+      }
+      containerTop = top;
+      containerHeight = container.offsetHeight;
+    };
+
+    updateDimensions();
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const viewHeight = window.innerHeight;
+      
+      const rectTop = containerTop - scrollY;
+      const rectBottom = rectTop + containerHeight;
+
+      // Only execute updates if container is inside or approaching the viewport
+      if (rectTop < viewHeight && rectBottom > 0) {
+        const progress = (viewHeight - rectTop) / (viewHeight + containerHeight);
+        const maxOffset = 220; // Maximum scroll shift in pixels
+        const currentOffset = progress * maxOffset;
+        container.style.setProperty('--scroll-offset', `${currentOffset}px`);
       }
     };
-    fetchLikes();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateDimensions);
+    
+    // Trigger initial loop sync
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateDimensions);
+    };
   }, []);
 
-  // Sync personal liked status locally to localStorage
-  useEffect(() => {
-    localStorage.setItem('pixelcraft_liked_status', JSON.stringify(likedMap));
-  }, [likedMap]);
-
-  const handleCardLike = async (cardId: string, instagramUrl?: string) => {
-    sfx.playTick('click');
-    setActiveHeartId(cardId);
-    setIsHeartPulsing(true);
-    const isCurrentlyLiked = likedMap[cardId] ?? false;
-    const nextLikedState = !isCurrentlyLiked;
-
-    // 1. Optimistic UI update: Toggle like status instantly
-    setLikedMap(prev => ({
-      ...prev,
-      [cardId]: nextLikedState
-    }));
-
-    // 2. Optimistic UI update: Increment/decrement local counts map instantly
-    setLikesMap(prev => ({
-      ...prev,
-      [cardId]: nextLikedState ? (prev[cardId] ?? 0) + 1 : Math.max(0, (prev[cardId] ?? 0) - 1)
-    }));
-
-    // 3. If liking, open the real Instagram post in a new tab so they can add a real like there
-    if (nextLikedState) {
-      window.open(instagramUrl || 'https://www.instagram.com/pixelcraft.exe', '_blank');
-    }
-
-    // 4. Dispatch POST request in background to update the SQLite database
-    try {
-      const response = await fetch(`http://localhost:5001/api/likes/${cardId}/toggle`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ liked: nextLikedState })
-      });
-      if (response.ok) {
-        const { count } = await response.json();
-        // Sync count with database server count
-        setLikesMap(prev => ({
-          ...prev,
-          [cardId]: count
-        }));
-      }
-    } catch (err) {
-      console.error('Failed to sync like click with database server:', err);
-      // Rollback on server network failure
-      setLikedMap(prev => ({
-        ...prev,
-        [cardId]: isCurrentlyLiked
-      }));
-      setLikesMap(prev => ({
-        ...prev,
-        [cardId]: isCurrentlyLiked ? (likesMap[cardId] ?? 0) : Math.max(0, (likesMap[cardId] ?? 0))
-      }));
-    }
-  };
-
-  useEffect(() => {
-    if (isHeartPulsing) {
-      const timer = setTimeout(() => {
-        setIsHeartPulsing(false);
-        setActiveHeartId(null);
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [isHeartPulsing]);
-
-  const handleCardClick = useCallback((image: string) => {
+  const handleCardClick = useCallback((image: string, instagramUrl?: string) => {
     sfx.playTick('click');
     setActiveImage(image);
+    setActiveInsta(instagramUrl || null);
     document.body.style.overflow = 'hidden';
   }, []);
 
   const handleCloseLightbox = useCallback(() => {
     sfx.playTick('click');
     setActiveImage(null);
+    setActiveInsta(null);
     document.body.style.overflow = '';
   }, []);
 
   return (
     <section
       id="vault"
-      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-[#0E0E0E] z-10 select-none overflow-hidden border-b border-white/5"
+      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-transparent z-10 select-none overflow-hidden border-b border-white/5"
     >
       <style>{`
-        @keyframes heart-pop {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.35); }
-          100% { transform: scale(1); }
-        }
-        .animate-heart-pop {
-          animation: heart-pop 0.3s ease-out;
-        }
         @keyframes marquee-l {
           0% { transform: translateX(0); }
           100% { transform: translateX(calc(-100% - 24px)); }
@@ -432,29 +308,25 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 sm:mb-20 md:mb-32 lg:mb-40 text-left">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 sm:mb-20 md:mb-32 lg:mb-40 text-left reveal">
           <div>
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 block mb-3">
-              04 — CREATIVE VAULT
+              04 — CINEMATIC ARCHIVES
             </span>
-            <h2 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight">
-              Artistic Wall Curation
+            <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-heading font-light tracking-[-0.03em] text-white leading-tight">
+              Visual Exhibition Vault
             </h2>
           </div>
           <p className="max-w-xs text-[14px] sm:text-[16px] font-body text-white/45 leading-relaxed">
-            Interact with the digital marquee rows to pause, like items, or tap to view posters in high-definition full screen.
+            Explore the infinite exhibition of conceptual movie posters, custom layouts, and theatrical art prints designed to feel like single cinematic frames.
           </p>
         </div>
 
-        {/* Responsive Digital Art Exhibition Infinite Marquee */}
-        <div className="w-full relative select-none mt-8 md:mt-12 lg:mt-16">
+        {/* Full View Screen-Edge Infinite Marquee Wall */}
+        <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] select-none mt-8 md:mt-12 lg:mt-16 reveal reveal-delay-200">
           <InfiniteMarqueeWall
             onCardClick={handleCardClick}
-            handleLike={handleCardLike}
-            likedMap={likedMap}
-            likesMap={likesMap}
-            isHeartPulsing={isHeartPulsing}
-            activeHeartId={activeHeartId}
+            containerRef={marqueeContainerRef}
           />
         </div>
 
@@ -464,7 +336,7 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
       {activeImage && createPortal(
         <div
           onClick={handleCloseLightbox}
-          className="fixed inset-0 bg-black/98 z-[100000] flex items-center justify-center p-4 cursor-zoom-out animate-fade-in always-dark"
+          className="fixed inset-0 bg-black/98 z-[100000] flex flex-col items-center justify-center p-4 cursor-zoom-out animate-fade-in always-dark"
         >
           {/* Close button */}
           <button
@@ -479,14 +351,32 @@ export const CreativeVault: React.FC<CreativeVaultProps> = () => {
             </svg>
           </button>
 
-          {/* Lightbox Image */}
-          <div className="max-w-4xl max-h-[85vh] relative flex items-center justify-center">
-            <ProgressiveImage
-              src={activeImage}
-              alt="Poster Detail View"
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_20px_60px_rgba(255,0,127,0.15)]"
-              onClick={(e) => e.stopPropagation()}
-            />
+          {/* Lightbox Content Layout */}
+          <div className="flex flex-col items-center gap-6 max-w-4xl max-h-[85vh]">
+            <div className="relative flex items-center justify-center overflow-hidden rounded-lg shadow-[0_20px_60px_rgba(0,136,255,0.12)] border border-white/5">
+              <ProgressiveImage
+                src={activeImage}
+                alt="Poster Detail View"
+                className="max-w-full max-h-[72vh] object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            </div>
+            
+            {activeInsta && (
+              <a
+                href={activeInsta}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={() => sfx.playTick('hover')}
+                className="flex items-center gap-2 bg-[#ff7700] hover:bg-[#ff7700]/95 text-white rounded-full px-6 py-2.5 text-[11px] font-heading font-semibold tracking-wider uppercase transition-all duration-300 shadow-[0_4px_15px_rgba(255,119,0,0.35)] cursor-pointer"
+              >
+                <span>View on Instagram</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="translate-y-[0.5px]">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+              </a>
+            )}
           </div>
         </div>,
         document.body

@@ -1,17 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { ProgressiveImage } from './ProgressiveImage';
 import { sfx } from '../utils/sfx';
 
 export const EditorialIntro: React.FC = () => {
   const cardRef = useRef<HTMLDivElement>(null);
 
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
+    if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+    const card = cardRef.current;
+    if (!card) return;
+    setRect(card.getBoundingClientRect());
+    sfx.playTick('hover');
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     // Disable interactive tilt on small devices/touch screens to avoid visual rendering/flickering issues in Safari
     if (window.innerWidth < 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0) return;
     
     const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
+    if (!card || !rect) return;
     const x = e.clientX - rect.left; // x position within the card
     const y = e.clientY - rect.top;  // y position within the card
     const xc = rect.width / 2;
@@ -23,7 +32,7 @@ export const EditorialIntro: React.FC = () => {
     card.style.setProperty('--rotate-x', `${rotateX}deg`);
     card.style.setProperty('--rotate-y', `${rotateY}deg`);
     card.style.setProperty('--card-scale', '1.025');
-    card.style.setProperty('--card-shadow', '0 30px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 0, 127, 0.22), 0 0 25px rgba(0, 255, 255, 0.18)');
+    card.style.setProperty('--card-shadow', '0 30px 70px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 119, 0, 0.22), 0 0 25px rgba(0, 136, 255, 0.18)');
     card.style.setProperty('--spotlight-x', `${x}px`);
     card.style.setProperty('--spotlight-y', `${y}px`);
     card.style.setProperty('--spotlight-opacity', '1');
@@ -43,7 +52,7 @@ export const EditorialIntro: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-[#0E0E0E] z-10 select-none overflow-hidden border-y border-white/5"
+      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-transparent z-10 select-none overflow-hidden border-y border-white/5"
     >
       
       {/* Absolute Ambient Background Lights */}
@@ -53,10 +62,10 @@ export const EditorialIntro: React.FC = () => {
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-20">
         
         {/* Typographic Story Column */}
-        <div className="flex-1 flex flex-col items-start text-left max-w-3xl">
+        <div className="flex-1 flex flex-col items-start text-left max-w-3xl lg:pl-10">
           
           {/* Section Header Accent */}
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-8 reveal">
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45">
               01 — PROFILE
             </span>
@@ -68,18 +77,18 @@ export const EditorialIntro: React.FC = () => {
 
           {/* Manifesto Paragraph Blocks */}
           <div className="flex flex-col gap-6 sm:gap-8 mb-12 sm:mb-16">
-            <p className="text-[20px] sm:text-[24px] md:text-[28px] font-body font-light text-white/90 leading-relaxed tracking-tight">
+            <p className="text-[20px] sm:text-[24px] md:text-[28px] font-body font-light text-white/90 leading-relaxed tracking-tight reveal reveal-delay-100">
               "I’m <strong className="font-semibold text-white">Sujith Putta</strong>, a visual designer focused on{' '}
               <span 
                 onMouseEnter={() => sfx.playTick('hover')}
-                className="hover:text-[#ff007f] hover:drop-shadow-[0_0_12px_rgba(255,0,127,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#ff007f]/45 underline-offset-4"
+                className="hover:text-[#ff7700] hover:drop-shadow-[0_0_12px_rgba(255,119,0,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#ff7700]/45 underline-offset-4"
               >
                 cinematic poster design
               </span>
               ,{' '}
               <span 
                 onMouseEnter={() => sfx.playTick('hover')}
-                className="hover:text-[#00ffff] hover:drop-shadow-[0_0_12px_rgba(0,255,255,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#00ffff]/45 underline-offset-4"
+                className="hover:text-[#0088ff] hover:drop-shadow-[0_0_12px_rgba(0,136,255,0.65)] transition-all duration-300 cursor-pointer font-medium decoration-dotted underline decoration-[#0088ff]/45 underline-offset-4"
               >
                 digital storytelling
               </span>
@@ -92,16 +101,16 @@ export const EditorialIntro: React.FC = () => {
               </span>
               ."
             </p>
-            <p className="text-[17px] sm:text-[19px] font-body font-normal text-white/55 leading-relaxed">
+            <p className="text-[17px] sm:text-[19px] font-body font-normal text-white/55 leading-relaxed reveal reveal-delay-200">
               "My work combines emotion, atmosphere, and design strategy to transform ideas into memorable visual experiences."
             </p>
-            <p className="text-[16px] sm:text-[18px] font-body font-normal text-white/45 leading-relaxed">
+            <p className="text-[16px] sm:text-[18px] font-body font-normal text-white/45 leading-relaxed reveal reveal-delay-300">
               "From superhero universes and sci-fi concepts to brand campaigns and creative identities, every project is built with intention and crafted frame by frame."
             </p>
           </div>
 
           {/* The Absolute Differentiator Callout */}
-          <div className="border-l-2 border-white/20 pl-6 sm:pl-8 py-2 flex flex-col gap-1.5 select-none">
+          <div className="border-l-2 border-white/20 pl-6 sm:pl-8 py-2 flex flex-col gap-1.5 select-none reveal reveal-delay-400">
             <span className="text-[15px] sm:text-[17px] font-heading font-semibold uppercase tracking-[0.15em] text-white/35">
               The Absolute Differentiator
             </span>
@@ -116,13 +125,13 @@ export const EditorialIntro: React.FC = () => {
         </div>
 
         {/* Cinematic Exhibit Portrait Column */}
-        <div className="w-full lg:w-[380px] flex flex-col items-center lg:items-end justify-center select-none pt-4 lg:pt-0">
+        <div className="w-full lg:w-[380px] flex flex-col items-center lg:items-end justify-center select-none pt-4 lg:pt-0 reveal-right reveal-delay-200 lg:-translate-y-12 lg:translate-x-6">
           
           <div 
             ref={cardRef}
+            onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            onMouseEnter={() => sfx.playTick('hover')}
             style={{
               transform: 'perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) scale3d(var(--card-scale, 1), var(--card-scale, 1), var(--card-scale, 1))',
               boxShadow: 'var(--card-shadow, none)',

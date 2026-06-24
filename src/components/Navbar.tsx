@@ -3,11 +3,9 @@ import { sfx } from '../utils/sfx';
 
 interface NavbarProps {
   onNavClick: (sectionId: string) => void;
-  toggleTheme: (e: React.MouseEvent) => void;
-  theme: 'light' | 'dark';
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onNavClick, toggleTheme, theme }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -56,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick, toggleTheme, theme }
             <img
               src="/Pixelcraft Discomorphism wb.png"
               alt="PixelCraft Main Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow-[0_0_8px_rgba(255,0,127,0.45)] drop-shadow-[0_0_4px_rgba(0,255,255,0.35)] transition-transform duration-700 ease-[var(--ease-luxury)] group-hover:scale-115 group-hover:rotate-[15deg]"
+              className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow-[0_0_8px_rgba(255,119,0,0.45)] drop-shadow-[0_0_4px_rgba(0,136,255,0.35)] transition-transform duration-700 ease-[var(--ease-luxury)] group-hover:scale-115 group-hover:rotate-[15deg]"
             />
 
             <span className="text-[19px] sm:text-[23px] font-heading font-medium tracking-tight text-white transition-opacity duration-300 group-hover:opacity-80">
@@ -65,8 +63,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick, toggleTheme, theme }
             </span>
           </div>
 
-          {/* Desktop Nav Links (center, hidden below md) */}
-          <div className="hidden md:flex items-center text-[22px] font-body text-white/50 select-none">
+          {/* Desktop Nav Links (center, hidden below lg) */}
+          <div className="hidden lg:flex items-center text-[22px] font-body text-white/50 select-none">
             <button
               onClick={() => handleLinkClick('works')}
               onMouseEnter={() => sfx.playTick('hover')}
@@ -113,29 +111,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick, toggleTheme, theme }
             </button>
           </div>
 
-          {/* Desktop CTA & Theme Toggle (right, hidden below md) */}
-          <div className="hidden md:flex items-center gap-6">
-            <button
-              onClick={toggleTheme}
-              onMouseEnter={() => sfx.playTick('hover')}
-              className="flex items-center justify-center w-9 h-9 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer select-none text-white relative group"
-              data-cursor="Theme"
-              aria-label="Toggle Theme"
-            >
-              <svg
-                className="w-4.5 h-4.5 transition-transform duration-500 rotate-0 group-hover:rotate-[45deg]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                {theme === 'dark' ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                )}
-              </svg>
-            </button>
+          {/* Desktop CTA (right, hidden below lg) */}
+          <div className="hidden lg:flex items-center gap-6">
             <button
               onClick={() => handleLinkClick('contact')}
               onMouseEnter={() => sfx.playTick('hover')}
@@ -147,27 +124,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick, toggleTheme, theme }
             </button>
           </div>
 
-          {/* Mobile Theme Toggle & Hamburger */}
-          <div className="md:hidden flex items-center gap-4 z-[110]">
-            <button
-              onClick={toggleTheme}
-              className="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer select-none text-white relative"
-              aria-label="Toggle Theme"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                {theme === 'dark' ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                )}
-              </svg>
-            </button>
+          {/* Mobile Hamburger */}
+          <div className="lg:hidden flex items-center gap-4 z-[110]">
             <button
               onClick={() => {
                 sfx.playTick('click');
@@ -197,7 +155,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick, toggleTheme, theme }
 
       {/* Mobile Overlay Menu */}
       <div
-        className={`fixed inset-0 bg-[#050505]/98 backdrop-blur-md z-[90] flex flex-col justify-center px-8 sm:px-12 gap-8 md:hidden transition-all duration-500 ease-out ${isOpen
+        className={`fixed inset-0 bg-[#050505]/98 backdrop-blur-md z-[90] flex flex-col justify-center px-8 sm:px-12 gap-8 lg:hidden transition-all duration-500 ease-out ${isOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
           }`}

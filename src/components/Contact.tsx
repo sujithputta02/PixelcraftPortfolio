@@ -27,10 +27,16 @@ export const Contact: React.FC = () => {
   const [tiltStyle, setTiltStyle] = useState<React.CSSProperties>({});
   const maxChars = 500;
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
     const card = cardRef.current;
     if (!card) return;
-    const rect = card.getBoundingClientRect();
+    setRect(card.getBoundingClientRect());
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rect) return;
     const x = e.clientX - rect.left; // x position within the element
     const y = e.clientY - rect.top;  // y position within the element
     const xc = rect.width / 2;
@@ -40,7 +46,7 @@ export const Contact: React.FC = () => {
     setTiltStyle({
       transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.015, 1.015, 1.015)`,
       transition: 'transform 0.1s ease-out',
-      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 0, 127, 0.25), 0 0 30px rgba(0, 255, 255, 0.2)'
+      boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 50px rgba(255, 119, 0, 0.25), 0 0 30px rgba(0, 136, 255, 0.2)'
     });
   };
 
@@ -108,7 +114,7 @@ ${formData.name}`;
   return (
     <section
       id="contact"
-      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-[#0E0E0E] z-10 select-none overflow-hidden border-t border-white/5"
+      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-transparent z-10 select-none overflow-hidden border-t border-white/5"
     >
       
       {/* Ambient specular glowing lights */}
@@ -118,7 +124,7 @@ ${formData.name}`;
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
         
         {/* Left Column: Typographic Header & External Stack */}
-        <div className="lg:col-span-6 flex flex-col items-start text-left select-none">
+        <div className="lg:col-span-6 flex flex-col items-start text-left select-none reveal">
           
           <div className="flex items-center gap-3 mb-6">
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45">
@@ -130,7 +136,7 @@ ${formData.name}`;
             </h2>
           </div>
 
-          <h3 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight mb-6 sm:mb-8 max-w-lg">
+          <h3 className="text-[clamp(2rem,6vw,3.5rem)] font-heading font-light tracking-[-0.03em] text-white leading-tight mb-6 sm:mb-8 max-w-lg">
             Let's Create Something Worth Remembering.
           </h3>
 
@@ -196,10 +202,11 @@ ${formData.name}`;
         {/* Right Column: Bespoke Contact Capture Form / Success Module */}
         <div 
           ref={cardRef}
+          onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={tiltStyle}
-          className="lg:col-span-6 w-full max-w-xl disco-card border-disco-chrome rounded-2xl p-6 sm:p-8 relative min-h-[380px] flex items-center justify-center transition-all duration-500"
+          className="lg:col-span-6 w-full max-w-xl disco-card border-disco-chrome rounded-2xl p-6 sm:p-8 relative min-h-[380px] flex items-center justify-center transition-all duration-500 reveal reveal-delay-200 lg:translate-y-12 lg:translate-x-4"
         >
           
           {/* Mirror Tile grid overlay */}
@@ -224,7 +231,7 @@ ${formData.name}`;
                   onChange={handleInputChange}
                   placeholder="e.g. Liam Henderson"
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff007f]/50 focus:shadow-[0_0_15px_rgba(255,0,127,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff7700]/50 focus:shadow-[0_0_15px_rgba(255,119,0,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300"
                 />
               </div>
 
@@ -240,7 +247,7 @@ ${formData.name}`;
                   onChange={handleInputChange}
                   placeholder="hello@collaborator.co"
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff007f]/50 focus:shadow-[0_0_15px_rgba(255,0,127,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff7700]/50 focus:shadow-[0_0_15px_rgba(255,119,0,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300"
                 />
               </div>
 
@@ -256,7 +263,7 @@ ${formData.name}`;
                   onChange={handleInputChange}
                   placeholder="e.g. Creative Direction for new Campaign"
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff007f]/50 focus:shadow-[0_0_15px_rgba(255,0,127,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff7700]/50 focus:shadow-[0_0_15px_rgba(255,119,0,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300"
                 />
               </div>
 
@@ -297,7 +304,7 @@ ${formData.name}`;
                     onChange={(e) => setCustomService(e.target.value)}
                     placeholder="Specify your custom design service..."
                     required
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff007f]/50 focus:shadow-[0_0_15px_rgba(255,0,127,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300 mt-1.5 animate-[fadeIn_0.3s_ease-out]"
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff7700]/50 focus:shadow-[0_0_15px_rgba(255,119,0,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300 mt-1.5 animate-[fadeIn_0.3s_ease-out]"
                   />
                 )}
               </div>
@@ -349,7 +356,7 @@ ${formData.name}`;
                   placeholder="Outline the cinematic scale of what we are building..."
                   rows={4}
                   required
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff007f]/50 focus:shadow-[0_0_15px_rgba(255,0,127,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300 resize-none scroll-bar-custom"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-[14px] text-white focus:outline-none focus:border-[#ff7700]/50 focus:shadow-[0_0_15px_rgba(255,119,0,0.15)] placeholder-white/25 hover:border-white/20 transition-all duration-300 resize-none scroll-bar-custom"
                 />
               </div>
 

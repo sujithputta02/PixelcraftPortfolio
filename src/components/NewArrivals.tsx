@@ -65,13 +65,20 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeImage, setActiveImage] = useState<string | null>(null);
 
+  const [sectionRect, setSectionRect] = useState<DOMRect | null>(null);
+
+  const handleSectionMouseEnter = () => {
+    const section = sectionRef.current;
+    if (!section) return;
+    setSectionRect(section.getBoundingClientRect());
+  };
+
   // Section mouse tracking for dynamic background glow (passionate red & cyber magenta)
   const handleSectionMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const section = sectionRef.current;
-    if (!section) return;
-    const rect = section.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    if (!section || !sectionRect) return;
+    const x = e.clientX - sectionRect.left;
+    const y = e.clientY - sectionRect.top;
     section.style.setProperty('--mouse-x', `${x}px`);
     section.style.setProperty('--mouse-y', `${y}px`);
     section.style.setProperty('--glow-opacity', '1');
@@ -125,15 +132,16 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
     <section
       id="latest"
       ref={sectionRef}
+      onMouseEnter={handleSectionMouseEnter}
       onMouseMove={handleSectionMouseMove}
       onMouseLeave={handleSectionMouseLeave}
-      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-[#050505] z-10 select-none overflow-hidden border-b border-white/5 transition-all duration-300"
+      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-transparent z-10 select-none overflow-hidden border-b border-white/5 transition-all duration-300"
     >
       {/* Interactive Ambient Crimson Glow */}
       <div
         className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-700 ease-out"
         style={{
-          background: `radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(239, 68, 68, 0.07) 0%, rgba(255, 0, 127, 0.02) 45%, transparent 100%)`,
+          background: `radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 119, 0, 0.07) 0%, rgba(0, 136, 255, 0.02) 45%, transparent 100%)`,
           opacity: 'var(--glow-opacity, 0)',
         }}
       />
@@ -144,15 +152,15 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Column: Heading, description, and slider controls */}
-          <div className="col-span-1 lg:col-span-4 flex flex-col justify-between self-stretch text-left">
+          <div className="col-span-1 lg:col-span-4 flex flex-col justify-between self-stretch text-left reveal lg:pl-8">
             <div>
               {/* Uppercase inline colored Tagline */}
               <span className="text-[12px] font-heading font-semibold tracking-[0.2em] uppercase text-white/55 block mb-3">
-                LATEST <span className="text-[#ff007f]">ARRIVALS</span>
+                LATEST <span className="text-[#ff7700]">ARRIVALS</span>
               </span>
               
               {/* Large Display Title */}
-              <h2 className="text-[36px] sm:text-[48px] md:text-[54px] font-heading font-light tracking-[-0.03em] text-white leading-tight mb-6">
+              <h2 className="text-[clamp(2rem,6vw,3.375rem)] font-heading font-light tracking-[-0.03em] text-white leading-tight mb-6">
                 Creative Exhibition Releases
               </h2>
 
@@ -195,7 +203,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
           </div>
 
           {/* Right Column: Horizontal slider row, bottom progress track, and 'View All' link pill */}
-          <div className="col-span-1 lg:col-span-8 flex flex-col gap-6 w-full overflow-hidden">
+          <div className="col-span-1 lg:col-span-8 flex flex-col gap-6 w-full overflow-hidden reveal reveal-delay-200 lg:-mr-20 lg:translate-y-4">
             
             {/* View All Pill Link row */}
             <div className="flex justify-end items-center mb-1 pr-1 sm:pr-4">
@@ -205,7 +213,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                   onNavClick?.('works');
                 }}
                 onMouseEnter={() => sfx.playTick('hover')}
-                className="bg-[#ff007f] hover:bg-[#ff007f]/90 text-white rounded-full px-6 py-2.5 text-[11px] font-heading font-semibold tracking-wider uppercase transition-all duration-300 shadow-[0_4px_15px_rgba(255,0,127,0.35)] hover:scale-[1.03] select-none cursor-pointer"
+                className="bg-[#ff7700] hover:bg-[#ff7700]/90 text-white rounded-full px-6 py-2.5 text-[11px] font-heading font-semibold tracking-wider uppercase transition-all duration-300 shadow-[0_4px_15px_rgba(255,119,0,0.35)] hover:scale-[1.03] select-none cursor-pointer"
                 data-cursor="Showcase"
                 data-magnetic
               >
@@ -217,7 +225,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
             <div
               ref={sliderRef}
               onScroll={handleScroll}
-              className="w-full overflow-x-auto flex gap-6 pb-6 select-none scrollbar-none snap-x snap-mandatory relative z-10 cursor-grab active:cursor-grabbing"
+              className="w-full overflow-x-auto flex gap-6 pt-6 pb-10 select-none scrollbar-none snap-x snap-mandatory relative z-10 cursor-grab active:cursor-grabbing"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               data-cursor="Drag view"
             >
@@ -269,7 +277,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
             {/* Horizontal Line Progress Bar Tracker */}
             <div className="w-[180px] sm:w-[220px] mx-auto mt-4 h-[2px] bg-white/10 rounded-full relative overflow-hidden">
               <div 
-                className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#ff007f] to-[#00ffff] rounded-full transition-all duration-[150ms] ease-out shadow-[0_0_8px_rgba(255,0,127,0.7)]"
+                className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#ff7700] to-[#0088ff] rounded-full transition-all duration-[150ms] ease-out shadow-[0_0_8px_rgba(255,119,0,0.7)]"
                 style={{ width: `${scrollProgress}%` }}
               />
             </div>
@@ -304,7 +312,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
             <ProgressiveImage
               src={activeImage}
               alt="Poster Detail View"
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_20px_60px_rgba(255,0,127,0.15)]"
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_20px_60px_rgba(255,119,0,0.15)]"
               onClick={(e) => e.stopPropagation()}
             />
           </div>

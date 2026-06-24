@@ -363,7 +363,7 @@ const renderOverviewWithHashtags = (text: string) => {
       return (
         <span
           key={index}
-          className="text-[#ff007f] font-semibold hover:text-[#00ffff] cursor-pointer transition-colors duration-300 mr-1"
+          className="text-[#ff7700] font-semibold hover:text-[#0088ff] cursor-pointer transition-colors duration-300 mr-1"
           onClick={(e) => {
             e.stopPropagation();
             window.open(`https://www.instagram.com/explore/tags/${part.replace('#', '')}/`, '_blank');
@@ -469,17 +469,17 @@ export const FeaturedWorks: React.FC = () => {
   return (
     <section
       id="works"
-      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-[#050505] z-10 select-none overflow-hidden"
+      className="relative w-full py-24 md:py-32 px-5 sm:px-8 md:px-16 bg-transparent z-10 select-none overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         
         {/* Section Header */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 sm:mb-20">
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 sm:mb-20 reveal">
           <div className="text-left">
             <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 block mb-3">
               03 — SHOWCASE
             </span>
-            <h2 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight">
+            <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-heading font-light tracking-[-0.03em] text-white leading-tight">
               Featured Exhibition Matrix
             </h2>
           </div>
@@ -489,7 +489,7 @@ export const FeaturedWorks: React.FC = () => {
         </div>
 
         {/* Desktop/Tablet Split-List View (Shown on md and up) */}
-        <div className="w-full hidden md:grid grid-cols-12 gap-12 items-start mt-8">
+        <div className="w-full hidden md:grid grid-cols-12 gap-12 items-start mt-8 reveal reveal-delay-150">
           <style>{`
             .scroll-bar-custom::-webkit-scrollbar {
               width: 3px;
@@ -502,7 +502,7 @@ export const FeaturedWorks: React.FC = () => {
               border-radius: 99px;
             }
             .scroll-bar-custom::-webkit-scrollbar-thumb:hover {
-              background: rgba(255, 0, 127, 0.35);
+              background: rgba(255, 119, 0, 0.35);
             }
           `}</style>
 
@@ -523,7 +523,7 @@ export const FeaturedWorks: React.FC = () => {
                   }`}
                 >
                   <span className={`font-heading text-lg md:text-2xl font-light tracking-wide transition-colors duration-300 ${
-                    isActive ? 'text-[#ff007f]' : 'text-white/20 group-hover:text-white/45'
+                    isActive ? 'text-[#ff7700]' : 'text-white/20 group-hover:text-white/45'
                   }`}>
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -550,7 +550,7 @@ export const FeaturedWorks: React.FC = () => {
             {/* Viewport Frame */}
             <div
               onClick={(e) => handleCardClick(projectsData[activeIndex], e as any)}
-              className="w-full max-w-[320px] sm:max-w-[360px] aspect-[3/4.2] rounded-3xl overflow-hidden bg-[#0A0A0A] border border-white/5 hover:border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.95)] relative group cursor-pointer transition-all duration-500 hover:shadow-[0_30px_70px_rgba(255,0,127,0.1)] hover:scale-[1.015]"
+              className="always-dark w-full max-w-[320px] sm:max-w-[360px] aspect-[3/4.2] rounded-3xl overflow-hidden bg-[#0A0A0A] border border-white/5 hover:border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.95)] relative group cursor-pointer transition-all duration-500 hover:shadow-[0_30px_70px_rgba(255,119,0,0.1)] hover:scale-[1.015]"
               data-cursor="Open View"
             >
               {/* Noise Grain Overlay */}
@@ -617,7 +617,7 @@ export const FeaturedWorks: React.FC = () => {
         </div>
 
         {/* Mobile/Tablet View (Horizontal Swipeable Carousel - Shown under md breakpoint) */}
-        <div className="md:hidden w-full flex flex-col gap-6 select-none mt-8">
+        <div className="md:hidden w-full flex flex-col gap-6 select-none mt-8 reveal reveal-delay-150">
           <style>{`
             .scroll-bar-none::-webkit-scrollbar {
               display: none;
@@ -632,7 +632,7 @@ export const FeaturedWorks: React.FC = () => {
               <div
                 key={project.id}
                 onClick={(e) => handleCardClick(project, e as any)}
-                className="snap-center shrink-0 w-[275px] sm:w-[325px] aspect-[3/4.2] rounded-3xl overflow-hidden bg-[#0C0C0C] border border-white/5 relative group cursor-pointer shadow-[0_15px_35px_rgba(0,0,0,0.7)]"
+                className="always-dark snap-center shrink-0 w-[275px] sm:w-[325px] aspect-[3/4.2] rounded-3xl overflow-hidden bg-[#0C0C0C] border border-white/5 relative group cursor-pointer shadow-[0_15px_35px_rgba(0,0,0,0.7)]"
               >
                 {/* Noise overlay */}
                 <div 
@@ -730,13 +730,13 @@ export const FeaturedWorks: React.FC = () => {
             }
           >
             {/* Inner Case Study Content Wrapper */}
-            <div className="w-full max-w-4xl flex flex-col text-left relative pt-12 sm:pt-0">
+            <div className="w-full max-w-4xl flex flex-col text-left relative pt-24 sm:pt-0">
               
               {/* Title & Taxonomy Stack */}
               <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 mb-2 block">
                 {activeProject.taxonomy}
               </span>
-              <h1 className="text-[38px] sm:text-[56px] md:text-[68px] font-heading font-bold text-white tracking-tight leading-none mb-8 sm:mb-12">
+              <h1 className="text-[clamp(2rem,7vw,4.25rem)] font-heading font-bold text-white tracking-tight leading-none mb-8 sm:mb-12">
                 {activeProject.title}
               </h1>
 
@@ -1097,7 +1097,7 @@ export const FeaturedWorks: React.FC = () => {
             <img
               src="/Pixelcraft Discomorphism wb.png"
               alt="PixelCraft Logo"
-              className="w-10 h-10 object-contain filter drop-shadow-[0_0_10px_rgba(255,0,127,0.5)] drop-shadow-[0_0_5px_rgba(0,255,255,0.35)] transition-transform duration-700"
+              className="w-10 h-10 object-contain filter drop-shadow-[0_0_10px_rgba(255,119,0,0.5)] drop-shadow-[0_0_5px_rgba(0,136,255,0.35)] transition-transform duration-700"
             />
             <span className="text-[12px] font-heading font-medium tracking-[0.25em] uppercase text-white/50">
               PixelCraft<span className="text-[8px] align-super leading-none text-white/40">®</span>

@@ -36,10 +36,20 @@ const TestimonialCard: React.FC<{ item: PhilosophyItem }> = ({ item }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [spotlightPos, setSpotlightPos] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
+  const handleMouseEnter = () => {
     const card = cardRef.current;
     if (!card) return;
-    const rect = card.getBoundingClientRect();
+    setRect(card.getBoundingClientRect());
+    if (!isHovered) {
+      sfx.playTick('hover');
+    }
+    setIsHovered(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!rect) return;
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const xc = rect.width / 2;
@@ -47,23 +57,18 @@ const TestimonialCard: React.FC<{ item: PhilosophyItem }> = ({ item }) => {
     const rotateX = (yc - y) / 10; // 3D tilt rotation intensity
     const rotateY = (x - xc) / 10;
 
-    if (!isHovered) {
-      sfx.playTick('hover');
-    }
-
     setTiltStyle({
       transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
       transition: 'transform 0.1s ease-out',
-      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 0, 127, 0.18), 0 0 20px rgba(0, 255, 255, 0.12)'
+      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 119, 0, 0.18), 0 0 20px rgba(0, 136, 255, 0.12)'
     });
     setSpotlightPos({ x, y });
-    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
     setTiltStyle({
-      transform: `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
-      transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+      transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+      transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
       boxShadow: ''
     });
     setIsHovered(false);
@@ -72,6 +77,7 @@ const TestimonialCard: React.FC<{ item: PhilosophyItem }> = ({ item }) => {
   return (
     <div
       ref={cardRef}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={tiltStyle}
@@ -175,17 +181,17 @@ export const Testimonials: React.FC = () => {
 
   return (
     <section
-      className="relative w-full py-24 md:py-32 bg-[#050505] z-10 select-none overflow-hidden"
+      className="relative w-full py-24 md:py-32 bg-transparent z-10 select-none overflow-hidden"
     >
       
       {/* Absolute Ambient Background Lights */}
       <div className="absolute top-1/2 right-0 w-80 h-80 rounded-full bg-white/[0.01] blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-16 mb-16 sm:mb-20 text-left">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-16 mb-20 sm:mb-28 text-left reveal">
         <span className="text-[12px] font-heading font-medium tracking-[0.2em] uppercase text-white/45 block mb-3">
           08 — VISION
         </span>
-        <h2 className="text-[36px] sm:text-[48px] md:text-[56px] font-heading font-light tracking-[-0.03em] text-white leading-tight">
+        <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-heading font-light tracking-[-0.03em] text-white leading-tight">
           Creative Philosophy
         </h2>
       </div>
@@ -198,7 +204,7 @@ export const Testimonials: React.FC = () => {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         onScroll={handleScroll}
-        className="w-full overflow-x-auto flex gap-6 sm:gap-8 px-5 sm:px-8 md:px-16 pb-8 select-none scrollbar-none cursor-grab active:cursor-grabbing scroll-smooth relative z-10"
+        className="w-full overflow-x-auto flex gap-6 sm:gap-8 px-5 sm:px-8 md:px-16 pt-16 pb-20 mt-4 select-none scrollbar-none cursor-grab active:cursor-grabbing scroll-smooth relative z-10 reveal reveal-delay-200"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         data-cursor="Drag Slider"
       >
@@ -208,9 +214,9 @@ export const Testimonials: React.FC = () => {
       </div>
 
       {/* Luxury Dynamic Progress Track */}
-      <div className="max-w-[140px] sm:max-w-[180px] mx-auto mt-10 h-[2px] bg-white/10 rounded-full relative overflow-hidden z-10">
+      <div className="max-w-[140px] sm:max-w-[180px] mx-auto mt-10 h-[2px] bg-white/10 rounded-full relative overflow-hidden z-10 reveal reveal-delay-300">
         <div 
-          className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#ff007f] to-[#00ffff] rounded-full transition-all duration-[100ms] ease-out shadow-[0_0_8px_rgba(255,0,127,0.8)]"
+          className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-[#ff7700] to-[#0088ff] rounded-full transition-all duration-[100ms] ease-out shadow-[0_0_8px_rgba(255,119,0,0.8)]"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
