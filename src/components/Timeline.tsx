@@ -342,7 +342,7 @@ const MobileTimeline: React.FC = () => {
 
               {/* Card */}
               <LiquidGlassCard 
-                className="lg-panel p-4 sm:p-5 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_15px_rgba(255,119,0,0.05)]"
+                className="lg-panel p-4 sm:p-5 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_15px_rgba(255,119,0,0.05)]"
                 options={{ radius: 36 }}
               >
                 {/* Header row */}
