@@ -41,6 +41,23 @@ const projectsData: Project[] = [
     instagramUrl: 'https://www.instagram.com/p/Dah9Mb0POq8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
   },
   {
+    id: 'american-psycho',
+    title: 'American Psycho — Graphic Novel Key Art',
+    taxonomy: 'Cinematic Editorial Design',
+    image: '/Poster/American Psycho Poster.webp',
+    gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
+    overview: 'A striking graphic novel-style key art tribute to the psychological thriller "American Psycho". The design captures the dual nature of Patrick Bateman—the polished corporate mask juxtaposed with his chaotic inner descent. Incorporating stylized halftone textures, a blood-spattered palette, and bold retro-modern typography, the artwork illustrates the themes of consumerism, vanity, and moral decay.',
+    challenge: 'Balancing stark high-contrast blood red splatter overlays and business suit grayscale rendering without muddling detail, and typesetting Bateman\'s iconic business card details as micro-typography.',
+    creativeDirection: 'Halftone retro patterns, stark red/black/white graphic gradients, sharp high-fashion silhouette shadows, and clean corporate geometric typography grids.',
+    development: 'Vector silhouette illustration in Affinity Designer, layered mask textures and noise grains in Canva, and typesetting corporate business card elements.',
+    tools: ['Canva', 'Affinity Designer', 'Digital Painting'],
+    results: 'Acclaimed for its striking use of minimalist high-contrast typography, receiving outstanding visual recognition in graphic design portfolios.',
+    galleryImages: ['/Poster/American Psycho Poster.webp'],
+    behanceUrl: 'https://www.behance.net/gallery/251696419/American-Psycho-Concept-Movie-Poster',
+    pinterestUrl: 'https://pin.it/3zqYFAZlT',
+    instagramUrl: 'https://www.instagram.com/p/DZ-chhehasg/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
+  },
+  {
     id: 'obsession',
     title: 'OBSESSION (2026)',
     taxonomy: 'Cinematic Horror Key Art',
