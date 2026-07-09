@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { sfx } from '../utils/sfx';
+import { LiquidGlassCard } from './LiquidGlassCard';
 
 const services = [
   'Theatrical Key Art',
@@ -276,9 +277,8 @@ ${formData.name}`;
                   {services.map((service) => {
                     const isSelected = selectedService === service;
                     return (
-                      <button
+                      <LiquidGlassCard
                         key={service}
-                        type="button"
                         onClick={() => {
                           sfx.playTick('click');
                           setSelectedService(service);
@@ -287,11 +287,13 @@ ${formData.name}`;
                         className={`px-3.5 py-1.5 rounded-full text-[10.5px] font-heading font-semibold uppercase tracking-wider transition-all duration-300 select-none cursor-pointer border ${
                           isSelected
                             ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
-                            : 'bg-white/5 text-white/60 border-white/10 hover:border-white/30 hover:text-white'
+                            : 'lg-panel text-white/60 border-white/10 hover:border-white/30 hover:text-white'
                         }`}
+                        options={{ radius: 14 }}
+                        active={!isSelected}
                       >
                         {service}
-                      </button>
+                      </LiquidGlassCard>
                     );
                   })}
                 </div>
@@ -318,9 +320,8 @@ ${formData.name}`;
                   {timelines.map((time) => {
                     const isSelected = selectedTimeline === time;
                     return (
-                      <button
+                      <LiquidGlassCard
                         key={time}
-                        type="button"
                         onClick={() => {
                           sfx.playTick('click');
                           setSelectedTimeline(time);
@@ -329,11 +330,13 @@ ${formData.name}`;
                         className={`px-3.5 py-1.5 rounded-full text-[10.5px] font-heading font-semibold uppercase tracking-wider transition-all duration-300 select-none cursor-pointer border ${
                           isSelected
                             ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
-                            : 'bg-white/5 text-white/60 border-white/10 hover:border-white/30 hover:text-white'
+                            : 'lg-panel text-white/60 border-white/10 hover:border-white/30 hover:text-white'
                         }`}
+                        options={{ radius: 14 }}
+                        active={!isSelected}
                       >
                         {time}
-                      </button>
+                      </LiquidGlassCard>
                     );
                   })}
                 </div>

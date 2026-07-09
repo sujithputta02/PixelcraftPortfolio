@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { sfx } from '../utils/sfx';
 import { ProgressiveImage } from './ProgressiveImage';
+import { LiquidGlassCard } from './LiquidGlassCard';
 
 interface HeroProps {
   onNavClick: (sectionId: string) => void;
@@ -106,12 +107,15 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           }}
         >
           {/* Subtle Tagline Accent */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 animate-fade-in">
+          <LiquidGlassCard 
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full lg-panel mb-6 animate-fade-in"
+            options={{ radius: 15 }}
+          >
             <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full animate-pulse" />
             <span className="text-[10px] font-heading font-semibold uppercase tracking-[0.28em] text-white/80">
               PixelCraft Creative Studio
             </span>
-          </div>
+          </LiquidGlassCard>
 
           {/* Premium Serif Typography Headline */}
           <h1 className="text-[clamp(2.2rem,8vw,4.75rem)] font-heading font-extrabold uppercase leading-[0.92] tracking-tighter text-white max-w-2xl mb-6">
@@ -141,15 +145,16 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
               View Projects
             </button>
             
-            <button
+            <LiquidGlassCard
               onClick={() => handleBtnClick('contact')}
               onMouseEnter={() => sfx.playTick('hover')}
-              className="px-8 py-3.5 rounded-full text-[12px] sm:text-[13px] font-heading font-bold uppercase tracking-[0.16em] border transition-all duration-300 transform active:scale-95 cursor-pointer border-white/20 text-white hover:bg-white/5"
+              className="px-8 py-3.5 rounded-full text-[12px] sm:text-[13px] font-heading font-bold uppercase tracking-[0.16em] lg-panel transition-all duration-300 transform active:scale-95 cursor-pointer text-white hover:bg-white/5"
+              options={{ radius: 21 }}
               data-cursor="Contact"
               data-magnetic
             >
               Get In Touch
-            </button>
+            </LiquidGlassCard>
           </div>
         </div>
 
@@ -162,13 +167,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           <div className="absolute w-[240px] sm:w-[280px] h-[340px] sm:h-[400px] rounded-2xl bg-[#ff7700]/8 blur-[50px] animate-pulse pointer-events-none z-0" />
           
           {/* Mockup Frame with custom 3D tilt */}
-          <div
-            onClick={() => handleCardClick('/Poster/American Psycho Poster.webp')}
+          <LiquidGlassCard
+            onClick={() => handleCardClick('/Poster/Sing geetham Poster.webp')}
             onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={tiltStyle}
-            className="w-[240px] sm:w-[280px] aspect-[3/4.2] rounded-2xl bg-[#0C0C0C]/80 border border-white/10 hover:border-white/25 p-3.5 relative shadow-[0_30px_60px_rgba(0,0,0,0.95)] cursor-pointer group transition-all duration-300 z-10"
+            className="w-[240px] sm:w-[280px] aspect-[3/4.2] rounded-2xl lg-panel p-3.5 relative shadow-[0_30px_60px_rgba(0,0,0,0.95)] cursor-pointer group transition-all duration-300 z-10"
+            options={{ radius: 36 }}
             data-cursor="Inspect"
             data-magnetic
           >
@@ -176,19 +182,22 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
             <div className="disco-tile-grid opacity-15 pointer-events-none" />
             
             {/* Red Pulsing Latest Dot badge */}
-            <div className="absolute top-6 left-6 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-[#ff7700]/45 rounded-full px-2.5 py-1">
+            <LiquidGlassCard 
+              className="absolute top-6 left-6 z-20 flex items-center gap-1.5 lg-panel border border-[#ff7700]/45 rounded-full px-2.5 py-1"
+              options={{ radius: 9 }}
+            >
               <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full animate-ping" />
               <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full absolute" />
               <span className="text-[8px] font-heading font-semibold tracking-wider uppercase text-white leading-none">
                 LATEST RELEASE
               </span>
-            </div>
+            </LiquidGlassCard>
 
             {/* Poster Image */}
             <div className="w-full h-full rounded-xl overflow-hidden relative">
               <ProgressiveImage
-                src="/Poster/American Psycho Poster.webp"
-                alt="Latest Release - American Psycho"
+                src="/Poster/Sing geetham Poster.webp"
+                alt="Latest Release - Sing Geetham"
                 fetchPriority="high"
                 className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 ease-out"
               />
@@ -198,14 +207,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
               {/* Release Metadata Overlay inside Image bottom */}
               <div className="absolute bottom-4 left-4 right-4 text-left transition-opacity duration-300 z-20">
                 <span className="text-[14px] font-heading font-semibold text-white tracking-tight leading-none block">
-                  American Psycho
+                  Sing Geetham
                 </span>
                 <span className="text-[9px] font-mono tracking-widest uppercase text-[#ff7700] block mt-1.5">
-                  PSYCHOLOGICAL THRILLER // 2026
+                  FANTASY / DRAMA // 2026
                 </span>
               </div>
             </div>
-          </div>
+          </LiquidGlassCard>
         </div>
 
       </div>

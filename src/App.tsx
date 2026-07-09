@@ -250,26 +250,21 @@ function App() {
                     </linearGradient>
 
                     {/* Infinite looping metallic gold shimmer gradient */}
-                    <motion.linearGradient 
+                    <linearGradient 
                       id="gold-grad" 
                       x1="-100%" 
                       y1="0%" 
                       x2="0%" 
                       y2="0%"
-                      animate={{ x1: ["-100%", "100%"], x2: ["0%", "200%"] }}
-                      transition={{ 
-                        repeat: Infinity, 
-                        repeatType: "loop", 
-                        duration: 3, 
-                        ease: "linear" 
-                      }}
                     >
+                      <animate attributeName="x1" from="-100%" to="100%" dur="3s" repeatCount="indefinite" />
+                      <animate attributeName="x2" from="0%" to="200%" dur="3s" repeatCount="indefinite" />
                       <stop offset="0%" stopColor="#B38728" />
                       <stop offset="25%" stopColor="#FBF5B7" />
                       <stop offset="50%" stopColor="#FFFFFF" />
                       <stop offset="75%" stopColor="#FBF5B7" />
                       <stop offset="100%" stopColor="#AA771C" />
-                    </motion.linearGradient>
+                    </linearGradient>
                     
                     <mask id="sign-mask">
                       {/* Animated gradient reveal moving from left to right */}

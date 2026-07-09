@@ -1,10 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { useRive } from '@rive-app/react-canvas';
 import { sfx } from '../utils/sfx';
+import { useLiquidGlass } from '../hooks/useLiquidGlass';
 
 export const About: React.FC = () => {
   const panelRef = useRef<HTMLDivElement>(null);
   const [panelTilt, setPanelTilt] = useState<React.CSSProperties>({});
+
+  useLiquidGlass(panelRef, true, {
+    scale: -112,
+    chroma: 6,
+    border: 0.07,
+    mapBlur: 12,
+    blur: 3,
+    saturate: 1.5,
+    radius: 48,
+  });
 
   const { RiveComponent } = useRive({
     src: '/little_machine.riv',
@@ -109,7 +120,7 @@ export const About: React.FC = () => {
           onMouseMove={handlePanelMove}
           onMouseLeave={handlePanelLeave}
           style={panelTilt}
-          className="lg:col-span-6 flex flex-col items-start text-left bg-white/[0.015] border border-white/5 p-6 sm:p-8 rounded-2xl backdrop-blur-md transition-all duration-500 relative overflow-hidden reveal reveal-delay-200"
+          className="lg:col-span-6 flex flex-col items-start text-left lg-panel p-6 sm:p-8 rounded-2xl transition-all duration-500 relative overflow-hidden reveal reveal-delay-200"
         >
           {/* Subtle discomorphism tile backdrop */}
           <div className="disco-tile-grid opacity-10 pointer-events-none" />

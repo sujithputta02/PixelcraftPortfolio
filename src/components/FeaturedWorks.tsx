@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { sfx } from '../utils/sfx';
 import { ProgressiveImage, preloadImage } from './ProgressiveImage';
+import { LiquidGlassCard } from './LiquidGlassCard';
 
 interface Project {
   id: string;
@@ -23,18 +24,21 @@ interface Project {
 
 const projectsData: Project[] = [
   {
-    id: 'american-psycho',
-    title: 'American Psycho — Graphic Novel Key Art',
-    taxonomy: 'Cinematic Editorial Design',
-    image: '/Poster/American Psycho Poster.webp',
+    id: 'sing-geetham',
+    title: 'Sing Geetham — Speculative Cinema Fan Poster Concept',
+    taxonomy: 'Fantasy / Drama Key Art',
+    image: '/Poster/Sing geetham Poster.webp',
     gridSpan: 'col-span-12 md:col-span-12 lg:col-span-12',
-    overview: 'A striking graphic novel-style key art tribute to the psychological thriller "American Psycho". The design captures the dual nature of Patrick Bateman—the polished corporate mask juxtaposed with his chaotic inner descent. Incorporating stylized halftone textures, a blood-spattered palette, and bold retro-modern typography, the artwork illustrates the themes of consumerism, vanity, and moral decay.',
-    challenge: 'Balancing stark high-contrast blood red splatter overlays and business suit grayscale rendering without muddling detail, and typesetting Bateman\'s iconic business card details as micro-typography.',
-    creativeDirection: 'Halftone retro patterns, stark red/black/white graphic gradients, sharp high-fashion silhouette shadows, and clean corporate geometric typography grids.',
-    development: 'Vector silhouette illustration in Affinity Designer, layered mask textures and noise grains in Canva, and typesetting corporate business card elements.',
+    overview: 'A beautiful fan poster concept for the movie "Sing Geetham". The story takes place in the mythical region of Kuberapuram, once a beautiful, lush greenery village rich in gold mines. Due to the greed for gold, widespread deforestation leads to a divine curse. As a result, the villagers can no longer communicate in normal speech and must convey everything in the form of songs. Eventually, by touching one another, the villagers are turned to stone/gold. In their final moments of repentance, they pray to Lord Kubera, leading to the removal of the curse, the return of rain, and the restoration of lush greenery to the land.',
+    challenge: 'Balancing mythological symbolism and the rendering of gold-metallic human statues against rich forest greens without introducing color bleed or losing micro-grain definition.',
+    creativeDirection: 'Mythological realism, high-contrast gold metallic reflections, dense lush green foliage framing, and custom vintage Sanskrit-inspired editorial typography.',
+    development: 'Premium visual composition and canvas layout designed in Canva, with intricate layer masking, custom gold-shimmer ambient reflections, and analog grain overlays rendered in Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Digital Painting'],
-    results: 'Acclaimed for its striking use of minimalist high-contrast typography, receiving outstanding visual recognition in graphic design design portfolios.',
-    galleryImages: ['/Poster/American Psycho Poster.webp'],
+    results: 'Acclaimed across social galleries, receiving extensive showcase curation on Behance, Instagram, and Pinterest.',
+    galleryImages: ['/Poster/Sing geetham Poster.webp'],
+    behanceUrl: 'https://www.behance.net/gallery/252390973/Sing-Geetham-A-Singeetham-Cinema-Fan-Poster-Concept',
+    pinterestUrl: 'https://pin.it/76M7ceTKI',
+    instagramUrl: 'https://www.instagram.com/p/Dah9Mb0POq8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=='
   },
   {
     id: 'obsession',
@@ -606,7 +610,10 @@ export const FeaturedWorks: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-15" />
 
               {/* Glassmorphic Details Overlay Badge */}
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex justify-between items-end bg-black/45 backdrop-blur-[16px] border-t border-white/10 z-20 transition-all duration-500 group-hover:bg-black/60 animate-fade-in">
+              <LiquidGlassCard 
+                className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex justify-between items-end lg-panel z-20 transition-all duration-500 group-hover:bg-black/60 animate-fade-in"
+                options={{ radius: 36 }}
+              >
                 <div className="text-left">
                   <span className="text-[10px] font-heading font-medium tracking-[0.15em] uppercase text-white/45 block mb-1">
                     {projectsData[activeIndex].taxonomy}
@@ -629,7 +636,7 @@ export const FeaturedWorks: React.FC = () => {
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </div>
-              </div>
+              </LiquidGlassCard>
             </div>
             
             {/* Action hint details below viewport */}
@@ -672,7 +679,10 @@ export const FeaturedWorks: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent pointer-events-none z-10" />
 
                 {/* Card Details Bar */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end bg-black/45 backdrop-blur-[16px] border-t border-white/10 z-20">
+                <LiquidGlassCard 
+                  className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end lg-panel z-20"
+                  options={{ radius: 36 }}
+                >
                   <div className="text-left">
                     <span className="text-[9px] font-heading font-medium tracking-[0.15em] uppercase text-white/45 block mb-1">
                       {project.taxonomy}
@@ -695,7 +705,7 @@ export const FeaturedWorks: React.FC = () => {
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </div>
-                </div>
+                </LiquidGlassCard>
               </div>
             ))}
           </div>
@@ -717,10 +727,11 @@ export const FeaturedWorks: React.FC = () => {
           }`}
         >
           {/* Fixed Close Button Anchor (Always visible and clickable in top-right of viewport) */}
-          <button
+          <LiquidGlassCard
             onClick={handleCloseDetail}
             onMouseEnter={() => sfx.playTick('hover')}
-            className="fixed top-6 right-6 sm:top-8 sm:right-10 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10050] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md"
+            className="fixed top-6 right-6 sm:top-8 sm:right-10 lg-panel text-white hover:text-black rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10050] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+            options={{ radius: 24 }}
             data-cursor="Close"
             data-magnetic
           >
@@ -735,7 +746,7 @@ export const FeaturedWorks: React.FC = () => {
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-          </button>
+          </LiquidGlassCard>
 
           {/* Morphing element starting bounds */}
           <div
@@ -984,34 +995,36 @@ export const FeaturedWorks: React.FC = () => {
                       {slides.length > 1 && (
                         <>
                           {/* Left button */}
-                          <button
+                          <LiquidGlassCard
                             onClick={() => {
                               sfx.playTick('click');
                               setActiveSlideIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
                             }}
                             onMouseEnter={() => sfx.playTick('hover')}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 border border-white/10 hover:border-white/35 text-white/70 hover:text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 hover:scale-105 active:scale-95 cursor-pointer z-30 shadow-lg"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full lg-panel text-white/70 hover:text-white flex items-center justify-center transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 hover:scale-105 active:scale-95 cursor-pointer z-30 shadow-lg"
+                            options={{ radius: 22 }}
                             data-cursor="Prev Slide"
                           >
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                               <path d="M15 18l-6-6 6-6" />
                             </svg>
-                          </button>
+                          </LiquidGlassCard>
 
                           {/* Right button */}
-                          <button
+                          <LiquidGlassCard
                             onClick={() => {
                               sfx.playTick('click');
                               setActiveSlideIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
                             }}
                             onMouseEnter={() => sfx.playTick('hover')}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 border border-white/10 hover:border-white/35 text-white/70 hover:text-white flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 hover:scale-105 active:scale-95 cursor-pointer z-30 shadow-lg"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full lg-panel text-white/70 hover:text-white flex items-center justify-center transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 hover:scale-105 active:scale-95 cursor-pointer z-30 shadow-lg"
+                            options={{ radius: 22 }}
                             data-cursor="Next Slide"
                           >
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                               <path d="M9 18l6-6-6-6" />
                             </svg>
-                          </button>
+                          </LiquidGlassCard>
                         </>
                       )}
 
@@ -1081,13 +1094,14 @@ export const FeaturedWorks: React.FC = () => {
           onClick={() => setLightboxImage(null)}
         >
           {/* Close Button Anchor */}
-          <button
+          <LiquidGlassCard
             onClick={() => {
               sfx.playTick('click');
               setLightboxImage(null);
             }}
             onMouseEnter={() => sfx.playTick('hover')}
-            className="fixed top-6 right-6 sm:top-8 sm:right-10 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10200] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md"
+            className="fixed top-6 right-6 sm:top-8 sm:right-10 lg-panel text-white hover:text-black rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10200] cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+            options={{ radius: 24 }}
             data-cursor="Close"
           >
             <svg
@@ -1101,7 +1115,7 @@ export const FeaturedWorks: React.FC = () => {
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-          </button>
+          </LiquidGlassCard>
 
           {/* Full uncropped poster layout */}
           <div 

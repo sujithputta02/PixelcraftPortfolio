@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { sfx } from '../utils/sfx';
 import { ProgressiveImage } from './ProgressiveImage';
+import { LiquidGlassCard } from './LiquidGlassCard';
 
 interface NewArrivalsProps {
   onNavClick?: (sectionId: string) => void;
@@ -12,56 +13,72 @@ interface ArrivalItem {
   title: string;
   image: string;
   category: string;
+  desc: string;
 }
 
 const arrivalsData: ArrivalItem[] = [
   {
+    id: 'sing-geetham',
+    title: 'Sing Geetham',
+    image: '/Poster/Sing geetham Poster.webp',
+    category: 'Fantasy / Drama',
+    desc: 'Set in the mythical region of Kuberapuram, a beautiful greenery village rich in gold mines. Due to greed, deforestation leads to a divine curse where everyone communicates solely through song, and eventually turns to gold by touching. Repentance and prayers to Lord Kubera lift the curse, bringing rain and restoring the greenery.'
+  },
+  {
     id: 'american-psycho',
     title: 'American Psycho',
     image: '/Poster/American Psycho Poster.webp',
-    category: 'Psychological Thriller'
+    category: 'Psychological Thriller',
+    desc: 'A striking graphic novel-style key art tribute to the psychological thriller "American Psycho". The design captures the dual nature of Patrick Bateman—the polished corporate mask juxtaposed with his chaotic inner descent, utilizing halftone textures and bold typography.'
   },
   {
     id: 'spiderman-bnd-v2',
     title: 'Spider-Man BND V-2',
     image: '/Poster/Spiderman BND v-2.webp',
-    category: 'Cinematic IMAX'
+    category: 'Cinematic IMAX',
+    desc: 'An IMAX layout tribute celebrating the classic Spider-Man Brand New Day series, highlighting high-speed dynamics and comic halftone textures.'
   },
   {
     id: 'obsession',
     title: 'OBSESSION',
     image: '/Poster/OBSESSION Poster.webp',
-    category: 'Cinematic Horror'
+    category: 'Cinematic Horror',
+    desc: 'This poster is a study of the fraught and conflicted relationship between desire and destruction, expressed in a minimalist but symbolic visual style. Two characters are on opposite sides of a broken platform, separated by an insurmountable gap representing emotional distance.'
   },
   {
     id: 'dudeholic',
     title: 'DUDEHOLIC',
     image: '/Poster/Dudeholic Poster.webp',
-    category: 'Music Editorial'
+    category: 'Music Editorial',
+    desc: 'A premium editorial music spread visualizing sonic rhythms through experimental layout formats and bespoke graphic grids.'
   },
   {
     id: 'dune-part-three',
     title: 'Dune: Part Three',
     image: '/Poster/Dune Part-3 Lisan al-gaib post.webp',
-    category: 'Theatrical Key Art'
+    category: 'Theatrical Key Art',
+    desc: 'A speculative key art tribute depicting Paul Atreides as the Lisan al-Gaib, utilizing golden desert dunes and stark atmospheric typography.'
   },
   {
     id: 'doctor-doom',
     title: 'Avengers: Doomsday',
     image: '/Poster/Doctor Doom Poster.webp',
-    category: 'Marvel Concept'
+    category: 'Marvel Concept',
+    desc: 'An Avengers: Doomsday concept artwork highlighting Victor von Doom in his sovereign armor, layered with emerald energy spikes.'
   },
   {
     id: 'raga-of-revenge',
     title: 'Raga of Revenge',
     image: '/Poster/Raga of Revenge-DC.webp',
-    category: 'Action Thriller'
+    category: 'Action Thriller',
+    desc: 'An action thriller theatrical concept framing a high-octane cinematic face-off with low-key dramatic lighting.'
   },
   {
     id: 'the-odyssey',
     title: 'The Odyssey',
     image: '/Poster/The odyssey Post.webp',
-    category: 'Mythological Concept'
+    category: 'Mythological Concept',
+    desc: 'A classic mythological concept poster outlining the epic journey of Odysseus across uncharted seas.'
   }
 ];
 
@@ -70,6 +87,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string>('sing-geetham');
 
   const [sectionRect, setSectionRect] = useState<DOMRect | null>(null);
 
@@ -171,17 +189,18 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
               </h2>
 
               {/* Storytelling Narrative Description */}
-              <p className="text-[14px] sm:text-[15px] font-body text-white/45 leading-relaxed pr-2 sm:pr-8 select-text">
-                This poster is a study of the fraught and conflicted relationship between desire and destruction, expressed in a minimalist but symbolic visual style. Two characters are on opposite sides of a broken platform, separated by an insurmountable gap that represents emotional distance, isolation and the effects of unhealthy attachment.
+              <p className="text-[14px] sm:text-[15px] font-body text-white/45 leading-relaxed pr-2 sm:pr-8 select-text min-h-[100px]">
+                {arrivalsData.find(item => item.id === activeId)?.desc || arrivalsData[0].desc}
               </p>
             </div>
 
             {/* Circular Slider Controllers (Left/Right Arrows) */}
             <div className="flex items-center gap-3.5 mt-8 sm:mt-12 lg:mt-24">
-              <button
+              <LiquidGlassCard
                 onClick={() => handleArrowScroll('left')}
                 onMouseEnter={() => sfx.playTick('hover')}
-                className="w-12 h-12 rounded-full border border-white/10 hover:border-white/20 bg-white/[0.02] hover:bg-white text-white hover:text-black flex items-center justify-center transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
+                className="w-12 h-12 rounded-full lg-panel text-white hover:text-black flex items-center justify-center transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
+                options={{ radius: 24 }}
                 aria-label="Previous Slide"
                 data-cursor="Prev"
                 data-magnetic
@@ -190,12 +209,13 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                   <line x1="19" y1="12" x2="5" y2="12" />
                   <polyline points="12 19 5 12 12 5" />
                 </svg>
-              </button>
+              </LiquidGlassCard>
 
-              <button
+              <LiquidGlassCard
                 onClick={() => handleArrowScroll('right')}
                 onMouseEnter={() => sfx.playTick('hover')}
-                className="w-12 h-12 rounded-full border border-white/10 hover:border-white/20 bg-white/[0.02] hover:bg-white text-white hover:text-black flex items-center justify-center transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
+                className="w-12 h-12 rounded-full lg-panel text-white hover:text-black flex items-center justify-center transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
+                options={{ radius: 24 }}
                 aria-label="Next Slide"
                 data-cursor="Next"
                 data-magnetic
@@ -204,7 +224,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
-              </button>
+              </LiquidGlassCard>
             </div>
           </div>
 
@@ -238,20 +258,30 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                {arrivalsData.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() => handleCardClick(item.image)}
-                  onMouseEnter={() => sfx.playTick('hover')}
+                  onClick={() => {
+                    handleCardClick(item.image);
+                    setActiveId(item.id);
+                  }}
+                  onMouseEnter={() => {
+                    sfx.playTick('hover');
+                    setActiveId(item.id);
+                  }}
                   className="w-[240px] sm:w-[280px] flex-shrink-0 snap-start flex flex-col group cursor-pointer"
                 >
                   {/* Card Image Container with discomorphism styling */}
                   <div className="w-full aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 border-disco-hover transition-all duration-500 relative shadow-lg">
                     
-                    {/* Pulsing red arrival dot for the main item */}
-                    {item.id === 'american-psycho' && (
-                      <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-red-500/30 rounded-full px-2.5 py-1">
-                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping" />
-                        <span className="w-1.5 h-1.5 bg-red-500 rounded-full absolute" />
-                        <span className="text-[8px] font-heading font-semibold tracking-wider uppercase text-white leading-none">
-                          LATEST
+                    {/* Pulsing orange trending badge for Sing Geetham */}
+                    {item.id === 'sing-geetham' && (
+                      <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-[#ff7700]/30 rounded-full px-2.5 py-1">
+                        <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full animate-ping" />
+                        <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full absolute" />
+                        <span className="text-[8px] font-heading font-semibold tracking-wider uppercase text-white leading-none flex items-center gap-1">
+                          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="text-[#ff7700]">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            <polyline points="17 6 23 6 23 12" />
+                          </svg>
+                          TRENDING
                         </span>
                       </div>
                     )}
@@ -301,17 +331,18 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
           className="fixed inset-0 bg-black/98 z-[100000] flex items-center justify-center p-4 cursor-zoom-out animate-fade-in always-dark"
         >
           {/* Close button */}
-          <button
+          <LiquidGlassCard
             onClick={handleCloseLightbox}
             onMouseEnter={() => sfx.playTick('hover')}
-            className="fixed top-6 right-6 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[100005] cursor-pointer"
+            className="fixed top-6 right-6 lg-panel text-white hover:text-black rounded-full w-12 h-12 flex items-center justify-center transition-all duration-300 z-[100005] cursor-pointer"
+            options={{ radius: 24 }}
             data-cursor="Close"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-          </button>
+          </LiquidGlassCard>
 
           {/* Lightbox Image */}
           <div className="max-w-4xl max-h-[85vh] relative flex items-center justify-center">

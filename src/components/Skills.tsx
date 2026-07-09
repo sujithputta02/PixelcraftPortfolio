@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { sfx } from '../utils/sfx';
+import { LiquidGlassCard } from './LiquidGlassCard';
 
 export const InteractiveSkillMatrix: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -243,6 +244,7 @@ const gridCapabilities = [
   }
 ];
 
+
 export const Skills: React.FC = () => {
 
   return (
@@ -323,7 +325,10 @@ export const Skills: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
           
           {/* Left Column: Interactive Rive Showcase */}
-          <div className="lg:col-span-4 w-full h-[320px] sm:h-[400px] rounded-2xl border border-white/10 bg-white/[0.015] overflow-hidden relative flex flex-col justify-between p-6 backdrop-blur-md">
+          <LiquidGlassCard 
+            className="lg:col-span-4 w-full h-[320px] sm:h-[400px] rounded-2xl lg-panel overflow-hidden relative flex flex-col justify-between p-6"
+            options={{ radius: 36 }}
+          >
             <div className="disco-tile-grid opacity-10 pointer-events-none" />
             
             <div className="relative z-10">
@@ -342,17 +347,18 @@ export const Skills: React.FC = () => {
             <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
               <InteractiveSkillMatrix />
             </div>
-          </div>
+          </LiquidGlassCard>
 
           {/* Right Column: Grid of Capabilities */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {gridCapabilities.map((cap, index) => (
-              <div
+              <LiquidGlassCard
                 key={index}
                 onMouseEnter={() => sfx.playTick('hover')}
-                className={`bg-white/[0.015] border border-white/5 hover:border-white/15 p-6 sm:p-8 rounded-2xl text-left transition-all duration-300 backdrop-blur-md ${
+                className={`lg-panel p-6 sm:p-8 rounded-2xl text-left transition-all duration-300 ${
                   index === 1 ? 'lg:translate-y-8' : index === 3 ? 'lg:translate-y-8' : ''
                 }`}
+                options={{ radius: 36 }}
               >
                 <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6">
                   <span className="text-[12px] font-heading font-semibold text-white/60">
@@ -367,7 +373,7 @@ export const Skills: React.FC = () => {
                 <p className="text-[14px] sm:text-[15px] font-body text-[#A3A3A3] leading-relaxed">
                   {cap.desc}
                 </p>
-              </div>
+              </LiquidGlassCard>
             ))}
           </div>
 

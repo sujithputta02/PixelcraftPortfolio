@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { sfx } from '../utils/sfx';
+import { useLiquidGlass } from '../hooks/useLiquidGlass';
 
 interface NavbarProps {
   onNavClick: (sectionId: string) => void;
@@ -8,6 +9,17 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Apply liquid glass refraction when navbar is scrolled
+  useLiquidGlass(navRef, isScrolled, {
+    scale: -112,     // Exact displacement strength bulge from the repository
+    chroma: 6,       // Exact chromatic aberration stagger scale
+    border: 0.07,    // Inset border fraction
+    mapBlur: 12,     // Blur radius for map edge softness
+    blur: 3,         // Exact interior blur (not frosted blur 24)
+    saturate: 1.5,   // Saturation boost
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,9 +47,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-out border-b ${isScrolled
-            ? 'py-3 sm:py-3.5 px-5 sm:px-8 bg-black/65 backdrop-blur-[24px] border-white/8 shadow-[0_10px_30px_rgba(0,0,0,0.8)]'
-            : 'py-5 sm:py-6 px-5 sm:px-8 bg-transparent border-transparent'
+        ref={navRef}
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-out ${isScrolled
+            ? 'py-3 sm:py-3.5 px-5 sm:px-8 lg-panel'
+            : 'py-5 sm:py-6 px-5 sm:px-8 bg-transparent border-b border-transparent'
           }`}
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center">

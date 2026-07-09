@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRive } from '@rive-app/react-canvas';
 import { sfx } from '../utils/sfx';
+import { LiquidGlassCard } from './LiquidGlassCard';
+
 
 interface TimelineItem {
   year: string;
@@ -221,12 +223,13 @@ const DesktopTimeline: React.FC = () => {
                   </div>
 
                   {/* Glassmorphic Film Cell Card */}
-                  <div
-                    className={`absolute w-[280px] border p-5 rounded-2xl transition-all duration-[600ms] backdrop-blur-md text-left z-20 ${
+                  <LiquidGlassCard
+                    className={`absolute w-[280px] p-5 rounded-2xl transition-all duration-[600ms] lg-panel text-left z-20 ${
                       isActive 
-                        ? 'bg-[#0e0e0e]/95 border-white/20 opacity-100 scale-100 shadow-[0_15px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(255,119,0,0.08)] text-white'
-                        : 'bg-[#0C0C0C]/80 border-white/5 opacity-30 scale-95 text-white/50'
+                        ? 'opacity-100 scale-100 shadow-[0_15px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(255,119,0,0.08)] text-white'
+                        : 'opacity-30 scale-95 text-white/50'
                     }`}
+                    options={{ radius: 36 }}
                     style={{
                       bottom: isEven ? '96px' : 'auto',
                       top: !isEven ? '96px' : 'auto',
@@ -251,14 +254,14 @@ const DesktopTimeline: React.FC = () => {
                     <p className="text-[12px] font-body opacity-75 leading-relaxed select-text">
                       {node.desc}
                     </p>
-                  </div>
+                  </LiquidGlassCard>
                 </div>
               );
             })}
           </div>
 
           {/* Stationary Cinema Projector Reel */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full border backdrop-blur-md flex items-center justify-center z-30 pointer-events-none select-none border-white/20 bg-black/55 shadow-[0_0_35px_rgba(255,119,0,0.18)]">
+          <LiquidGlassCard className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full lg-panel flex items-center justify-center z-30 pointer-events-none select-none">
             <div className="absolute inset-0 rounded-full bg-[#ff7700]/8 blur-[20px] pointer-events-none animate-pulse z-0" />
             
             <div 
@@ -280,7 +283,7 @@ const DesktopTimeline: React.FC = () => {
             <div className="absolute w-[44px] h-[44px] rounded-full overflow-hidden z-20 scale-[1.05]">
               <ReelRiveAnimation />
             </div>
-          </div>
+          </LiquidGlassCard>
 
         </div>
 
@@ -338,7 +341,10 @@ const MobileTimeline: React.FC = () => {
               </div>
 
               {/* Card */}
-              <div className="bg-[#0e0e0e]/90 border border-white/10 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_15px_rgba(255,119,0,0.05)]">
+              <LiquidGlassCard 
+                className="lg-panel p-4 sm:p-5 shadow-[0_10px_30px_rgba(0,0,0,0.8),0_0_15px_rgba(255,119,0,0.05)]"
+                options={{ radius: 36 }}
+              >
                 {/* Header row */}
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[9px] font-mono tracking-widest text-white/35">
@@ -356,7 +362,7 @@ const MobileTimeline: React.FC = () => {
                 <p className="text-[13px] font-body text-white/60 leading-relaxed select-text">
                   {node.desc}
                 </p>
-              </div>
+              </LiquidGlassCard>
             </div>
           ))}
         </div>
