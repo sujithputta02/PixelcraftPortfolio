@@ -16,6 +16,7 @@ interface VaultItem {
 }
 
 const backgroundCards: VaultItem[] = [
+  { id: 'dune-part-three-v2', title: 'Dune: Part Three | Minimalist Cinematic Poster', image: '/Poster/Dune Part Three V-2.webp', category: 'Theatrical Key Art', instagramUrl: 'https://www.instagram.com/p/DaptEeQDwlZ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
   { id: 'sing-geetham', title: 'Sing Geetham', image: '/Poster/Sing geetham Poster.webp', category: 'Fantasy / Drama', instagramUrl: 'https://www.instagram.com/p/Dah9Mb0POq8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
   { id: 'spider-noir', title: 'Spider-Man Noir', image: '/Poster/spider noir poster.webp', category: 'Atmospheric Key Art', instagramUrl: 'https://www.instagram.com/p/DVYbj2sEchE/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
   { id: 'spidey-sense', title: 'Spidey Sense', image: '/Poster/spidey sense - spiderman Poster.webp', category: 'Comic Concept', instagramUrl: 'https://www.instagram.com/p/DZAPWjbvor8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },

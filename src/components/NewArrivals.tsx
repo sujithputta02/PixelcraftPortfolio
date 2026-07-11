@@ -18,6 +18,13 @@ interface ArrivalItem {
 
 const arrivalsData: ArrivalItem[] = [
   {
+    id: 'dune-part-three-v2',
+    title: 'Dune: Part Three | Minimalist Cinematic Poster',
+    image: '/Poster/Dune Part Three V-2.webp',
+    category: 'Theatrical Key Art',
+    desc: 'A minimalist cinematic key art tribute for Dune: Part Three, capturing the vast silent horizons of Arrakis and Paul Atreides\' path.'
+  },
+  {
     id: 'sing-geetham',
     title: 'Sing Geetham',
     image: '/Poster/Sing geetham Poster.webp',
@@ -87,7 +94,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeImage, setActiveImage] = useState<string | null>(null);
-  const [activeId, setActiveId] = useState<string>('sing-geetham');
+  const [activeId, setActiveId] = useState<string>('dune-part-three-v2');
 
   const [sectionRect, setSectionRect] = useState<DOMRect | null>(null);
 
@@ -271,8 +278,8 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                   {/* Card Image Container with discomorphism styling */}
                   <div className="w-full aspect-[3/4.2] rounded-2xl overflow-hidden bg-[#0C0C0C] border border-white/5 border-disco-hover transition-all duration-500 relative shadow-lg">
                     
-                    {/* Pulsing orange trending badge for Sing Geetham */}
-                    {item.id === 'sing-geetham' && (
+                    {/* Pulsing orange trending badge for Sing Geetham & Dune Part Three V-2 */}
+                    {(item.id === 'sing-geetham' || item.id === 'dune-part-three-v2') && (
                       <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-[#ff7700]/30 rounded-full px-2.5 py-1">
                         <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full animate-ping" />
                         <span className="w-1.5 h-1.5 bg-[#ff7700] rounded-full absolute" />
@@ -281,7 +288,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ onNavClick }) => {
                             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
                             <polyline points="17 6 23 6 23 12" />
                           </svg>
-                          TRENDING
+                          {item.id === 'dune-part-three-v2' ? 'TRENDING LATEST' : 'TRENDING'}
                         </span>
                       </div>
                     )}

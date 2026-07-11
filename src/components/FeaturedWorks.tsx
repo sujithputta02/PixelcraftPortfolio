@@ -20,6 +20,9 @@ interface Project {
   behanceUrl?: string;
   pinterestUrl?: string;
   instagramUrl?: string;
+  behanceUrl2?: string;
+  pinterestUrl2?: string;
+  instagramUrl2?: string;
 }
 
 const projectsData: Project[] = [
@@ -135,10 +138,13 @@ const projectsData: Project[] = [
     development: 'Layering composite landscape assets, digital light painting of bright solar flares, and calibrating typographic letter spacing in Canva and Affinity Designer.',
     tools: ['Canva', 'Affinity Designer', 'Creative Direction'],
     results: 'Recognized across international movie design portals for outstanding atmospheric and epic scale visualization.',
-    galleryImages: ['/Poster/Dune Part-3 Lisan al-gaib post.webp', '/Poster/Dear, El ! - Written by Mike wheeler v-2.webp'],
+    galleryImages: ['/Poster/Dune Part-3 Lisan al-gaib post.webp', '/Poster/Dune Part Three V-2.webp'],
     behanceUrl: 'https://www.behance.net/gallery/246673177/Dune-Part-Three-Lisan-al-Gaib-Official-Style-Poster',
+    behanceUrl2: 'https://www.behance.net/gallery/252547767/Dune-Part-Three-Minimalist-Cinematic-Poster',
     instagramUrl: 'https://www.instagram.com/p/DWgj6dwkfcN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
-    pinterestUrl: 'https://pin.it/6gFhLqmb1'
+    instagramUrl2: 'https://www.instagram.com/p/DaptEeQDwlZ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+    pinterestUrl: 'https://pin.it/6gFhLqmb1',
+    pinterestUrl2: 'https://pin.it/3NmhAwv0E'
   },
   {
     id: 'doctor-doom',
@@ -888,7 +894,8 @@ export const FeaturedWorks: React.FC = () => {
               </div>
 
               {/* Case Study External Links Section */}
-              {(activeProject.behanceUrl || activeProject.pinterestUrl || activeProject.instagramUrl) && (
+              {(activeProject.behanceUrl || activeProject.pinterestUrl || activeProject.instagramUrl ||
+                activeProject.behanceUrl2 || activeProject.pinterestUrl2 || activeProject.instagramUrl2) && (
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-12 items-start sm:items-center disco-card border-disco-chrome p-6 sm:p-8 rounded-2xl shadow-disco-neon select-none relative overflow-hidden chrome-sweep-effect">
                   {/* Subtle discomorphism tile backdrop */}
                   <div className="disco-tile-grid opacity-20 pointer-events-none" />
@@ -917,6 +924,21 @@ export const FeaturedWorks: React.FC = () => {
                         <span>Behance Project</span>
                       </a>
                     )}
+
+                    {activeProject.behanceUrl2 && (
+                      <a
+                        href={activeProject.behanceUrl2}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2.5 bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5 text-[13px] font-heading font-semibold uppercase tracking-wider text-white hover:bg-white hover:text-black hover:border-white transition-all duration-500 shadow-[0_4px_15px_rgba(0,0,0,0.4)] hover:scale-105"
+                        data-cursor="Behance Showcase 2"
+                      >
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="w-4.5 h-4.5">
+                          <path d="M8.22 5h-4.3v13.6h4.54c2.62 0 4.14-1.22 4.14-3.4 0-1.8-1.07-2.65-2.28-2.97 1-.36 1.83-1.12 1.83-2.64 0-2.13-1.63-4.59-3.93-4.59zm-2.02 2.76h1.9c1.07 0 1.77.56 1.77 1.48 0 .97-.7 1.48-1.77 1.48h-1.9V7.76zm1.9 8.2h-1.9v-3.08h1.9c1.17 0 1.95.53 1.95 1.54 0 1.02-.78 1.54-1.95 1.54zm11.75-5.91c-2.45 0-3.9 1.63-3.9 4.3 0 2.65 1.4 4.35 3.9 4.35 1.83 0 2.9-.84 3.33-2.06h-1.77c-.23.48-.74.84-1.56.84-1 0-1.68-.53-1.8-1.54h5.27c.07-.36.1-.74.1-1.12 0-2.95-1.32-4.77-3.67-4.77zm-1.8 3.03c.12-.97.74-1.55 1.77-1.55 1 0 1.6.58 1.72 1.55h-3.49zm2.45-5.5h-4.9v1.22h4.9V5.58z"/>
+                        </svg>
+                        <span>Behance V-2</span>
+                      </a>
+                    )}
                     
                     {activeProject.pinterestUrl && (
                       <a
@@ -933,6 +955,21 @@ export const FeaturedWorks: React.FC = () => {
                       </a>
                     )}
 
+                    {activeProject.pinterestUrl2 && (
+                      <a
+                        href={activeProject.pinterestUrl2}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2.5 bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5 text-[13px] font-heading font-semibold uppercase tracking-wider text-white hover:bg-white hover:text-black hover:border-white transition-all duration-500 shadow-[0_4px_15px_rgba(0,0,0,0.4)] hover:scale-105"
+                        data-cursor="Pinterest Board 2"
+                      >
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="w-4.5 h-4.5">
+                          <path d="M12.24 2C6.6 2 2 6.6 2 12.24c0 4.3 2.66 8 6.5 9.58-.1-.8-.18-2.02.04-2.9l1.68-7.1s-.42-.85-.42-2.1c0-1.97 1.14-3.44 2.57-3.44 1.2 0 1.8.9 1.8 2 0 1.22-.78 3.04-1.18 4.73-.34 1.42.72 2.58 2.12 2.58 2.54 0 4.5-2.68 4.5-6.55 0-3.43-2.46-5.83-5.98-5.83-4.08 0-6.48 3.06-6.48 6.22 0 1.23.47 2.55 1.06 3.27.12.14.13.26.1.4l-.38 1.58c-.06.26-.2.32-.47.2-1.78-.83-2.9-3.44-2.9-5.53 0-4.5 3.27-8.63 9.43-8.63 4.95 0 8.8 3.53 8.8 8.25 0 4.92-3.1 8.88-7.4 8.88-1.45 0-2.8-.75-3.27-1.63l-.9 3.4c-.32 1.25-1.2 2.82-1.8 3.78 1.45.44 3 .68 4.6.68C17.4 22.48 22 17.88 22 12.24 22 6.6 17.4 2 12.24 2z"/>
+                        </svg>
+                        <span>Pinterest V-2</span>
+                      </a>
+                    )}
+
                     {activeProject.instagramUrl && (
                       <a
                         href={activeProject.instagramUrl}
@@ -945,6 +982,21 @@ export const FeaturedWorks: React.FC = () => {
                           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                         </svg>
                         <span>Instagram Post</span>
+                      </a>
+                    )}
+
+                    {activeProject.instagramUrl2 && (
+                      <a
+                        href={activeProject.instagramUrl2}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2.5 bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-5 py-2.5 text-[13px] font-heading font-semibold uppercase tracking-wider text-white hover:bg-white hover:text-black hover:border-white transition-all duration-500 shadow-[0_4px_15px_rgba(0,0,0,0.4)] hover:scale-105"
+                        data-cursor="Instagram Post 2"
+                      >
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" className="w-4.5 h-4.5">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                        </svg>
+                        <span>Instagram V-2</span>
                       </a>
                     )}
                   </div>

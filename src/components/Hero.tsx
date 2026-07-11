@@ -35,7 +35,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
     const yc = rect.height / 2;
     const rotateX = (yc - y) / 14; // subtle 3D tilt rotation
     const rotateY = (x - xc) / 14;
-    
+
     setTiltStyle({
       transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.025, 1.025, 1.025)`,
       transition: 'transform 0.1s ease-out',
@@ -79,26 +79,26 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
   const textTranslateY = -progress * 120;
 
   return (
-    <section 
+    <section
       id="hero"
       className="relative w-full min-h-screen flex justify-center items-start lg:items-center px-5 sm:px-8 md:px-16 overflow-hidden select-none bg-transparent pt-32 sm:pt-36 lg:pt-16 pb-16 always-dark"
     >
       {/* Designer draft sheet dot grid */}
-      <div className="absolute inset-0 pointer-events-none select-none z-0 transition-opacity duration-500 opacity-[0.02]" 
-           style={{ 
-             backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)', 
-             backgroundSize: '24px 24px' 
-           }} />
+      <div className="absolute inset-0 pointer-events-none select-none z-0 transition-opacity duration-500 opacity-[0.02]"
+        style={{
+          backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)',
+          backgroundSize: '24px 24px'
+        }} />
 
       {/* Atmospheric backlight overlay */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none z-0 bg-radial from-transparent via-[#050505]/40 to-[#050505] opacity-80"
       />
 
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center relative z-10">
-        
+
         {/* Left Column: Typography & CTA */}
-        <div 
+        <div
           className="lg:col-span-7 flex flex-col items-start text-left transition-all duration-[80ms] ease-out"
           style={{
             opacity: fadeOutOpacity,
@@ -107,7 +107,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           }}
         >
           {/* Subtle Tagline Accent */}
-          <LiquidGlassCard 
+          <LiquidGlassCard
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full lg-panel mb-6 animate-fade-in"
             options={{ radius: 15 }}
           >
@@ -120,7 +120,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           {/* Premium Serif Typography Headline */}
           <h1 className="text-[clamp(2.2rem,8vw,4.75rem)] font-heading font-extrabold uppercase leading-[0.92] tracking-tighter text-white max-w-2xl mb-6">
             Crafting Digital <br />
-            <span 
+            <span
               className="font-light tracking-[0.06em]"
               style={{ WebkitTextStroke: '1.2px rgba(255, 255, 255, 0.75)', color: 'transparent' }}
             >
@@ -144,7 +144,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
             >
               View Projects
             </button>
-            
+
             <LiquidGlassCard
               onClick={() => handleBtnClick('contact')}
               onMouseEnter={() => sfx.playTick('hover')}
@@ -159,16 +159,16 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
         </div>
 
         {/* Right Column: Interactive 3D Mockup of Latest Release */}
-        <div 
+        <div
           className="lg:col-span-5 flex justify-center items-center relative select-none mt-12 lg:mt-0 reveal reveal-delay-300"
           style={{ perspective: 1000 }}
         >
           {/* Outer glowing back-glow reflecting Spiderman red/orange colors */}
           <div className="absolute w-[240px] sm:w-[280px] h-[340px] sm:h-[400px] rounded-2xl bg-[#ff7700]/8 blur-[50px] animate-pulse pointer-events-none z-0" />
-          
+
           {/* Mockup Frame with custom 3D tilt */}
           <LiquidGlassCard
-            onClick={() => handleCardClick('/Poster/Sing geetham Poster.webp')}
+            onClick={() => handleCardClick('/Poster/Dune Part Three V-2.webp')}
             onMouseEnter={handleMouseEnter}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -180,9 +180,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
           >
             {/* Mirror Tile grid overlay inside card */}
             <div className="disco-tile-grid opacity-15 pointer-events-none" />
-            
+
             {/* Red Pulsing Latest Dot badge */}
-            <LiquidGlassCard 
+            <LiquidGlassCard
               className="absolute top-6 left-6 z-20 flex items-center gap-1.5 lg-panel border border-[#ff7700]/45 rounded-full px-2.5 py-1"
               options={{ radius: 9 }}
             >
@@ -196,21 +196,21 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
             {/* Poster Image */}
             <div className="w-full h-full rounded-xl overflow-hidden relative">
               <ProgressiveImage
-                src="/Poster/Sing geetham Poster.webp"
-                alt="Latest Release - Sing Geetham"
+                src="/Poster/Dune Part Three V-2.webp"
+                alt="Latest Release - Dune: Part Three | Minimalist Cinematic Poster"
                 fetchPriority="high"
                 className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 ease-out"
               />
               {/* Cover shadow gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              
+
               {/* Release Metadata Overlay inside Image bottom */}
               <div className="absolute bottom-4 left-4 right-4 text-left transition-opacity duration-300 z-20">
                 <span className="text-[14px] font-heading font-semibold text-white tracking-tight leading-none block">
-                  Sing Geetham
+                  Dune: Part Three | Minimalist Cinematic Poster
                 </span>
                 <span className="text-[9px] font-mono tracking-widest uppercase text-[#ff7700] block mt-1.5">
-                  FANTASY / DRAMA // 2026
+                  THEATRICAL KEY ART // 2026
                 </span>
               </div>
             </div>
@@ -220,7 +220,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavClick }) => {
       </div>
 
       {/* Scroll indicator (Fades out when scrolling) */}
-      <div 
+      <div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 cursor-pointer transition-opacity duration-300 hidden sm:flex z-10"
         style={{ opacity: Math.max(0, 1 - progress * 4) }}
         onClick={() => onNavClick('about')}
