@@ -9,28 +9,26 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   const navRef = useRef<HTMLElement>(null);
 
-  // Apply liquid glass refraction when navbar is scrolled
-  useLiquidGlass(navRef, isScrolled, {
-    scale: -112,     // Exact displacement strength bulge from the repository
-    chroma: 6,       // Exact chromatic aberration stagger scale
-    border: 0.07,    // Inset border fraction
-    mapBlur: 12,     // Blur radius for map edge softness
-    blur: 3,         // Exact interior blur (not frosted blur 24)
-    saturate: 1.5,   // Saturation boost
+  // Apply liquid glass refraction to the Dynamic Island pill
+  useLiquidGlass(navRef, true, {
+    scale: -112,
+    chroma: 6,
+    border: 0.07,
+    mapBlur: 12,
+    blur: 6,
+    saturate: 1.5,
+    radius: 999,
   });
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 30);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -40,189 +38,158 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavClick }) => {
 
   const handleLinkClick = (id: string) => {
     sfx.playTick('click');
+    setActiveSection(id);
     setIsOpen(false);
     onNavClick(id);
   };
 
   return (
     <>
-      <nav
-        ref={navRef}
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-out ${isScrolled
-            ? 'py-3 sm:py-3.5 px-5 sm:px-8 lg-panel'
-            : 'py-5 sm:py-6 px-5 sm:px-8 bg-transparent border-b border-transparent'
+      {/* Dynamic Island Floating Header Capsule */}
+      <header className="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-4xl pointer-events-none">
+        <nav
+          ref={navRef}
+          className={`pointer-events-auto mx-auto rounded-full lg-panel border border-white/15 bg-[#09090b]/85 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(255,119,0,0.12)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-between ${
+            isScrolled
+              ? 'py-2 px-3.5 sm:px-5 scale-[0.98] shadow-[0_20px_45px_rgba(0,0,0,0.95)]'
+              : 'py-2.5 sm:py-3 px-4 sm:px-6 scale-100'
           }`}
-      >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-
-          {/* Logo (left) */}
-          <div 
-            onClick={() => handleLinkClick('hero')} 
+        >
+          {/* Left: Dynamic Island Logo & Live Indicator */}
+          <div
+            onClick={() => handleLinkClick('hero')}
             onMouseEnter={() => sfx.playTick('hover')}
-            className="flex items-center gap-3.5 cursor-pointer select-none group"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none group"
             data-cursor="Home"
             data-magnetic
           >
-            {/* The Main Discomorphic Logo Image - Rendered natively with a vibrant metallic neon drop-shadow */}
-            <img
-              src="/Pixelcraft Discomorphism wb.webp"
-              alt="PixelCraft Main Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 object-contain filter drop-shadow-[0_0_8px_rgba(255,119,0,0.45)] drop-shadow-[0_0_4px_rgba(0,136,255,0.35)] transition-transform duration-700 ease-[var(--ease-luxury)] group-hover:scale-115 group-hover:rotate-[15deg]"
-            />
+            <div className="relative flex items-center justify-center">
+              <img
+                src="/Pixelcraft Discomorphism wb.webp"
+                alt="PixelCraft Main Logo"
+                className="w-8 h-8 sm:w-9 sm:h-9 object-contain filter drop-shadow-[0_0_8px_rgba(255,119,0,0.5)] transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-12"
+              />
+            </div>
 
-            <span className="text-[19px] sm:text-[23px] font-heading font-medium tracking-tight text-white transition-opacity duration-300 group-hover:opacity-80">
-              PixelCraft<span className="text-[11px] sm:text-[13px] align-super leading-none">®</span>
-              <span className="font-cursive text-[23px] sm:text-[26px] text-white/90 ml-1.5">by Sujith</span>
-            </span>
+            <div className="flex flex-col text-left">
+              <span className="text-[14px] sm:text-[16px] font-heading font-semibold tracking-tight text-white leading-none">
+                PixelCraft<span className="text-[9px] align-super">®</span>
+              </span>
+              <span className="text-[9px] sm:text-[10px] font-mono text-white/50 tracking-wider uppercase mt-0.5 hidden xs:inline-block">
+                Studio
+              </span>
+            </div>
           </div>
 
-          {/* Desktop Nav Links (center, hidden below lg) */}
-          <div className="hidden lg:flex items-center text-[22px] font-body text-white/50 select-none">
-            <button
-              onClick={() => handleLinkClick('works')}
-              onMouseEnter={() => sfx.playTick('hover')}
-              className="text-white hover:text-white transition-colors duration-300 px-1"
-              data-cursor="Works"
-            >
-              Works
-            </button>
-            <span className="mx-1 text-white/30 text-[20px]">,</span>
-            <button
-              onClick={() => handleLinkClick('latest')}
-              onMouseEnter={() => sfx.playTick('hover')}
-              className="text-white/70 hover:text-white transition-colors duration-300 px-1"
-              data-cursor="Latest"
-            >
-              Latest
-            </button>
-            <span className="mx-1 text-white/30 text-[20px]">,</span>
-            <button
-              onClick={() => handleLinkClick('about')}
-              onMouseEnter={() => sfx.playTick('hover')}
-              className="text-white/70 hover:text-white transition-colors duration-300 px-1"
-              data-cursor="About"
-            >
-              About
-            </button>
-            <span className="mx-1 text-white/30 text-[20px]">,</span>
-            <button
-              onClick={() => handleLinkClick('skills')}
-              onMouseEnter={() => sfx.playTick('hover')}
-              className="text-white/70 hover:text-white transition-colors duration-300 px-1"
-              data-cursor="Skills"
-            >
-              Capabilities
-            </button>
-            <span className="mx-1 text-white/30 text-[20px]">,</span>
-            <button
-              onClick={() => handleLinkClick('timeline')}
-              onMouseEnter={() => sfx.playTick('hover')}
-              className="text-white/70 hover:text-white transition-colors duration-300 px-1"
-              data-cursor="Timeline"
-            >
-              Journey
-            </button>
+          {/* Center: Dynamic Island Navigation Pills (Desktop) */}
+          <div className="hidden md:flex items-center gap-1 bg-white/[0.04] p-1 rounded-full border border-white/10 text-[13px] font-heading font-medium">
+            {[
+              { id: 'works', label: 'Works' },
+              { id: 'latest', label: 'Latest' },
+              { id: 'about', label: 'About' },
+              { id: 'skills', label: 'Capabilities' },
+              { id: 'timeline', label: 'Journey' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleLinkClick(item.id)}
+                onMouseEnter={() => sfx.playTick('hover')}
+                className={`px-3.5 py-1.5 rounded-full transition-all duration-300 ${
+                  activeSection === item.id
+                    ? 'bg-white text-black font-semibold shadow-md scale-105'
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+                data-cursor={item.label}
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
 
-          {/* Desktop CTA (right, hidden below lg) */}
-          <div className="hidden lg:flex items-center gap-6">
+          {/* Right: Dynamic Island Contact CTA & Status */}
+          <div className="flex items-center gap-2">
             <button
               onClick={() => handleLinkClick('contact')}
               onMouseEnter={() => sfx.playTick('hover')}
-              className="text-[22px] font-body text-white underline underline-offset-4 decoration-white/30 hover:decoration-white hover:opacity-85 transition-all duration-300 cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[12px] font-heading font-semibold uppercase tracking-wider bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-white/20 active:scale-95"
               data-cursor="Contact"
               data-magnetic
             >
-              Get in touch
+              <span>Get in touch</span>
             </button>
-          </div>
 
-          {/* Mobile Hamburger */}
-          <div className="lg:hidden flex items-center gap-4 z-[110]">
+            {/* Mobile Hamburger Island Switcher */}
             <button
               onClick={() => {
                 sfx.playTick('click');
                 toggleMenu();
               }}
               onMouseEnter={() => sfx.playTick('hover')}
-              className="flex flex-col justify-center items-center gap-[5px] w-8 h-8 focus:outline-none"
-              aria-label="Toggle Menu"
+              className="md:hidden flex flex-col justify-center items-center gap-[4px] w-9 h-9 rounded-full bg-white/10 border border-white/15 focus:outline-none cursor-pointer"
+              aria-label="Toggle Dynamic Island Menu"
             >
               <span
-                className={`w-6 h-[2px] bg-white transition-all duration-300 ease-out origin-center ${isOpen ? 'rotate-[45deg] translate-y-[7px]' : ''
-                  }`}
+                className={`w-4 h-[2px] bg-white transition-all duration-300 ease-out origin-center ${
+                  isOpen ? 'rotate-[45deg] translate-y-[6px]' : ''
+                }`}
               />
               <span
-                className={`w-6 h-[2px] bg-white transition-all duration-300 ease-out ${isOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-                  }`}
+                className={`w-4 h-[2px] bg-white transition-all duration-300 ease-out ${
+                  isOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
+                }`}
               />
               <span
-                className={`w-6 h-[2px] bg-white transition-all duration-300 ease-out origin-center ${isOpen ? 'rotate-[-45deg] -translate-y-[7px]' : ''
-                  }`}
+                className={`w-4 h-[2px] bg-white transition-all duration-300 ease-out origin-center ${
+                  isOpen ? 'rotate-[-45deg] -translate-y-[6px]' : ''
+                }`}
               />
             </button>
           </div>
+        </nav>
+      </header>
 
-        </div>
-      </nav>
-
-      {/* Mobile Overlay Menu */}
+      {/* Mobile Dynamic Island Expanded Overlay */}
       <div
-        className={`fixed inset-0 bg-[#050505]/98 backdrop-blur-md z-[90] flex flex-col justify-center px-8 sm:px-12 gap-8 lg:hidden transition-all duration-500 ease-out ${isOpen
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none'
-          }`}
+        className={`fixed inset-0 bg-[#050508]/96 backdrop-blur-2xl z-[90] flex flex-col justify-center px-8 sm:px-12 gap-8 md:hidden transition-all duration-500 ease-out ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
       >
-        <div className="flex flex-col gap-6 select-none">
-          <button
-            onClick={() => handleLinkClick('works')}
-            onMouseEnter={() => sfx.playTick('hover')}
-            className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
-          >
-            Works
-          </button>
-          <button
-            onClick={() => handleLinkClick('latest')}
-            onMouseEnter={() => sfx.playTick('hover')}
-            className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
-          >
-            Latest
-          </button>
-          <button
-            onClick={() => handleLinkClick('about')}
-            onMouseEnter={() => sfx.playTick('hover')}
-            className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
-          >
-            About
-          </button>
-          <button
-            onClick={() => handleLinkClick('skills')}
-            onMouseEnter={() => sfx.playTick('hover')}
-            className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
-          >
-            Capabilities
-          </button>
-          <button
-            onClick={() => handleLinkClick('timeline')}
-            onMouseEnter={() => sfx.playTick('hover')}
-            className="text-[32px] sm:text-[38px] font-heading font-medium text-white hover:text-white/60 transition-colors text-left"
-          >
-            Journey
-          </button>
+        <div className="flex flex-col gap-5 select-none max-w-sm mx-auto w-full">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2 h-2 rounded-full bg-[#ff7700] animate-pulse" />
+            <span className="text-[11px] font-mono uppercase tracking-widest text-white/50">
+              Navigation Menu
+            </span>
+          </div>
 
-
-
-          <div className="h-[1px] bg-white/10 w-24 my-2" />
+          {[
+            { id: 'works', label: 'Works' },
+            { id: 'latest', label: 'Latest' },
+            { id: 'about', label: 'About' },
+            { id: 'skills', label: 'Capabilities' },
+            { id: 'timeline', label: 'Journey' },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleLinkClick(item.id)}
+              onMouseEnter={() => sfx.playTick('hover')}
+              className="text-[28px] sm:text-[32px] font-heading font-medium text-white hover:text-[#ff7700] transition-colors text-left flex items-center justify-between border-b border-white/5 pb-2"
+            >
+              <span>{item.label}</span>
+              <span className="text-[14px] font-mono text-white/30">→</span>
+            </button>
+          ))}
 
           <button
             onClick={() => handleLinkClick('contact')}
             onMouseEnter={() => sfx.playTick('hover')}
-            className="text-[28px] sm:text-[34px] font-body text-white underline underline-offset-4 decoration-white/30 text-left"
+            className="mt-4 px-6 py-3.5 rounded-full text-[14px] font-heading font-bold uppercase tracking-wider bg-white text-black text-center shadow-lg active:scale-95 transition-transform"
           >
-            Get in touch
+            Get In Touch
           </button>
         </div>
       </div>
     </>
   );
 };
+
